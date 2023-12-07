@@ -36,6 +36,7 @@ jobs:
               run: |
                 git config --global user.name 'Rumis'
                 git config --global user.email '56908557+MynameisBI@users.noreply.github.com'
+                git pull
                 git add .
                 git commit -m "Daily auto web build" || true
                 git subtree push --prefix web origin gh-pages
