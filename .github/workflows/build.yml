@@ -2,9 +2,7 @@ name: Daily web distribution
 
 on:
     schedule:
-        - cron: '30 15 * * *'
-        branches:
-            - main
+        - cron: "30 15 * * *"
 
 permissions:
     contents: write
