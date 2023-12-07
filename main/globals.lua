@@ -8,7 +8,6 @@ Knife = {
 Anim8 = require 'libs.anim8'
 Class = require 'libs.middleclass'
 Lume = require 'libs.lume'
-Vector = require 'libs.brinevector'
 Gamera = require 'libs.gamera'
 Bump = require 'libs.bump'
 
