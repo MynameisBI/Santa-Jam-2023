@@ -1,0 +1,41 @@
+name: Daily web distribution
+
+on:
+    schedule:
+        - cron: '30 15 * * *'
+        branches:
+            - main
+
+permissions:
+    contents: write
+
+jobs:
+    export:
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+            
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                node-version: 14
+                
+            - name: Install love.js
+              run: npm install -g love.js
+
+            - name: Package a web build
+              run: |
+                cd main
+                zip -9 -r game.love .
+                cd ..
+                love.js ./main/game.love web -t "game" -c
+
+            - name: Commit and push
+              run: |
+                git config --global user.name 'Rumis'
+                git config --global user.email '56908557+MynameisBI@users.noreply.github.com'
+                git add .
+                git commit -m "Daily auto web build" || true
+                git subtree push --prefix web origin gh-pages
