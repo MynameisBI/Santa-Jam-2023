@@ -3,6 +3,8 @@ name: Daily web distribution
 on:
     schedule:
         - cron: "30 15 * * *"
+        
+    workflow_dispatch:
 
 permissions:
     contents: write
