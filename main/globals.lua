@@ -1,3 +1,9 @@
+DEBUG = {
+  status = true,
+  buildingsX = 0,
+  buildingsSpeed = 25
+}
+
 Hump = {
   Gamestate = require 'libs.hump.gamestate',
   Timer = require 'libs.hump.timer'
@@ -10,8 +16,14 @@ Class = require 'libs.middleclass'
 Lume = require 'libs.lume'
 Gamera = require 'libs.gamera'
 Bump = require 'libs.bump'
+Suit = require 'libs.suit'
+Clove = require 'libs.clove'
 
 love.graphics.setDefaultFilter('nearest', 'nearest')
-Sprites = {
 
-}
+Images = {
+  diamond = love.graphics.newImage('assets/diamond.png'),
+
+  environment = Clove.importAll('assets/environment', true)
+} 
+
