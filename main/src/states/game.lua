@@ -3,7 +3,7 @@ local Entity = require 'src.entities.entity'
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 
-local ResourcesHUD = require 'src.gui.game.resourcesHUD'
+local HUD = require 'src.gui.game.HUD'
 
 local Game = Class('Game', State)
 
@@ -11,7 +11,7 @@ function Game:enter(from)
   State.enter(self, from)
 
   self.guis = {
-    ResourcesHUD()
+    HUD()
   }
 end
 

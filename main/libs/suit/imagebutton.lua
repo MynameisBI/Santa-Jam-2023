@@ -12,13 +12,16 @@ return function(core, normal, ...)
 	opt.hovered = opt.hovered or opt[2] or opt.normal
 	opt.active = opt.active or opt[3] or opt.hovered
 	opt.id = opt.id or opt.normal
+	--! Modified
+	opt.sx, opt.sy = opt.sx or 1, opt.sy or 1
 
 	local image = assert(opt.normal, "No image for state `normal'")
 
 	core:registerMouseHit(opt.id, x, y, function(u,v)
 		-- mouse in image?
 		u, v = math.floor(u+.5), math.floor(v+.5)
-		if u < 0 or u >= image:getWidth() or v < 0 or v >= image:getHeight() then
+		--! Modified
+		if u < 0 or u >= image:getWidth() * opt.sx or v < 0 or v >= image:getHeight() * opt.sy then
 			return false
 		end
 
@@ -43,7 +46,8 @@ return function(core, normal, ...)
 
 	core:registerDraw(opt.draw or function(image,x,y, r,g,b,a)
 		love.graphics.setColor(r,g,b,a)
-		love.graphics.draw(image,x,y)
+		--! Modified
+		love.graphics.draw(image,x,y,0,opt.sx,opt.sy)
 	end, image, x,y, love.graphics.getColor())
 
 	return {
