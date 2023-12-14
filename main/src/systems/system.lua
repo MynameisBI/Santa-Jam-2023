@@ -15,7 +15,7 @@ function System:initialize(...)
     local callback = self[callbackName]
     if callback ~= nil then
       self.callbacks[callbackNames] = callback
-      self[callbackName] = Knife.System(self.aspects, function(...) callback(self, ...) end)  
+      self[callbackName] = Knife.System(self.aspects, function(...) callback(self, ...) end)
     end
   end
 end
