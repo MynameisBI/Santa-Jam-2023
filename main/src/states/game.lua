@@ -4,6 +4,8 @@ local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 
 local HUD = require 'src.gui.game.HUD'
+local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
+local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
 
 local Game = Class('Game', State)
 
@@ -11,7 +13,9 @@ function Game:enter(from)
   State.enter(self, from)
 
   self.guis = {
-    HUD()
+    HUD(),
+    BattleRewardWindow(),
+    HeroRewardWindow()
   }
 end
 
@@ -41,7 +45,33 @@ function Game:draw()
 
   State.draw(self)
 
-  Lume.each(self.guis, 'draw')
+
+  if self.guis[3].isOpened then
+    self.guis[1].suit:updateMouse(math.huge, math.huge, false)
+    self.guis[1]:draw()
+
+    self.guis[2].suit:updateMouse(math.huge, math.huge, false)
+    self.guis[2]:draw()
+
+    self.guis[3]:draw()
+
+  elseif self.guis[2].isOpened then
+    self.guis[1].suit:updateMouse(math.huge, math.huge, false)
+    self.guis[1]:draw()
+
+    self.guis[2]:draw()
+
+  else
+    self.guis[1]:draw()
+  end
+end
+
+function Game:keypressed(key, scancode, isRepeat)
+  State.keypressed(self, key, scancode, isRepeat)
+
+  if love.keyboard.isDown('lctrl') and scancode == 'b' then
+    self.guis[2]:open()
+  end
 end
 
 return Game

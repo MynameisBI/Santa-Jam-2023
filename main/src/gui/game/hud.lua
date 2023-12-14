@@ -60,7 +60,6 @@ function HUD:draw()
     print('energy')
   end
 
-
   -- Synergy
   local synergies = {{}, {}}
   self.suit.layout:reset(23, 113)
@@ -72,7 +71,6 @@ function HUD:draw()
     end
   end
 
-
   -- Skill buttons
   local skills = {{}, {}, {}, {}}
   local skillW, skillH = 110, 51
@@ -80,7 +78,7 @@ function HUD:draw()
   self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #skills / 2 - paddingX * (#skills - 1), 409)
   self.suit.layout:padding(15)
   for i = 1, #skills do
-    if self.suit:Button('f'..tostring(i), {id = ('synergy %d'):format(i)},
+    if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
         self.suit.layout:col(skillW, skillH)).hit then
       print('use skill')
     end
