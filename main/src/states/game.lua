@@ -17,6 +17,10 @@ local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
 local Cole = require 'src.entities.heroes.cole'
 local Tom = require 'src.entities.heroes.tom'
 local Soniya = require 'src.entities.heroes.soniya'
+local Sasami = require 'src.entities.heroes.sasami'
+local Skott = require 'src.entities.heroes.skott'
+local Rover = require 'src.entities.heroes.rover'
+local Raylee = require 'src.entities.heroes.raylee'
 
 local Game = Class('Game', State)
 
@@ -48,6 +52,10 @@ function Game:enter(from)
   self:addEntity(Soniya(slots[1]))
   self:addEntity(Cole(slots[2]))
   self:addEntity(Tom(slots[3]))
+  self:addEntity(Sasami(slots[4]))
+  self:addEntity(Skott(slots[5]))
+  self:addEntity(Rover(slots[6]))
+  self:addEntity(Raylee(slots[7]))
 
   local teamSynergy = TeamSynergy(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
   self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
