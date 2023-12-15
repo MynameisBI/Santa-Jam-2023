@@ -20,13 +20,22 @@ Suit = require 'libs.suit'
 Clove = require 'libs.clove'
 
 love.graphics.setDefaultFilter('nearest', 'nearest')
-
 Images = {
   diamond = love.graphics.newImage('assets/diamond.png'),
 
   environment = Clove.importAll('assets/environment', true),
 
   heroes = Clove.importAll('assets/heroes', true),
+
+  icons = Clove.importAll('assets/icons', true)
+}
+
+Fonts = {
+  small = love.graphics.newFont('assets/04B_03__.TTF', 8),
+  medium = love.graphics.newFont('assets/04B_03__.TTF', 16),
+  big = love.graphics.newFont('assets/04B_03__.TTF', 24),
+  large = love.graphics.newFont('assets/04B_03__.TTF', 32),
+  huge = love.graphics.newFont('assets/04B_03__.TTF', 40),
 }
 
 function Lume.nearest(ox, oy, points, getPointPosFn)

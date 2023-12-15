@@ -1,7 +1,10 @@
 local HUD = Class('HUD')
 
-function HUD:initialize()
+function HUD:initialize(teamSynergy)
   self.suit = Suit.new()
+
+  assert(teamSynergy, 'Where is the TeamSynergy instance?')
+  self.teamSynergy = teamSynergy
 end
 
 function HUD:update(dt)
@@ -63,14 +66,34 @@ function HUD:draw()
   end
 
   -- Synergy
-  local synergies = {{}, {}}
-  self.suit.layout:reset(23, 113)
+  local topX, topY = 23, 93
+  self.suit.layout:reset(topX, topY)
   self.suit.layout:padding(11)
-  for i = 1, #synergies do
-    if self.suit:ImageButton(Images.diamond, {id = ('synergy %d'):format(i), sx = 0.2, sy = 0.2},
-        self.suit.layout:row(78, 32)).hovered then
-      print('synergy')
-    end
+  for i = 1, #self.teamSynergy.synergies do
+    local synergy = self.teamSynergy.synergies[i]
+    local id = ('synergy %d'):format(i)
+    self.suit:Button(Images.icons[synergy.trait..tostring('Icon')],
+      {
+        id = id,
+        draw = function(image, opt, x, y, w, h)
+          love.graphics.setColor(83/255, 92/255, 99/255, 0.66)
+          love.graphics.rectangle('fill', x, y, 78, 32)
+          if self.suit:isHovered(id) then
+            love.graphics.rectangle('fill', x + 78, y, 10, 32)
+            love.graphics.rectangle('fill', x + 88, topY, 110, 160)
+          end
+
+          love.graphics.setColor(1, 1, 1)
+          love.graphics.draw(image, x + 5, y + 4, 0, 2, 2)
+
+          love.graphics.setColor(0.7, 0.7, 0.7)
+          love.graphics.setFont(Fonts.medium)
+          love.graphics.print(('%d/%d'):format(synergy.count, synergy.count), x + 40, y + 9)
+        end
+      },
+      self.suit.layout:row(78, 32)
+    )
+
   end
 
   -- Skill buttons

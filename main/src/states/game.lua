@@ -1,7 +1,12 @@
 local State = require 'src.states.state'
 
 local DragAndDrop = require 'src.systems.dragAndDrop'
+local ManageTeamSynergy = require 'src.systems.manageTeamSynergy'
 
+local TeamSynergy = require 'src.components.teamSynergy'
+local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
+
+local Entity = require 'src.entities.entity'
 local Slot = require 'src.entities.slot'
 local Cole = require 'src.entities.heroes.cole'
 
@@ -17,21 +22,35 @@ function Game:enter(from)
 
 
   self:addSystem(DragAndDrop())
+  self:addSystem(ManageTeamSynergy())
 
+  local slots = {}
+  table.insert(slots, self:addEntity(Slot('bench', 145, 165)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 165)))
+  table.insert(slots, self:addEntity(Slot('bench', 145, 205)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 205)))
+  table.insert(slots, self:addEntity(Slot('bench', 145, 245)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 245)))
+  table.insert(slots, self:addEntity(Slot('bench', 145, 285)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 285)))
+  table.insert(slots, self:addEntity(Slot('bench', 145, 325)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 325))) 
 
-  local slot1 = self:addEntity(Slot('team', 234, 174))
-  self:addEntity(Slot('team', 280, 190))
-  self:addEntity(Slot('team', 234, 232))
-  self:addEntity(Slot('team', 280, 248))
-  self:addEntity(Slot('team', 234, 290))
-  local slot2 = self:addEntity(Slot('team', 280, 306))
+  table.insert(slots, self:addEntity(Slot('team', 234, 174)))
+  table.insert(slots, self:addEntity(Slot('team', 280, 190)))
+  table.insert(slots, self:addEntity(Slot('team', 234, 232)))
+  table.insert(slots, self:addEntity(Slot('team', 280, 248)))
+  table.insert(slots, self:addEntity(Slot('team', 234, 290)))
+  table.insert(slots, self:addEntity(Slot('team', 280, 306)))
 
-  self:addEntity(Cole(slot1))
-  self:addEntity(Cole(slot2))
+  self:addEntity(Cole(slots[1]))
+  self:addEntity(Cole(slots[2]))
 
+  local teamSynergy = TeamSynergy(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
+  self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
 
   self.guis = {
-    HUD(),
+    HUD(teamSynergy),
     BattleRewardWindow(),
     HeroRewardWindow()
   }

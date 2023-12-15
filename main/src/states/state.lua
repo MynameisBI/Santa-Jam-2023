@@ -113,7 +113,7 @@ function State:getComponents(className)
   local components = {}
   for _, entity in ipairs(self.entities) do
     if entity[className] then
-      components[#entities+1] = entity[className]
+      components[#components+1] = entity[className]
     end
   end
   return components
