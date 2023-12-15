@@ -25,6 +25,11 @@ local Nathanael = require 'src.entities.heroes.nathanael'
 local Kori = require 'src.entities.heroes.kori'
 local Keon = require 'src.entities.heroes.keon'
 local Hakiko = require 'src.entities.heroes.hakiko'
+local Cloud = require 'src.entities.heroes.cloud'
+local Brunnos = require 'src.entities.heroes.brunnos'
+local Brae = require 'src.entities.heroes.brae'
+local Aurora = require 'src.entities.heroes.aurora'
+local Alestra = require 'src.entities.heroes.alestra'
 
 local Game = Class('Game', State)
 
@@ -45,7 +50,12 @@ function Game:enter(from)
   table.insert(slots, self:addEntity(Slot('bench', 185, 285)))
   table.insert(slots, self:addEntity(Slot('bench', 145, 325)))
   table.insert(slots, self:addEntity(Slot('bench', 185, 325)))
+  table.insert(slots, self:addEntity(Slot('bench', 100, 165)))
   table.insert(slots, self:addEntity(Slot('bench', 100, 205)))
+  table.insert(slots, self:addEntity(Slot('bench', 100, 245)))
+  table.insert(slots, self:addEntity(Slot('bench', 100, 285)))
+  table.insert(slots, self:addEntity(Slot('bench', 100, 325)))
+  table.insert(slots, self:addEntity(Slot('bench', 60, 245)))
 
   table.insert(slots, self:addEntity(Slot('team', 234, 174)))
   table.insert(slots, self:addEntity(Slot('team', 280, 190)))
@@ -65,6 +75,11 @@ function Game:enter(from)
   self:addEntity(Kori(slots[9]))
   self:addEntity(Keon(slots[10]))
   self:addEntity(Hakiko(slots[11]))
+  self:addEntity(Cloud(slots[12]))
+  self:addEntity(Brunnos(slots[13]))
+  self:addEntity(Brae(slots[14]))
+  self:addEntity(Aurora(slots[15]))
+  self:addEntity(Alestra(slots[16]))
 
   local teamSynergy = TeamSynergy(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
   self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
