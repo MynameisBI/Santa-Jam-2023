@@ -21,10 +21,13 @@ function ManageTeamSynergy:update(teamSynergy, teamUpdateObserver, dt)
     for _, trait in ipairs(hero.traits) do
       local synergy = Lume.match(teamSynergy.synergies, function(synergy) return synergy.trait == trait end)
       if synergy == nil then
-        synergy = {trait = trait, count = 0}
+        synergy = {trait = trait, count = 0, nextThresholdIndex = 1}
         table.insert(teamSynergy.synergies, synergy)
       end
       synergy.count = synergy.count + 1
+      if synergy.count >= teamSynergy.TRAIT_THRESHOLD[synergy.trait][synergy.nextThresholdIndex] then
+        synergy.nextThresholdIndex = synergy.nextThresholdIndex + 1
+      end
     end
   end
 

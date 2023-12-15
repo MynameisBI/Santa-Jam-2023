@@ -1,7 +1,17 @@
 local HUD = Class('HUD')
 
-function HUD:initialize(teamSynergy)
+local TRAIT_DESCRIPTIONS = {
+  bigEar = {
+    title = 'Big Ear',
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
+    threshold = '(2)\n(4)\n(6)'
+  },
+}
+
+function HUD:initialize(resources, teamSynergy)
   self.suit = Suit.new()
+
+  self.resources = resources
 
   assert(teamSynergy, 'Where is the TeamSynergy instance?')
   self.teamSynergy = teamSynergy
@@ -13,17 +23,21 @@ end
 
 function HUD:draw()
   love.graphics.setColor(1, 1, 1)
-
-  -- Style
-  if self.suit:ImageButton(Images.diamond, {id = 'style', sx = 0.2, sy = 0.2}, 23, 13).hovered then
-    print('style')
+  if self.suit:ImageButton(Images.icons.moneyIcon, {id = 'money', sx = 2, sy = 2}, 23, 13).hovered then
+    
   end
+  love.graphics.setColor(0.85, 0.85, 0.85)
+  love.graphics.setFont(Fonts.medium)
+  love.graphics.print(tostring(self.resources:getMoney()), 53, 17)
 
-  
-  -- Gold
-  if self.suit:ImageButton(Images.diamond, {id = 'gold', sx = 0.2, sy = 0.2}, 23, 39).hovered then
-    print('gold')
+
+  love.graphics.setColor(1, 1, 1)
+  if self.suit:ImageButton(Images.icons.styleIcon, {id = 'gold', sx = 2, sy = 2}, 103, 13).hovered then
+    
   end
+  love.graphics.setColor(0.85, 0.85, 0.85)
+  love.graphics.setFont(Fonts.medium)
+  love.graphics.print(tostring(self.resources:getStyle()), 133, 17)
 
 
   -- Health bar
@@ -81,6 +95,21 @@ function HUD:draw()
           if self.suit:isHovered(id) then
             love.graphics.rectangle('fill', x + 78, y, 10, 32)
             love.graphics.rectangle('fill', x + 88, topY, 110, 160)
+
+            local description = TRAIT_DESCRIPTIONS[synergy.trait]
+            if description then
+              love.graphics.setColor(0.7, 0.7, 0.7)
+              love.graphics.setFont(Fonts.big)
+              love.graphics.print(description.title, x + 94, topY + 6)
+
+              love.graphics.setColor(0.7, 0.7, 0.7)
+              love.graphics.setFont(Fonts.medium)
+              love.graphics.print(description.body, x + 94, topY + 30)
+
+              love.graphics.setColor(0.7, 0.7, 0.7)
+              love.graphics.setFont(Fonts.medium)
+              love.graphics.print(description.threshold, x + 94, topY + 46)
+            end
           end
 
           love.graphics.setColor(1, 1, 1)
@@ -88,7 +117,13 @@ function HUD:draw()
 
           love.graphics.setColor(0.7, 0.7, 0.7)
           love.graphics.setFont(Fonts.medium)
-          love.graphics.print(('%d/%d'):format(synergy.count, synergy.count), x + 40, y + 9)
+          local nextThreshold = self.teamSynergy.TRAIT_THRESHOLD[synergy.trait][synergy.nextThresholdIndex]
+          if nextThreshold ~= nil then
+            nextThreshold = '/'..tostring(nextThreshold)
+          else
+            nextThreshold = ''
+          end
+          love.graphics.print(tostring(synergy.count)..nextThreshold, x + 40, y + 9)
         end
       },
       self.suit.layout:row(78, 32)

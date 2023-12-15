@@ -5,6 +5,7 @@ local ManageTeamSynergy = require 'src.systems.manageTeamSynergy'
 
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
+local Resources = require 'src.components.resources'
 
 local Entity = require 'src.entities.entity'
 local Slot = require 'src.entities.slot'
@@ -51,8 +52,11 @@ function Game:enter(from)
   local teamSynergy = TeamSynergy(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
   self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
 
+  local resources = Resources()
+  self:addEntity(Entity(resources))
+
   self.guis = {
-    HUD(teamSynergy),
+    HUD(resources, teamSynergy),
     BattleRewardWindow(),
     HeroRewardWindow()
   }
