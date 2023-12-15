@@ -15,6 +15,7 @@ local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
 
 local Cole = require 'src.entities.heroes.cole'
 local Tom = require 'src.entities.heroes.tom'
+local Soniya = require 'src.entities.heroes.soniya'
 
 local Game = Class('Game', State)
 
@@ -43,7 +44,7 @@ function Game:enter(from)
   table.insert(slots, self:addEntity(Slot('team', 234, 290)))
   table.insert(slots, self:addEntity(Slot('team', 280, 306)))
 
-  self:addEntity(Cole(slots[1]))
+  self:addEntity(Soniya(slots[1]))
   self:addEntity(Cole(slots[2]))
   self:addEntity(Tom(slots[3]))
 
