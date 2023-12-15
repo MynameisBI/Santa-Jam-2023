@@ -1,16 +1,18 @@
 local State = require 'src.states.state'
-local Entity = require 'src.entities.entity'
-local Transform = require 'src.components.transform'
-local Sprite = require 'src.components.sprite'
+
+local Cole = require 'src.entities.heroes.cole'
 
 local HUD = require 'src.gui.game.HUD'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
 
+
 local Game = Class('Game', State)
 
 function Game:enter(from)
   State.enter(self, from)
+
+  self:addEntity(Cole(250, 200))
 
   self.guis = {
     HUD(),

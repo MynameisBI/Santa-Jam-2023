@@ -12,7 +12,7 @@ local DrawWorld = require 'src.systems.drawWorld'
 local DrawScreen = require 'src.systems.drawScreen'
 local ManageInput = require 'src.systems.manageInput'
 local ManageBumpWorld = require 'src.systems.manageBumpWorld'
-local Hero = require 'src.systems.hero'
+local Hero = require 'src.systems.manageHero'
 
 local State = Class('State')
 
