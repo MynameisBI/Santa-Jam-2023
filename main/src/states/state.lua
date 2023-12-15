@@ -61,12 +61,12 @@ function State:enter(from)
   -- animator:setCurrentAnimationName('idle down')
 
   -- Add the hero
-  self:addEntity(Entity(
-    Transform(200, 300, 0, 2, 2),
-    Sprite(Images.diamond, 10),
-    -- animator,
-    Area(96, 96)
-  ))
+  -- self:addEntity(Entity(
+  --   Transform(200, 300, 0, 2, 2),
+  --   Sprite(Images.diamond, 10),
+  --   -- animator,
+  --   Area(96, 96)
+  -- ))
 end
 
 function State:addEntity(entity)
@@ -97,6 +97,26 @@ function State:removeSystem(system)
       break
     end
   end
+end
+
+function State:getEntitiesWithComponent(className)
+  local entities = {}
+  for _, entity in ipairs(self.entities) do
+    if entity[className] then
+      entities[#entities+1] = entity
+    end
+  end
+  return entities
+end
+
+function State:getComponents(className)
+  local components = {}
+  for _, entity in ipairs(self.entities) do
+    if entity[className] then
+      components[#entities+1] = entity[className]
+    end
+  end
+  return components
 end
 
 function State:_getSystemManager(callback)

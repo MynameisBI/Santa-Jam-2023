@@ -2,15 +2,17 @@ local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 local Animator = require 'src.components.animator'
 local Hero = require 'src.components.hero'
+local Draggable = require 'src.components.draggable'
+local Area = require 'src.components.area'
 
 local Entity = require 'src.entities.entity'
 
 local Cole = Class('Cole', Entity)
 
-function Cole:initialize(x, y)
+function Cole:initialize(slot)
   Entity.initialize(self)
 
-  self:addComponent(Transform(x, y, 0, 2, 2))
+  self:addComponent(Transform(0, 0, 0, 2, 2))
 
   self:addComponent(Sprite(Images.heroes.cole, 10))
 
@@ -36,6 +38,10 @@ function Cole:initialize(x, y)
       )
     )
   self:addComponent(hero)
+
+  self:addComponent(Area(36, 36))
+
+  self:addComponent(Draggable(slot))
 end
 
 return Cole

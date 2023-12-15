@@ -9,6 +9,8 @@ function HUD:update(dt)
 end
 
 function HUD:draw()
+  love.graphics.setColor(1, 1, 1)
+
   -- Style
   if self.suit:ImageButton(Images.diamond, {id = 'style', sx = 0.2, sy = 0.2}, 23, 13).hovered then
     print('style')

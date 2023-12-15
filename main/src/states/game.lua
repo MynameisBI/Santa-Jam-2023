@@ -1,8 +1,11 @@
 local State = require 'src.states.state'
 
+local DragAndDrop = require 'src.systems.dragAndDrop'
+
+local Slot = require 'src.entities.slot'
 local Cole = require 'src.entities.heroes.cole'
 
-local HUD = require 'src.gui.game.HUD'
+local HUD = require 'src.gui.game.hud'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
 
@@ -12,7 +15,20 @@ local Game = Class('Game', State)
 function Game:enter(from)
   State.enter(self, from)
 
-  self:addEntity(Cole(250, 200))
+
+  self:addSystem(DragAndDrop())
+
+
+  local slot1 = self:addEntity(Slot('team', 234, 174))
+  self:addEntity(Slot('team', 280, 190))
+  self:addEntity(Slot('team', 234, 232))
+  self:addEntity(Slot('team', 280, 248))
+  self:addEntity(Slot('team', 234, 290))
+  local slot2 = self:addEntity(Slot('team', 280, 306))
+
+  self:addEntity(Cole(slot1))
+  self:addEntity(Cole(slot2))
+
 
   self.guis = {
     HUD(),

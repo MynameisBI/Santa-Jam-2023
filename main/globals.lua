@@ -29,3 +29,16 @@ Images = {
   heroes = Clove.importAll('assets/heroes', true),
 }
 
+function Lume.nearest(ox, oy, points, getPointPosFn)
+  local minDist = math.huge
+  local nearestPoint = nil
+  for _, point in ipairs(points) do
+    local px, py = getPointPosFn(point)
+    local dist = Lume.distance(ox, oy, px, py)
+    if dist < minDist then
+      minDist = dist
+      nearestPoint = point
+    end
+  end
+  return nearestPoint
+end
