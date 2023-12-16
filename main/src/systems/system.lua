@@ -17,6 +17,9 @@ function System:initialize(...)
       self.callbacks[callbackNames] = callback
       self[callbackName] = Knife.System(self.aspects, function(...) callback(self, ...) end)
     end
+
+    self['earlysystem'..callbackName] = self['earlysystem'..callbackName] or function() end
+    self['latesystem'..callbackName] = self['latesystem'..callbackName] or function() end
   end
 end
 

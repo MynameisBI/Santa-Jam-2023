@@ -13,12 +13,12 @@ function DrawSlot:worlddraw(transform, area, dropSlot)
     Deep.queue(20, function()
       local x, y = transform:getGlobalPosition()
       local w, h = area:getSize()
-
+      local hero = dropSlot.draggable:getEntity():getComponent('Hero')
+      
       love.graphics.setColor(0.8, 0.8, 0.8)
       love.graphics.setFont(Fonts.medium)
-      love.graphics.print('lv.1', x, y - 17, 0, 0.75, 0.75)
+      love.graphics.print('lv.'..tostring(hero.level), x, y - 17, 0, 0.75, 0.75)
 
-      local hero = dropSlot.draggable:getEntity():getComponent('Hero')
       local threshold = hero.class.EXPERIENCE_THRESHOLD[hero.level]
       for i = 1, threshold do
         local bx, by = x + w / threshold * (i-1), y - 5

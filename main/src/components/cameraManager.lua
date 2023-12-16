@@ -12,7 +12,7 @@ function CameraManager:addCamera(name, camera)
 end
 
 function CameraManager:getCamera(name)
-  assert(self.cameras[name], name..' camera does not exist')
+  assert(self.cameras[name], tostring(name)..' camera does not exist')
   return self.cameras[name]
 end
 

@@ -10,9 +10,14 @@ function Draggable:initialize(slot)
   assert(slot, 'Draggable must have a Slot entity parent')
   slot:getComponent('DropSlot').draggable = self
   self.slot = slot
-  -- You can't do this bc the entity hasn't been fully initialize
-  -- So we call this in the system when the entity has been fully initialize
+  -- You can't do this bc the entity hasn't been fully initialized
+  -- So we call this when the entity has been fully initialized
   -- self:setEntityPosToSlot(slot)
+end
+
+-- The entity has been initialized
+function Draggable:entityadded()
+  self:setEntityPosToSlot(self.slot)
 end
 
 -- These functions probably don't belong here, they belong to the system

@@ -40,7 +40,7 @@ end
 function Area:hasScreenPoint(screenX, screenY, cameraName)
   assert(screenX and screenY, 'Missing point x or/and y')
 
-  local camera = CameraManager():getCamera(cameraName)
+  local camera = CameraManager():getCamera(cameraName or 'main')
   local worldX, worldY = camera:toWorld(screenX, screenY)
   return self:hasWorldPoint(worldX, worldY)
 end

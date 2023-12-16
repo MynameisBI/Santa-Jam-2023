@@ -1,4 +1,5 @@
 local Phase = require 'src.components.phase'
+local CurrentInspectable = require 'src.components.currentInspectable'
 
 -- This should have been a system but it will mess up the draw order with the modal windows,
 -- so it's a seperate class for now
@@ -10,6 +11,55 @@ local TRAIT_DESCRIPTIONS = {
     body = 'Increase skill cooldown reduction. Skill have 1 more charge',
     threshold = '(2)\n(4)\n(6)'
   },
+  sentient = {
+    title = 'Sentient',
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
+    threshold = '(2)\n(4)\n(6)'
+  },
+  defect = {
+    title = 'Defect',
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
+    threshold = '(2)\n(4)\n(6)'
+  },
+  candyhead = {
+    title = 'Candyhead',
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
+    threshold = '(2)\n(4)\n(6)'
+  },
+  coordinator = {
+    title = 'Coordinator',
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
+    threshold = '(2)\n(4)\n(6)'
+  },
+  artificer = {
+    title = 'Artificer',
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
+    threshold = '(2)\n(4)\n(6)'
+  },
+  trailblazer = {
+    title = 'Trailblazer',
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
+    threshold = '(2)\n(4)\n(6)'
+  },
+  droneMaestro = {
+    title = 'Drone Maestro',
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
+    threshold = '(2)\n(4)\n(6)'
+  },
+  cracker = {
+    title = 'Cracker',
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
+    threshold = '(2)\n(4)\n(6)'
+  },
+}
+
+local STAT_DISPLAY_NAMES = {
+  attackDamage = 'ATK',
+  realityPower = 'RPW',
+  attackSpeed = 'AS',
+  range = 'RANGE',
+  critChance = 'CCHANCE',
+  critDamage = 'CDMG',
 }
 
 function HUD:initialize(resources, teamSynergy)
@@ -21,6 +71,8 @@ function HUD:initialize(resources, teamSynergy)
 
   assert(teamSynergy, 'Where is the TeamSynergy instance?')
   self.teamSynergy = teamSynergy
+
+  self.currentInspectable = CurrentInspectable()
 end
 
 function HUD:update(dt)
@@ -115,12 +167,46 @@ function HUD:draw()
       },
       self.suit.layout:row(78, 32)
     )
-
   end
 
 
-  love.graphics.setFont(Fonts.medium)
+  -- Inspector
+  local x, y, w, h = 650, 80, 185, 300
+  local inspectable = self.currentInspectable.inspectable
+  if inspectable then
+    love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+    love.graphics.rectangle('fill', x, y, w, h)
+
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(inspectable.image, inspectable.quad, x + 15, y + 18, 0, 3, 3)
+
+    if inspectable.objectType == 'hero' then
+      local hero = inspectable.object
+
+      love.graphics.setColor(0.8, 0.8, 0.8)
+      love.graphics.setFont(Fonts.big)
+      love.graphics.print(string.upper(hero.name), x + 67, y + 8)
+      for i = 1, #hero.traits do
+        love.graphics.setFont(Fonts.medium)
+        love.graphics.print(TRAIT_DESCRIPTIONS[hero.traits[i]].title, x + 67, y + 35 + (i-1) * 16)
+      end
+
+      local statValues = hero:getStats()
+      local stats = {'attackDamage', 'realityPower', 'attackSpeed', 'range', 'critChance', 'critDamage'}
+      love.graphics.setFont(Fonts.medium)
+      local statY = y + 100
+      for i = 1, #stats do
+        love.graphics.print(STAT_DISPLAY_NAMES[stats[i]], x + 12, statY)
+        love.graphics.print(tostring(statValues[stats[i]]),
+            x + 174 - Fonts.medium:getWidth(tostring(statValues[stats[i]])), statY)
+        statY = statY + 17
+      end
+    end
+  end
+
+
   -- Lower buttons
+  love.graphics.setFont(Fonts.medium)
   local currentPhase = self.phase:current()
   if currentPhase == 'planning' then
     if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()), 250, 409, 110, 51).hit then

@@ -42,4 +42,14 @@ function Entity:getComponent(className)
   return self[className]
 end
 
+function Entity:onAdded()
+  for _, component in pairs(self) do
+    if type(component) == 'table' then
+      if component.class then
+        component:entityadded()
+      end
+    end
+  end
+end
+
 return Entity

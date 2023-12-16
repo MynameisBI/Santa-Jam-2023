@@ -8,10 +8,6 @@ function DragAndDrop:initialize()
   self.dragAndDropInfo = DragAndDropInfo()
 end
 
-function DragAndDrop:entityadded(draggable, transform, area, entity)
-  draggable:setEntityPosToSlot(draggable.slot)
-end
-
 function DragAndDrop:update(draggable, transform, area, dt)
   if self.dragAndDropInfo.draggable == nil then return end
 
@@ -22,6 +18,8 @@ function DragAndDrop:update(draggable, transform, area, dt)
 end
 
 function DragAndDrop:mousepressed(draggable, transform, area, x, y, button)
+  if button ~= 1 then return end
+  
   if area:hasWorldPoint(x, y) then
     self.dragAndDropInfo.draggable = draggable
 
@@ -31,6 +29,8 @@ function DragAndDrop:mousepressed(draggable, transform, area, x, y, button)
 end
 
 function DragAndDrop:mousereleased(draggable, transform, area, x, y, button)
+  if button ~= 1 then return end
+
   if self.dragAndDropInfo.draggable then
     local slots = Hump.Gamestate.current():getEntitiesWithComponent('DropSlot')
 

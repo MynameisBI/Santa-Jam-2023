@@ -4,6 +4,7 @@ local State = require 'src.states.state'
 local DragAndDrop = require 'src.systems.dragAndDrop'
 local DrawSlot = require 'src.systems.drawSlot'
 local ManageTeamSynergy = require 'src.systems.manageTeamSynergy'
+local Inspect = require 'src.systems.inspect'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
@@ -41,6 +42,7 @@ function Game:enter(from)
   self:addSystem(DragAndDrop())
   self:addSystem(DrawSlot())
   self:addSystem(ManageTeamSynergy())
+  self:addSystem(Inspect())
 
   local slots = {}
   table.insert(slots, self:addEntity(Slot('bench', 145, 165)))

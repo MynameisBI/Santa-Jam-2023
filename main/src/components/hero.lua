@@ -53,8 +53,23 @@ function Hero.Stats:initialize(attackDamage, realityPower, attackSpeed, range, c
   self.critDamage = critDamage or 0
 end
 
+function Hero.Stats:getValues()
+  return {
+    attackDamage = self.attackDamage,
+    realityPower = self.realityPower,
+    attackSpeed = self.attackSpeed,
+    range = self.range,
+    critChance = self.critChance,
+    critDamage = self.critDamage,
+  }
+end
+
 function Hero:addStats(level, attackDamage, realityPower, attackSpeed, range, critChance, critDamage)
   self.levelStats[level] = Hero.Stats(attackDamage, realityPower, attackSpeed, range, critChance, critDamage)
+end
+
+function Hero:getStats()
+  return self.levelStats[self.level]
 end
 
 

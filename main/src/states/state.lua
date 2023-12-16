@@ -71,7 +71,10 @@ end
 
 function State:addEntity(entity)
   self.entities[#self.entities+1] = entity
+  entity:onAdded()
+  Lume.each(self.systems, 'earlysystementityadded', entity)
   Lume.each(self.systems, self.systemManagers.entityadded, entity)
+  Lume.each(self.systems, 'latesystementityadded', entity)
   return entity
 end
 
@@ -79,7 +82,9 @@ function State:removeEntity(entity)
   for i, e in ipairs(self.entities) do
     if e == entity then
       table.remove(self.entities, i)
+      Lume.each(self.systems, 'earlysystementityremoved', entity)
       Lume.each(self.systems, self.systemManagers.entityremoved, entity)
+      Lume.each(self.systems, 'latesystementityremoved', entity)
       break
     end
   end
@@ -129,38 +134,53 @@ function State:_getSystemManager(callback)
 end
 
 function State:update(dt)
+  Lume.each(self.systems, 'earlysystemupdate', dt)
   Lume.each(self.systems, self.systemManagers.update, dt)
+  Lume.each(self.systems, 'latesystemupdate', dt)
   self.input:clear()
 end
 
 function State:draw()
-  Lume.each(
-    self.systems, self.systemManagers.screendraw,
-    function(camX, camY, camW, camH)
-      Lume.each(self.systems, self.systemManagers.worlddraw, camX, camY, camW, camH)
-      Deep.execute()
-    end
-  )
+  local worlddrawFunc = function(camX, camY, camW, camH)
+    Lume.each(self.systems, 'earlysystemworlddraw')
+    Lume.each(self.systems, self.systemManagers.worlddraw, camX, camY, camW, camH)
+    Lume.each(self.systems, 'latesystemworlddraw')
+    Deep.execute()
+  end
+
+  Lume.each(self.systems, 'earlysystemscreendraw', worlddrawFunc)
+  Lume.each(self.systems, self.systemManagers.screendraw, worlddrawFunc)
+  Lume.each(self.systems, 'latesystemscreendraw', worlddrawFunc)
 end
 
 function State:keypressed(key, scancode, isrepeat)
+  Lume.each(self.systems, 'earlysystemkeypressed', key, scancode, isrepeat)
   Lume.each(self.systems, self.systemManagers.keypressed, key, scancode, isrepeat)
+  Lume.each(self.systems, 'latesystemkeypressed', key, scancode, isrepeat)
 end
 
 function State:keyreleased(key, scancode)
+  Lume.each(self.systems, 'earlysystemkeyreleased', key, scancode, isrepeat)
   Lume.each(self.systems, self.systemManagers.keyreleased, key, scancode, isrepeat)
+  Lume.each(self.systems, 'latesystemkeyreleased', key, scancode, isrepeat)
 end
 
 function State:mousepressed(x, y, button, istouch, presses)
+  Lume.each(self.systems, 'earlysystemmousepressed', x, y, button, istouch, presses)
   Lume.each(self.systems, self.systemManagers.mousepressed, x, y, button, istouch, presses)
+  Lume.each(self.systems, 'latesystemmousepressed', x, y, button, istouch, presses)
 end
 
 function State:mousereleased(x, y, button, istouch, presses)
+  Lume.each(self.systems, 'earlysystemmousereleased', x, y, button, istouch, presses)
   Lume.each(self.systems, self.systemManagers.mousereleased, x, y, button, istouch, presses)
+  Lume.each(self.systems, 'latesystemmousereleased', x, y, button, istouch, presses)
 end
 
 function State:mousemoved(x, y, dx, dy, istouch)
+  Lume.each(self.systems, 'earlysystemmousemoved', x, y, button, istouch, presses)
   Lume.each(self.systems, self.systemManagers.mousemoved, x, y, dx, dy, istouch)
+  Lume.each(self.systems, 'latesystemmousemoved', x, y, button, istouch, presses)
 end
 
 return State

@@ -4,6 +4,7 @@ local Animator = require 'src.components.animator'
 local Hero = require 'src.components.hero'
 local Draggable = require 'src.components.draggable'
 local Area = require 'src.components.area'
+local Inspectable = require 'src.components.inspectable'
 
 local Entity = require 'src.entities.entity'
 
@@ -42,6 +43,8 @@ function Aurora:initialize(slot)
     self:addComponent(Area(36, 36))
 
     self:addComponent(Draggable(slot))
+
+    self:addComponent(Inspectable(nil, 3, 1, 'hero', hero))
 end
 
 return Aurora
