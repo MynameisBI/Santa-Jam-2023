@@ -18,6 +18,7 @@ Gamera = require 'libs.gamera'
 Bump = require 'libs.bump'
 Suit = require 'libs.suit'
 Clove = require 'libs.clove'
+Deep = require 'libs.deep'
 
 love.graphics.setDefaultFilter('nearest', 'nearest')
 Images = {

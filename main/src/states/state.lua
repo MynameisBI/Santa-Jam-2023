@@ -138,6 +138,7 @@ function State:draw()
     self.systems, self.systemManagers.screendraw,
     function(camX, camY, camW, camH)
       Lume.each(self.systems, self.systemManagers.worlddraw, camX, camY, camW, camH)
+      Deep.execute()
     end
   )
 end

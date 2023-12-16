@@ -96,8 +96,12 @@ function HUD:draw()
       {
         id = id,
         draw = function(image, opt, x, y, w, h)
-          love.graphics.setColor(83/255, 92/255, 99/255, 0.66)
-          love.graphics.rectangle('fill', x, y, 78, 32)
+          if synergy.nextThresholdIndex ~= 1 then
+            -- love.graphics.setColor(83/255, 92/255, 99/255, 0.66)
+            love.graphics.setColor(113/255, 122/255, 129/255, 0.75)
+            love.graphics.rectangle('fill', x, y, 78, 32)
+          end
+
           if self.suit:isHovered(id) then
             love.graphics.rectangle('fill', x + 78, y, 10, 32)
             love.graphics.rectangle('fill', x + 88, topY, 110, 160)
@@ -131,7 +135,7 @@ function HUD:draw()
           love.graphics.print(tostring(synergy.count)..nextThreshold, x + 40, y + 9)
 
           if synergy.nextThresholdIndex == 1 then
-            love.graphics.setColor(0, 0, 0, 0.2)
+            love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
             love.graphics.rectangle('fill', x, y, 78, 32)
           end
         end

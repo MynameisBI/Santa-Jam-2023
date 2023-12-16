@@ -2,6 +2,7 @@ local State = require 'src.states.state'
 
 -- Systems
 local DragAndDrop = require 'src.systems.dragAndDrop'
+local DrawSlot = require 'src.systems.drawSlot'
 local ManageTeamSynergy = require 'src.systems.manageTeamSynergy'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
@@ -38,6 +39,7 @@ function Game:enter(from)
   State.enter(self, from)
 
   self:addSystem(DragAndDrop())
+  self:addSystem(DrawSlot())
   self:addSystem(ManageTeamSynergy())
 
   local slots = {}

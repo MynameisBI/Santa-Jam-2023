@@ -1,11 +1,11 @@
+local DragAndDropInfo = require 'src.components.dragAndDropInfo'
 local System = require 'src.systems.system'
 
 local DragAndDrop = Class('DragAndDrop', System)
 
 function DragAndDrop:initialize()
   System.initialize(self, 'Draggable', 'Transform', 'Area', '-Hero')
-  self.draggable = nil
-  self.oldSlot = nil
+  self.dragAndDropInfo = DragAndDropInfo()
 end
 
 function DragAndDrop:entityadded(draggable, transform, area, entity)
@@ -13,9 +13,9 @@ function DragAndDrop:entityadded(draggable, transform, area, entity)
 end
 
 function DragAndDrop:update(draggable, transform, area, dt)
-  if self.draggable == nil then return end
+  if self.dragAndDropInfo.draggable == nil then return end
 
-  if self.draggable ~= draggable then return end
+  if self.dragAndDropInfo.draggable ~= draggable then return end
   
   local x, y = love.mouse.getPosition()
   transform:setGlobalPosition(x - 18, y - 36)
@@ -23,51 +23,43 @@ end
 
 function DragAndDrop:mousepressed(draggable, transform, area, x, y, button)
   if area:hasWorldPoint(x, y) then
-    self.draggable = draggable
+    self.dragAndDropInfo.draggable = draggable
 
-    self.oldSlot = draggable.slot
+    self.dragAndDropInfo.oldSlot = draggable.slot
     draggable:unsetSlot()
   end
 end
 
 function DragAndDrop:mousereleased(draggable, transform, area, x, y, button)
-  if self.draggable then
-    -- Find all empty slot
+  if self.dragAndDropInfo.draggable then
     local slots = Hump.Gamestate.current():getEntitiesWithComponent('DropSlot')
-    for i = #slots, 1, -1 do
-      if slots[i].draggable ~= nil then 
-        table.remove(slots, i)
+
+    local droppedSlot = nil
+    for _, slot in ipairs(slots) do
+      if slot:getComponent('Area'):hasWorldPoint(x, y) then
+        droppedSlot = slot
       end
     end
+    if droppedSlot then
+      if droppedSlot.draggable == nil then
+        self.dragAndDropInfo.draggable:setSlot(droppedSlot)
+      else
+        local droppedSlotDraggable = droppedSlot.draggable
+        self.dragAndDropInfo.draggable:setSlot(droppedSlot)
+        droppedSlotDraggable:setSlot(self.dragAndDropInfo.oldSlot)
+      end
 
-    -- Find nearest slot and snap to it
-    local nearestSlot = Lume.nearest(x, y, slots,
-        function(slot)
-          local x, y = slot:getComponent('Transform'):getGlobalPosition()
-          local w, h = slot:getComponent('Area'):getSize()
-          return x + w/2, y + h/2
-        end)
-    self.draggable:setSlot(nearestSlot)
-
-    if self.oldSlot:getComponent('DropSlot').slotType ~= nearestSlot:getComponent('DropSlot').slotType then
-      local teamUpdateObservers = Hump.Gamestate.current():getComponents('TeamUpdateObserver')
-      Lume.each(teamUpdateObservers, 'notify')
+      if self.dragAndDropInfo.oldSlot:getComponent('DropSlot').slotType ~= droppedSlot:getComponent('DropSlot').slotType then
+        local teamUpdateObservers = Hump.Gamestate.current():getComponents('TeamUpdateObserver')
+        Lume.each(teamUpdateObservers, 'notify')
+      end
+    else
+      self.dragAndDropInfo.draggable:setSlot(self.dragAndDropInfo.oldSlot)
     end
   end
 
-  self.oldSlot = nil
-  self.draggable = nil
-end
-
--- debugging
-function DragAndDrop:worlddraw(draggable, transform, area)
-  -- if self.draggable == nil then return end
-  for _, dropSlot in ipairs(Hump.Gamestate.current():getEntitiesWithComponent('DropSlot')) do
-    love.graphics.setColor(0.8, 0.8, 0.8, 0.5)
-    local x, y = dropSlot:getComponent('Transform'):getGlobalPosition()
-    local w, h = dropSlot:getComponent('Area'):getSize()
-    love.graphics.rectangle('line', x, y, w, h)
-  end
+  self.dragAndDropInfo.oldSlot = nil
+  self.dragAndDropInfo.draggable = nil
 end
 
 return DragAndDrop
