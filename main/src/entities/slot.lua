@@ -1,5 +1,5 @@
 local Transform = require 'src.components.transform'
-local DropSlot = require 'src.components.dropSLot'
+local DropSlot = require 'src.components.dropSlot'
 local Area = require 'src.components.area'
 
 local Entity = require 'src.entities.entity'

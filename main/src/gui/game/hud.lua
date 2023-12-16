@@ -1,3 +1,7 @@
+local Phase = require 'src.components.phase'
+
+-- This should have been a system but it will mess up the draw order with the modal windows,
+-- so it's a seperate class for now
 local HUD = Class('HUD')
 
 local TRAIT_DESCRIPTIONS = {
@@ -12,6 +16,8 @@ function HUD:initialize(resources, teamSynergy)
   self.suit = Suit.new()
 
   self.resources = resources
+
+  self.phase = Phase()
 
   assert(teamSynergy, 'Where is the TeamSynergy instance?')
   self.teamSynergy = teamSynergy
@@ -118,12 +124,16 @@ function HUD:draw()
           love.graphics.setColor(0.7, 0.7, 0.7)
           love.graphics.setFont(Fonts.medium)
           local nextThreshold = self.teamSynergy.TRAIT_THRESHOLD[synergy.trait][synergy.nextThresholdIndex]
-          if nextThreshold ~= nil then
-            nextThreshold = '/'..tostring(nextThreshold)
-          else
-            nextThreshold = ''
+          if nextThreshold ~= nil then nextThreshold = '/'..tostring(nextThreshold)
+          else nextThreshold = ''
           end
+          love.graphics.setColor(0.7, 0.7, 0.7)
           love.graphics.print(tostring(synergy.count)..nextThreshold, x + 40, y + 9)
+
+          if synergy.nextThresholdIndex == 1 then
+            love.graphics.setColor(0, 0, 0, 0.2)
+            love.graphics.rectangle('fill', x, y, 78, 32)
+          end
         end
       },
       self.suit.layout:row(78, 32)
@@ -131,16 +141,39 @@ function HUD:draw()
 
   end
 
-  -- Skill buttons
-  local skills = {{}, {}, {}, {}}
-  local skillW, skillH = 110, 51
-  local paddingX = 15
-  self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #skills / 2 - paddingX * (#skills - 1), 409)
-  self.suit.layout:padding(15)
-  for i = 1, #skills do
-    if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
-        self.suit.layout:col(skillW, skillH)).hit then
-      print('use skill')
+
+  -- Lower buttons
+  local currentPhase = self.phase:current()
+  if currentPhase == 'planning' then
+    if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()), 250, 409, 110, 51).hit then
+      if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
+        print('add slot')
+      end
+    end
+
+    if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()), 375, 409, 110, 51).hit then
+      if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
+        local style = 50
+        self.resources:modifyStyle(style)
+      end
+    end
+
+    if self.suit:Button('Let\'s roll!', 500, 409, 110, 51).hit then
+      self.phase:switch('battle')
+    end
+
+  elseif currentPhase == 'battle' then
+    local heroComponents = self.teamSynergy:getHeroComponentsInTeam()
+
+    local skillW, skillH = 110, 51
+    local paddingX = 15
+    self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 409)
+    self.suit.layout:padding(15)
+    for i = 1, #heroComponents do
+      if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
+          self.suit.layout:col(skillW, skillH)).hit then
+        print('use skill')
+      end
     end
   end
 

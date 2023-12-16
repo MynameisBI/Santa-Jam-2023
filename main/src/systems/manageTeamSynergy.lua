@@ -9,15 +9,10 @@ end
 function ManageTeamSynergy:update(teamSynergy, teamUpdateObserver, dt)
   if not teamUpdateObserver.teamUpdated then return end
 
-  local heroes = {}
-  for _, slot in ipairs(teamSynergy.teamSlots) do
-    if slot.draggable then
-      table.insert(heroes, slot.draggable:getEntity():getComponent('Hero'))
-    end
-  end
+  local heroComponents = teamSynergy:getHeroComponentsInTeam()
 
   teamSynergy.synergies = {}
-  for _, hero in ipairs(heroes) do
+  for _, hero in ipairs(heroComponents) do
     for _, trait in ipairs(hero.traits) do
       local synergy = Lume.match(teamSynergy.synergies, function(synergy) return synergy.trait == trait end)
       if synergy == nil then
@@ -30,6 +25,16 @@ function ManageTeamSynergy:update(teamSynergy, teamUpdateObserver, dt)
       end
     end
   end
+
+  table.sort(teamSynergy.synergies, function(syn1, syn2)
+    if syn1.nextThresholdIndex == 1 and syn2.nextThresholdIndex ~= 1 then
+      return false
+    elseif syn1.nextThresholdIndex ~= 1 and syn2.nextThresholdIndex == 1 then
+      return true
+    else
+      return syn1.count > syn2.count
+    end
+  end)
 
   teamUpdateObserver.teamUpdated = false
 end

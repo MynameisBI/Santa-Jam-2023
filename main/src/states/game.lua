@@ -1,19 +1,16 @@
 local State = require 'src.states.state'
 
+-- Systems
 local DragAndDrop = require 'src.systems.dragAndDrop'
 local ManageTeamSynergy = require 'src.systems.manageTeamSynergy'
-
+-- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
 local Resources = require 'src.components.resources'
-
+local Phase = require 'src.components.phase'
+-- Entities
 local Entity = require 'src.entities.entity'
 local Slot = require 'src.entities.slot'
-
-local HUD = require 'src.gui.game.hud'
-local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
-local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
-
 local Cole = require 'src.entities.heroes.cole'
 local Tom = require 'src.entities.heroes.tom'
 local Soniya = require 'src.entities.heroes.soniya'
@@ -30,6 +27,10 @@ local Brunnos = require 'src.entities.heroes.brunnos'
 local Brae = require 'src.entities.heroes.brae'
 local Aurora = require 'src.entities.heroes.aurora'
 local Alestra = require 'src.entities.heroes.alestra'
+-- UI
+local HUD = require 'src.gui.game.hud'
+local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
+local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
 
 local Game = Class('Game', State)
 
@@ -85,7 +86,8 @@ function Game:enter(from)
   self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
 
   local resources = Resources()
-  self:addEntity(Entity(resources))
+  local phase = Phase(); phase:switch('planning')
+  self:addEntity(Entity(resources), Phase())
 
   self.guis = {
     HUD(resources, teamSynergy),

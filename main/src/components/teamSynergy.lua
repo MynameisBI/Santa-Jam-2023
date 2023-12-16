@@ -11,6 +11,16 @@ function TeamSynergy:initialize(teamSlots)
   self.synergies = {}
 end
 
+function TeamSynergy:getHeroComponentsInTeam()
+  local heroComponents = {}
+  for _, slot in ipairs(self.teamSlots) do
+    if slot.draggable then
+      table.insert(heroComponents, slot.draggable:getEntity():getComponent('Hero'))
+    end
+  end
+  return heroComponents
+end
+
 TeamSynergy.TRAIT_THRESHOLD = {
   bigEar = {2, 4, 6},
   sentient = {2, 3, 4},
