@@ -47,43 +47,16 @@ function HUD:draw()
 
 
   -- Health bar
-  if self.suit:ImageButton(Images.diamond, {
-    id = 'health', sx = 0.2, sy = 0.2,
-    draw = function(image, x, y)
-      local barWidth = love.graphics.getWidth() - x * 2
-
-      love.graphics.setColor(1, 0.2, 0.2, 0.4)
-      love.graphics.rectangle('fill', x , y, barWidth, 20)
-
-      local health, maxHealth = 75, 100
-      local percentLeft = health / maxHealth
-      love.graphics.setColor(1, 0.2, 0.2, 0.4)
-      love.graphics.rectangle('fill', x , y, barWidth, 20)
-      love.graphics.setColor(1, 0.2, 0.2, 1)
-      love.graphics.rectangle('fill', x + barWidth * (1 - percentLeft) / 2, y, barWidth * percentLeft, 20)
-    end
-  }, 275, 13).hovered then
-    print('health')
-  end  
+  self:drawBar(self.resources:getHealth(), self.resources:getMaxHealth(),
+      {205/255, 41/255, 62/255}, Fonts.small,
+      275, 12, love.graphics.getWidth() - 275 * 2, 15)
 
 
   -- Energy bar
-  if self.suit:ImageButton(Images.diamond, {
-    id = 'energy', sx = 0.2, sy = 0.2,
-    draw = function(image, x, y)
-      local barWidth = love.graphics.getWidth() - x * 2
+  self:drawBar(self.resources:getEnergy(), self.resources:getMaxEnergy(),
+      {61/255, 90/255, 237/255}, Fonts.small,
+      275, 30, love.graphics.getWidth() - 275 * 2, 15)
 
-      love.graphics.setColor(0.2, 0.35, 1, 0.4)
-      love.graphics.rectangle('fill', x , y, barWidth, 20)
-
-      local energy, maxEnergy = 75, 100
-      local percentLeft = energy / maxEnergy
-      love.graphics.setColor(0.2, 0.35, 1, 1)
-      love.graphics.rectangle('fill', x + barWidth * (1 - percentLeft) / 2, y, barWidth * percentLeft, 20)
-    end
-  }, 275, 39).hovered then
-    print('energy')
-  end
 
   -- Synergy
   local topX, topY = 23, 93
@@ -146,6 +119,7 @@ function HUD:draw()
   end
 
 
+  love.graphics.setFont(Fonts.medium)
   -- Lower buttons
   local currentPhase = self.phase:current()
   if currentPhase == 'planning' then
@@ -183,6 +157,23 @@ function HUD:draw()
 
 
   self.suit:draw()
+end
+
+function HUD:drawBar(value, maxValue, color, font, x, y, w, h)
+  local barWidth = love.graphics.getWidth() - x * 2
+
+  love.graphics.setColor(color[1], color[2], color[3], 0.4)
+  love.graphics.rectangle('fill', x, y, w, h)
+
+  local percentage = value / maxValue
+  love.graphics.setColor(color[1], color[2], color[3], 1)
+  -- love.graphics.rectangle('fill', x + barWidth * (1 - percentage) / 2 + 2, y + 2, w * percentage - 4, h - 4)
+  love.graphics.rectangle('fill', x + 2, y + 2, w * percentage - 4, h - 4)
+
+  love.graphics.setColor(0.8, 0.8, 0.8, 1)
+  love.graphics.setFont(font)
+  local t = ('%d/%d'):format(value, maxValue)
+  love.graphics.print(t, x + w / 2 - font:getWidth(t) / 2, y + h / 2 - font:getHeight() / 2)
 end
 
 return HUD
