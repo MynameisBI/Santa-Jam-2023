@@ -15,7 +15,7 @@ function Hero:initialize(name, traits, levelStats, skill)
   self.traits = traits or {}
 
   self.level = 1
-  self.exp = 0
+  self.exp = 1
   self.levelStats = levelStats or {
     [1] = Hero.Stats(),
     [2] = Hero.Stats(),
@@ -36,7 +36,6 @@ Hero.EXPERIENCE_THRESHOLD = {
 function Hero:addExp(exp)
   self.exp = self.exp + exp
   if self.exp >= Hero.EXPERIENCE_THRESHOLD[self.level] then
-    print('level up')
     self.exp = self.exp - Hero.EXPERIENCE_THRESHOLD[self.level]
     self.level = self.level + 1
   end

@@ -41,10 +41,10 @@ function DragAndDrop:mousereleased(draggable, transform, area, x, y, button)
       end
     end
     if droppedSlot then
-      if droppedSlot.draggable == nil then
+      if droppedSlot:getComponent('DropSlot').draggable == nil then
         self.dragAndDropInfo.draggable:setSlot(droppedSlot)
       else
-        local droppedSlotDraggable = droppedSlot.draggable
+        local droppedSlotDraggable = droppedSlot:getComponent('DropSlot').draggable
         self.dragAndDropInfo.draggable:setSlot(droppedSlot)
         droppedSlotDraggable:setSlot(self.dragAndDropInfo.oldSlot)
       end

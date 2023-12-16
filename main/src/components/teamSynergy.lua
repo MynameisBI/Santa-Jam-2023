@@ -14,8 +14,9 @@ end
 function TeamSynergy:getHeroComponentsInTeam()
   local heroComponents = {}
   for _, slot in ipairs(self.teamSlots) do
-    if slot.draggable then
-      table.insert(heroComponents, slot.draggable:getEntity():getComponent('Hero'))
+    local dropSlotComponent = slot:getComponent('DropSlot')
+    if dropSlotComponent.draggable then
+      table.insert(heroComponents, dropSlotComponent.draggable:getEntity():getComponent('Hero'))
     end
   end
   return heroComponents
