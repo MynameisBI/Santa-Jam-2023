@@ -38,7 +38,7 @@ function Entity:addComponent(component)
 end
 
 function Entity:getComponent(className)
-  if self[className] == nil then print('Entity '..self.class.name..' have no '..className..' component') end
+  -- if self[className] == nil then print('Entity '..self.class.name..' have no '..className..' component') end
   return self[className]
 end
 

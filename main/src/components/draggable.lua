@@ -4,7 +4,8 @@ local Draggable = Class('Draggable', Component)
 
 local HERO_Y_OFFSET = 4
 
-function Draggable:initialize(slot)
+-- draggableType can be `hero` or `mod`
+function Draggable:initialize(slot, draggableType)
   Component.initialize(self)
 
   assert(slot, 'Draggable must have a Slot entity parent')
@@ -13,6 +14,8 @@ function Draggable:initialize(slot)
   -- You can't do this bc the entity hasn't been fully initialized
   -- So we call this when the entity has been fully initialized
   -- self:setEntityPosToSlot(slot)
+
+  self.draggableType = draggableType or 'hero'
 end
 
 -- The entity has been initialized

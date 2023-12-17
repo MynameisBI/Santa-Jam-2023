@@ -208,21 +208,25 @@ function HUD:draw()
   -- Lower buttons
   love.graphics.setFont(Fonts.medium)
   local currentPhase = self.phase:current()
+  self.suit.layout:reset(250, 475)
+  self.suit.layout:padding(15)
   if currentPhase == 'planning' then
-    if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()), 250, 409, 110, 51).hit then
+    if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
+        self.suit.layout:col(110, 51)).hit then
       if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
         print('add slot')
       end
     end
 
-    if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()), 375, 409, 110, 51).hit then
+    if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
+    self.suit.layout:col(110, 51)).hit then
       if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
         local style = 50
         self.resources:modifyStyle(style)
       end
     end
 
-    if self.suit:Button('Let\'s roll!', 500, 409, 110, 51).hit then
+    if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
       self.phase:switch('battle')
     end
 

@@ -2,7 +2,7 @@ local Component = require 'src.components.component'
 
 local DropSlot = Class('DropSlot', Component)
 
--- `slotType` can be 'bench' or 'team'
+-- `slotType` can be 'bench', 'team' or 'mod'
 function DropSlot:initialize(slotType)
   Component.initialize(self)
 

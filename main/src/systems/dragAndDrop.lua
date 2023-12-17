@@ -1,24 +1,30 @@
 local DragAndDropInfo = require 'src.components.dragAndDropInfo'
+local Phase = require 'src.components.phase'
 local System = require 'src.systems.system'
 
 local DragAndDrop = Class('DragAndDrop', System)
 
 function DragAndDrop:initialize()
-  System.initialize(self, 'Draggable', 'Transform', 'Area', '-Hero')
+  System.initialize(self, 'Draggable', 'Transform', 'Area', '?Hero', '?Mod')
   self.dragAndDropInfo = DragAndDropInfo()
 end
 
-function DragAndDrop:update(draggable, transform, area, dt)
+function DragAndDrop:update(draggable, transform, area, hero, mod, dt)
   if self.dragAndDropInfo.draggable == nil then return end
 
   if self.dragAndDropInfo.draggable ~= draggable then return end
   
   local x, y = love.mouse.getPosition()
-  transform:setGlobalPosition(x - 18, y - 36)
+  local w, h = area:getSize()
+  x = x - w / 2
+  if hero then y = y - 46
+  elseif mod then y = y - 26
+  end
+  transform:setGlobalPosition(x, y)
 end
 
-function DragAndDrop:mousepressed(draggable, transform, area, x, y, button)
-  if button ~= 1 then return end
+function DragAndDrop:mousepressed(draggable, transform, area, hero, mod, x, y, button)
+  if button ~= 1 or Phase():current() ~= 'planning' then return end
   
   if area:hasWorldPoint(x, y) then
     self.dragAndDropInfo.draggable = draggable
@@ -28,8 +34,8 @@ function DragAndDrop:mousepressed(draggable, transform, area, x, y, button)
   end
 end
 
-function DragAndDrop:mousereleased(draggable, transform, area, x, y, button)
-  if button ~= 1 then return end
+function DragAndDrop:mousereleased(draggable, transform, area, hero, mod, x, y, button)
+  if button ~= 1 or Phase():current() ~= 'planning' then return end
 
   if self.dragAndDropInfo.draggable then
     local slots = Hump.Gamestate.current():getEntitiesWithComponent('DropSlot')

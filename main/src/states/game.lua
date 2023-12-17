@@ -29,6 +29,8 @@ local Brunnos = require 'src.entities.heroes.brunnos'
 local Brae = require 'src.entities.heroes.brae'
 local Aurora = require 'src.entities.heroes.aurora'
 local Alestra = require 'src.entities.heroes.alestra'
+local ModSlot = require 'src.entities.modSlot'
+local ScrapPack = require 'src.entities.mods.scrapPack'
 -- UI
 local HUD = require 'src.gui.game.hud'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
@@ -45,29 +47,29 @@ function Game:enter(from)
   self:addSystem(Inspect())
 
   local slots = {}
-  table.insert(slots, self:addEntity(Slot('bench', 145, 165)))
-  table.insert(slots, self:addEntity(Slot('bench', 185, 165)))
-  table.insert(slots, self:addEntity(Slot('bench', 145, 205)))
-  table.insert(slots, self:addEntity(Slot('bench', 185, 205)))
-  table.insert(slots, self:addEntity(Slot('bench', 145, 245)))
-  table.insert(slots, self:addEntity(Slot('bench', 185, 245)))
-  table.insert(slots, self:addEntity(Slot('bench', 145, 285)))
-  table.insert(slots, self:addEntity(Slot('bench', 185, 285)))
-  table.insert(slots, self:addEntity(Slot('bench', 145, 325)))
-  table.insert(slots, self:addEntity(Slot('bench', 185, 325)))
-  table.insert(slots, self:addEntity(Slot('bench', 100, 165)))
-  table.insert(slots, self:addEntity(Slot('bench', 100, 205)))
-  table.insert(slots, self:addEntity(Slot('bench', 100, 245)))
-  table.insert(slots, self:addEntity(Slot('bench', 100, 285)))
-  table.insert(slots, self:addEntity(Slot('bench', 100, 325)))
-  table.insert(slots, self:addEntity(Slot('bench', 60, 245)))
+  table.insert(slots, self:addEntity(Slot('bench', 145, 185)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 185)))
+  table.insert(slots, self:addEntity(Slot('bench', 145, 225)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 225)))
+  table.insert(slots, self:addEntity(Slot('bench', 145, 265)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 265)))
+  table.insert(slots, self:addEntity(Slot('bench', 145, 305)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 305)))
+  table.insert(slots, self:addEntity(Slot('bench', 145, 345)))
+  table.insert(slots, self:addEntity(Slot('bench', 185, 345)))
+  table.insert(slots, self:addEntity(Slot('bench', 100, 185)))
+  table.insert(slots, self:addEntity(Slot('bench', 100, 225)))
+  table.insert(slots, self:addEntity(Slot('bench', 100, 265)))
+  table.insert(slots, self:addEntity(Slot('bench', 100, 305)))
+  table.insert(slots, self:addEntity(Slot('bench', 100, 345)))
+  table.insert(slots, self:addEntity(Slot('bench', 60, 265)))
 
-  table.insert(slots, self:addEntity(Slot('team', 234, 174)))
-  table.insert(slots, self:addEntity(Slot('team', 280, 190)))
-  table.insert(slots, self:addEntity(Slot('team', 234, 232)))
-  table.insert(slots, self:addEntity(Slot('team', 280, 248)))
-  table.insert(slots, self:addEntity(Slot('team', 234, 290)))
-  table.insert(slots, self:addEntity(Slot('team', 280, 306)))
+  table.insert(slots, self:addEntity(Slot('team', 234, 194)))
+  table.insert(slots, self:addEntity(Slot('team', 280, 210)))
+  table.insert(slots, self:addEntity(Slot('team', 234, 252)))
+  table.insert(slots, self:addEntity(Slot('team', 280, 268)))
+  table.insert(slots, self:addEntity(Slot('team', 234, 310)))
+  table.insert(slots, self:addEntity(Slot('team', 280, 326)))
 
   self:addEntity(Soniya(slots[1]))
   self:addEntity(Cole(slots[2]))
@@ -85,6 +87,10 @@ function Game:enter(from)
   self:addEntity(Brae(slots[14]))
   self:addEntity(Aurora(slots[15]))
   self:addEntity(Alestra(slots[16]))
+
+  local modSlots = {}
+  table.insert(modSlots, self:addEntity(ModSlot(145, 115)))
+  self:addEntity(ScrapPack(modSlots[1]))
 
   local teamSynergy = TeamSynergy(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
   self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
