@@ -5,11 +5,15 @@ local DragAndDrop = require 'src.systems.dragAndDrop'
 local DrawSlot = require 'src.systems.drawSlot'
 local ManageTeamSynergy = require 'src.systems.manageTeamSynergy'
 local Inspect = require 'src.systems.inspect'
+local ManageHero = require 'src.systems.manageHero'
+local ManageEnemy = require 'src.systems.manageEnemy'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
 local Resources = require 'src.components.resources'
 local Phase = require 'src.components.phase'
+local Bullet = require 'src.components.bullet'
+local Enemy = require 'src.components.enemy'
 -- Entities
 local Entity = require 'src.entities.entity'
 local Slot = require 'src.entities.slot'
@@ -44,7 +48,9 @@ function Game:enter(from)
   self:addSystem(DragAndDrop())
   self:addSystem(DrawSlot())
   self:addSystem(ManageTeamSynergy())
+  self:addSystem(ManageHero())
   self:addSystem(Inspect())
+  self:addSystem(ManageEnemy())
 
   local slots = {}
   table.insert(slots, self:addEntity(Slot('bench', 145, 185)))
@@ -87,6 +93,8 @@ function Game:enter(from)
   self:addEntity(Brae(slots[14]))
   self:addEntity(Aurora(slots[15]))
   self:addEntity(Alestra(slots[16]))
+
+  -- self:addEntity(Bullet)
 
   local modSlots = {}
   table.insert(modSlots, self:addEntity(ModSlot(145, 115)))

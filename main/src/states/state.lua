@@ -12,7 +12,7 @@ local DrawWorld = require 'src.systems.drawWorld'
 local DrawScreen = require 'src.systems.drawScreen'
 local ManageInput = require 'src.systems.manageInput'
 local ManageBumpWorld = require 'src.systems.manageBumpWorld'
-local Hero = require 'src.systems.manageHero'
+local ManageHero = require 'src.systems.manageHero'
 
 local State = Class('State')
 
@@ -46,7 +46,7 @@ function State:enter(from)
   self:addSystem(DrawScreen())
   self:addSystem(ManageInput())
   self:addSystem(ManageBumpWorld())
-  self:addSystem(Hero())
+  self:addSystem(ManageHero())
 
   -- local animator = Animator()
   -- animator:setGrid(48, 48, 192, 192)

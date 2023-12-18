@@ -3,7 +3,7 @@ local Component = require 'src.components.component'
 local Hero = Class('Hero', Component)
 
 -- `traits` is a table of `trait`
-  -- `trait` can be 
+  -- `trait` can be
     -- bigEar, sentient, defect, candyhead
     -- coordinator, artificer, trailblazer, droneMaestro, cracker
 -- `levelStats` is a table of objects of class Hero.Stats

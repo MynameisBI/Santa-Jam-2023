@@ -4,42 +4,28 @@ local System = require 'src.systems.system'
 
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
-local BulletInfo = require 'src.components.bulletInfo'
+local Bullet = require 'src.components.bullet'
 
-local Hero = System:subclass('Hero')
+local ManageHero = System:subclass('ManageHero')
 
-function Hero:initialize()
+function ManageHero:initialize()
+    self.heroes = {}
     System.initialize(self, 'Transform', 'Sprite', 'Area')
     self.input = Input()
     self.timer = Hump.Timer()
+    self.bullets = {}
 end
 
-function Hero:update(transform, sprite, area, dt)
-    self.cost = cost
-    -- Hero's attributes
-    self.tier = {1, 2, 3, 4}
-    self.level = level
-
-    self.atkbyLevel = {10, 15, 30}
-    self.atkSpeedbyLevel = {0.5, 0.6, 0.9}
-    self.maxHPbyLevel = {100, 150, 250}
-    self.maxMPbyLevel = {100, 150, 250}
-
-    self.atk = self.atkbyLevel[self.level]
-        
-    self.HP = self.maxHP or 100
-    self.range = range
-    self.dmgReduced = 0.5
-
-    self.bullets = {}
-    self.target = 0
+function ManageHero:update(transform, sprite, area, dt)
+    
+    self.target = {x = 800, y = 800}
 
     self.timer:update(dt)
     -- self:setTarget()
 
     -- normal attack
     if self.input:isScancodePressed('space') and not self.atkCD then
-        self:atk()
+        self:attack()
         print('shoot')
 
         self.atkCD = true
@@ -47,22 +33,29 @@ function Hero:update(transform, sprite, area, dt)
             self.atkCD = false
         end)
     end
+
+    for i = #self.bullets, 1, -1 do
+        local bullet = self.bullets[i]
+        local transform = bullet:getComponent('Transform')
+        transform:setGlobalPosition(transform.x + 1, transform.y + 1)
+    end
 end
 
-function Hero:setup()
+function ManageHero:setup()
     self.atkCD = false
     self.skillCD = false
     self.isDead = false
-    self.timer = Timer()
 end
 
-function Hero:atk()
-    -- add 
+function ManageHero:attack()
+    -- add bullet
     local bullet = Entity(
-        Transform(self.x, self.y, 0, 2, 2),
+        Transform(self.x, self.y, 0, 0.5, 0.5),
         Sprite(Images.diamond, 2),
-        BulletInfo(10, self.target)
+        Bullet(self, self.target, 200)
     )
+    self.bullets[#self.bullets + 1] = bullet
+    
 
     Hump.Gamestate.current():addEntity(bullet)
 end
@@ -80,11 +73,7 @@ end
 --     end
 -- end
 
-function Hero:worlddraw(transform, sprite, animator)
-    local wx, wy = transform:getGlobalPosition()
-    local w, h = transform:getEntity():getComponent('Area'):getSize()
-end
 
-return Hero
+return ManageHero
 
 
