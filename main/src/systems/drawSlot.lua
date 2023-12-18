@@ -9,27 +9,40 @@ function DrawSlot:initialize()
 end
 
 function DrawSlot:worlddraw(transform, area, dropSlot)
-  -- Draw XP bar
   if dropSlot.draggable then
     local hero = dropSlot.draggable:getEntity():getComponent('Hero')
+
     if hero then 
+      local x, y = transform:getGlobalPosition()
+      local w, h = area:getSize()
+
+      -- Draw XP bar
       Deep.queue(20, function()
-        local x, y = transform:getGlobalPosition()
-        local w, h = area:getSize()
-        
         love.graphics.setColor(0.8, 0.8, 0.8)
         love.graphics.setFont(Fonts.medium)
-        love.graphics.print('lv.'..tostring(hero.level), x, y - 17, 0, 0.75, 0.75)
+        love.graphics.print('lv.'..tostring(hero.level), x, y - 25, 0, 0.75, 0.75)
 
         local threshold = hero.class.EXPERIENCE_THRESHOLD[hero.level]
         for i = 1, threshold do
-          local bx, by = x + w / threshold * (i-1), y - 5
+          local bx, by = x + w / threshold * (i-1), y - 13
           if i <= hero.exp then love.graphics.setColor(0.8, 0.8, 0.8)
           else love.graphics.setColor(0.15, 0.15, 0.15)
           end
           love.graphics.rectangle('fill', bx, by, w / threshold - 1, 5, 2, 2)
         end
       end)
+
+      -- Draw mod
+      if hero.modEntity then
+        Deep.queue(20, function()
+          -- love.graphics.setColor(0.05, 0.05, 0.05, 0.4)
+          -- love.graphics.rectangle('fill', x-1, y - 7, 14, 14)
+          -- love.graphics.setColor(0.05, 0.05, 0.05)
+          -- love.graphics.rectangle('line', x - 1, y - 6, 14, 14)
+          love.graphics.setColor(1, 1, 1)
+          love.graphics.draw(hero.modEntity:getComponent('Sprite').image, x, y - 8, 0, 1, 1)
+        end)
+      end
     end
   end
 

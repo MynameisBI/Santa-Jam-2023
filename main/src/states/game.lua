@@ -35,6 +35,24 @@ local Aurora = require 'src.entities.heroes.aurora'
 local Alestra = require 'src.entities.heroes.alestra'
 local ModSlot = require 'src.entities.modSlot'
 local ScrapPack = require 'src.entities.mods.scrapPack'
+local PsychePack = require 'src.entities.mods.psychePack'
+local BioPack = require 'src.entities.mods.bioPack'
+local HarmonizerUnit = require 'src.entities.mods.harmonizerUnit'
+local QuantumToken = require 'src.entities.mods.quantumToken'
+local HullTransformer = require 'src.entities.mods.hullTransformer'
+local BrainImplant = require 'src.entities.mods.brainImplant'
+local SyntheticCore = require 'src.entities.mods.syntheticCore'
+local NoradInhaler = require 'src.entities.mods.noradInhaler'
+local TheConductor = require 'src.entities.mods.theConductor'
+local SkaterayEqualizer = require 'src.entities.mods.skaterayEqualizer'
+local RadioPopper = require 'src.entities.mods.radioPopper'
+local AsymframeVisionary = require 'src.entities.mods.asymframeVisionary'
+local AbovesSliver = require 'src.entities.mods.abovesSliver'
+local SubcellularSupervisor = require 'src.entities.mods.subcellularSupervisor'
+local NeuralProcessor = require 'src.entities.mods.neuralProcessor'
+local BionicColumn = require 'src.entities.mods.bionicColumn'
+local EnhancerFumes = require 'src.entities.mods.enhancerFumes'
+local DeathsPromise = require 'src.entities.mods.deathsPromise'
 -- UI
 local HUD = require 'src.gui.game.hud'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
@@ -97,8 +115,30 @@ function Game:enter(from)
   -- self:addEntity(Bullet)
 
   local modSlots = {}
-  table.insert(modSlots, self:addEntity(ModSlot(145, 115)))
+  for x = 1, 10 do
+    for y = 1, 2 do
+      table.insert(modSlots, self:addEntity(ModSlot(160 + 40 * (x-1), 80 + 35 * (y-1))))
+    end
+  end
   self:addEntity(ScrapPack(modSlots[1]))
+  self:addEntity(PsychePack(modSlots[2]))
+  self:addEntity(BioPack(modSlots[3]))
+  self:addEntity(HarmonizerUnit(modSlots[4]))
+  self:addEntity(QuantumToken(modSlots[5]))
+  self:addEntity(HullTransformer(modSlots[6]))
+  self:addEntity(BrainImplant(modSlots[7]))
+  self:addEntity(SyntheticCore(modSlots[8]))
+  self:addEntity(NoradInhaler(modSlots[9]))
+  self:addEntity(TheConductor(modSlots[11]))
+  self:addEntity(SkaterayEqualizer(modSlots[12]))
+  self:addEntity(RadioPopper(modSlots[13]))
+  self:addEntity(AsymframeVisionary(modSlots[14]))
+  self:addEntity(AbovesSliver(modSlots[15]))
+  self:addEntity(SubcellularSupervisor(modSlots[16]))
+  self:addEntity(NeuralProcessor(modSlots[17]))
+  self:addEntity(BionicColumn(modSlots[18]))
+  self:addEntity(EnhancerFumes(modSlots[19]))
+  self:addEntity(DeathsPromise(modSlots[20]))
 
   local teamSynergy = TeamSynergy(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
   self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))

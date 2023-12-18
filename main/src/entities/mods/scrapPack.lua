@@ -1,24 +1,14 @@
-local Transform = require 'src.components.transform'
-local Sprite = require 'src.components.sprite'
-local Area = require 'src.components.area'
-local Draggable = require 'src.components.draggable'
-local Mod = require 'src.components.mod'
-local Entity = require 'src.entities.entity'
+local ModEntity = require 'src.entities.mods.modEntity'
 
-local ScrapPack = Class('ScrapPack', Entity)
+local ScrapPack = Class('ScrapPack', ModEntity)
 
 function ScrapPack:initialize(slot)
-  Entity.initialize(self)
-
-  self:addComponent(Transform(200, 200, 0, 0.24, 0.24))
-
-  self:addComponent(Sprite(Images.diamond, 12))
-
-  self:addComponent(Area(24, 24))
-
-  self:addComponent(Draggable(slot, 'mod'))
-
-  self:addComponent(Mod())
+  ModEntity.initialize(self, slot, Images.mods.scrapPack, 
+    'S',
+    'Scrap Pack',
+    '+ 5 ATK',
+    5, 0, 0, 0, 0, 0
+  )
 end
 
 return ScrapPack

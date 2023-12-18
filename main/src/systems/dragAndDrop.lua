@@ -34,33 +34,72 @@ function DragAndDrop:mousepressed(draggable, transform, area, hero, mod, x, y, b
   end
 end
 
-function DragAndDrop:mousereleased(draggable, transform, area, hero, mod, x, y, button)
+function DragAndDrop:earlysystemmousereleased(x, y, button)
   if button ~= 1 or Phase():current() ~= 'planning' then return end
 
-  if self.dragAndDropInfo.draggable then
-    local slots = Hump.Gamestate.current():getEntitiesWithComponent('DropSlot')
+  local currentDraggable = self.dragAndDropInfo.draggable
 
-    local droppedSlot = nil
-    for _, slot in ipairs(slots) do
-      if slot:getComponent('Area'):hasWorldPoint(x, y) then
-        droppedSlot = slot
+  if currentDraggable then
+    if currentDraggable.draggableType == 'hero' then
+      local slots = Hump.Gamestate.current():getEntitiesWithComponent('DropSlot')
+      local droppedSlot = nil
+      for _, slot in ipairs(slots) do
+        if (slot:getComponent('DropSlot').slotType == 'team' or slot:getComponent('DropSlot').slotType == 'bench') and
+            slot:getComponent('Area'):hasWorldPoint(x, y) then
+          droppedSlot = slot
+          break
+        end
       end
-    end
-    if droppedSlot then
-      if droppedSlot:getComponent('DropSlot').draggable == nil then
-        self.dragAndDropInfo.draggable:setSlot(droppedSlot)
+      if droppedSlot then
+        if droppedSlot:getComponent('DropSlot').draggable == nil then
+          self.dragAndDropInfo.draggable:setSlot(droppedSlot)
+        else
+          local droppedSlotDraggable = droppedSlot:getComponent('DropSlot').draggable
+          self.dragAndDropInfo.draggable:setSlot(droppedSlot)
+          droppedSlotDraggable:setSlot(self.dragAndDropInfo.oldSlot)
+        end
+
+        if self.dragAndDropInfo.oldSlot:getComponent('DropSlot').slotType ~= droppedSlot:getComponent('DropSlot').slotType then
+          local teamUpdateObservers = Hump.Gamestate.current():getComponents('TeamUpdateObserver')
+          Lume.each(teamUpdateObservers, 'notify')
+        end
       else
-        local droppedSlotDraggable = droppedSlot:getComponent('DropSlot').draggable
-        self.dragAndDropInfo.draggable:setSlot(droppedSlot)
-        droppedSlotDraggable:setSlot(self.dragAndDropInfo.oldSlot)
+        self.dragAndDropInfo.draggable:setSlot(self.dragAndDropInfo.oldSlot)
       end
 
-      if self.dragAndDropInfo.oldSlot:getComponent('DropSlot').slotType ~= droppedSlot:getComponent('DropSlot').slotType then
-        local teamUpdateObservers = Hump.Gamestate.current():getComponents('TeamUpdateObserver')
-        Lume.each(teamUpdateObservers, 'notify')
+    elseif currentDraggable.draggableType == 'mod' then
+      local slots = Hump.Gamestate.current():getEntitiesWithComponent('DropSlot')
+      local modSlots = Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'mod' end)
+      local heroes = Hump.Gamestate.current():getEntitiesWithComponent('Hero')
+      local droppableEntities = Lume.concat(modSlots, heroes)
+      local droppedEntity = nil
+      for _, entity in ipairs(droppableEntities) do
+        if entity:getComponent('Area'):hasWorldPoint(x, y) then
+          droppedEntity = entity
+        end
       end
-    else
-      self.dragAndDropInfo.draggable:setSlot(self.dragAndDropInfo.oldSlot)
+      if droppedEntity then
+        local dropSlot = droppedEntity:getComponent('DropSlot')
+        local hero = droppedEntity:getComponent('Hero')
+        if dropSlot then
+          if dropSlot.draggable == nil then
+            self.dragAndDropInfo.draggable:setSlot(droppedEntity)
+          else
+            local droppedSlotDraggable = dropSlot.draggable
+            self.dragAndDropInfo.draggable:setSlot(dropSlot:getEntity())
+            droppedSlotDraggable:setSlot(self.dragAndDropInfo.oldSlot)
+          end
+
+        elseif hero then
+          local modEntity = currentDraggable:getEntity()
+          Hump.Gamestate.current():removeEntity(modEntity)
+          hero:addMod(modEntity)
+          
+        end
+
+      else
+        self.dragAndDropInfo.draggable:setSlot(self.dragAndDropInfo.oldSlot)
+      end
     end
   end
 

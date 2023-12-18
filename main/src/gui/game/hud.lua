@@ -171,30 +171,56 @@ function HUD:draw()
 
 
   -- Inspector
-  local x, y, w, h = 650, 80, 185, 300
+  local x, y, w, h = 650, 80, 195, 360
   local inspectable = self.currentInspectable.inspectable
   if inspectable then
     love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
     love.graphics.rectangle('fill', x, y, w, h)
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(inspectable.image, inspectable.quad, x + 15, y + 18, 0, 3, 3)
+    love.graphics.draw(inspectable.image, inspectable.quad, x + 15, y + 10, 0, 3, 3)
 
     if inspectable.objectType == 'hero' then
       local hero = inspectable.object
 
+      -- Name and traits
       love.graphics.setColor(0.8, 0.8, 0.8)
       love.graphics.setFont(Fonts.big)
-      love.graphics.print(string.upper(hero.name), x + 67, y + 8)
+      love.graphics.print(string.upper(hero.name), x + 67, y + 13)
       for i = 1, #hero.traits do
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.draw(Images.icons[hero.traits[i]..'Icon'], x + 67, y + 41 + (i-1) * 18)
+
+        love.graphics.setColor(0.8, 0.8, 0.8)
         love.graphics.setFont(Fonts.medium)
-        love.graphics.print(TRAIT_DESCRIPTIONS[hero.traits[i]].title, x + 67, y + 35 + (i-1) * 16)
+        love.graphics.print(TRAIT_DESCRIPTIONS[hero.traits[i]].title, x + 85, y + 40 + (i-1) * 18)
       end
 
+      -- Mod
+      love.graphics.setColor(0.1, 0.1, 0.1, 0.8)
+      love.graphics.setLineWidth(2)
+      love.graphics.rectangle('line', x + 12, y + 62, 42, 42)
+      love.graphics.setLineWidth(1)
+      love.graphics.setColor(0.4, 0.4, 0.4, 0.4)
+      love.graphics.rectangle('fill', x + 12, y + 62, 42, 42)
+      local modEntity = hero.modEntity
+      if modEntity then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.draw(modEntity:getComponent('Sprite').image,
+            x + 15, y + 65, 0, 3, 3)
+
+        local mx, my = love.mouse.getPosition()
+        if x + 12 < mx and mx < x + 54 and y + 62 < my and my < y + 104 then
+          self:drawModTooltip(modEntity, mx, my, 'right')
+        end
+      end
+
+      -- Stats
       local statValues = hero:getStats()
       local stats = {'attackDamage', 'realityPower', 'attackSpeed', 'range', 'critChance', 'critDamage'}
+      love.graphics.setColor(1, 1, 1)
       love.graphics.setFont(Fonts.medium)
-      local statY = y + 100
+      local statY = y + 120
       for i = 1, #stats do
         love.graphics.print(STAT_DISPLAY_NAMES[stats[i]], x + 12, statY)
         love.graphics.print(tostring(statValues[stats[i]]),
@@ -245,8 +271,24 @@ function HUD:draw()
     end
   end
 
-
   self.suit:draw()
+
+  -- Mod tooltip
+  local mx, my = love.mouse.getPosition()
+  local modEntities = Hump.Gamestate.current():getEntitiesWithComponent('Mod')
+  for _, modEntity in ipairs(modEntities) do
+    if modEntity:getComponent('Area'):hasWorldPoint(mx, my) then
+      self:drawModTooltip(modEntity, mx, my)
+    end
+  end
+  local heroes = Hump.Gamestate.current():getEntitiesWithComponent('Hero')
+  heroes = Lume.filter(heroes, function(hero) return hero:getComponent('Hero').modEntity ~= nil end)
+  for _, hero in ipairs(heroes) do
+    local hx, hy = hero:getComponent('Transform'):getGlobalPosition()
+    if hx - 3 < mx and mx < hx + 15 and hy - 5 < my and my < hy + 7 then
+      self:drawModTooltip(hero:getComponent('Hero').modEntity, mx, my)
+    end
+  end
 end
 
 function HUD:drawBar(value, maxValue, color, font, x, y, w, h)
@@ -257,13 +299,32 @@ function HUD:drawBar(value, maxValue, color, font, x, y, w, h)
 
   local percentage = value / maxValue
   love.graphics.setColor(color[1], color[2], color[3], 1)
-  -- love.graphics.rectangle('fill', x + barWidth * (1 - percentage) / 2 + 2, y + 2, w * percentage - 4, h - 4)
   love.graphics.rectangle('fill', x + 2, y + 2, w * percentage - 4, h - 4)
 
   love.graphics.setColor(0.8, 0.8, 0.8, 1)
   love.graphics.setFont(font)
   local t = ('%d/%d'):format(value, maxValue)
   love.graphics.print(t, x + w / 2 - font:getWidth(t) / 2, y + h / 2 - font:getHeight() / 2)
+end
+
+function HUD:drawModTooltip(modEntity, x, y, align)
+  local w, h = 300, 100
+
+  local mod = modEntity:getComponent('Mod')
+  
+  local x = x
+  if align == 'right' then
+    x = x - w
+  end
+
+  love.graphics.setColor(0.15, 0.15, 0.15, 0.6)
+  love.graphics.rectangle('fill', x, y, w, h)
+
+  love.graphics.setColor(0.8, 0.8, 0.8)
+  love.graphics.setFont(Fonts.big)
+  love.graphics.print(mod.name, x + 12, y + 6)
+  love.graphics.setFont(Fonts.medium)
+  love.graphics.print(mod.description, x + 12, y + 32)
 end
 
 return HUD

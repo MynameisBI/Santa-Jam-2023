@@ -4,6 +4,7 @@ local Animator = require 'src.components.animator'
 local Hero = require 'src.components.hero'
 local Draggable = require 'src.components.draggable'
 local Area = require 'src.components.area'
+local Inspectable = require 'src.components.inspectable'
 
 local Entity = require 'src.entities.entity'
 
@@ -23,7 +24,7 @@ function Skott:initialize(slot)
     animator:setCurrentAnimationName('idle')
     self:addComponent(animator)
 
-    local hero = Hero('Skott', {'defect', 'artificer', 'cracker'},
+    local hero = Hero('S\'kott', {'defect', 'artificer', 'cracker'},
         {
             [1] = Hero.Stats(40, 30, 1.0, 300, 0, 0),
             [2] = Hero.Stats(60, 45, 1.0, 300, 0, 0),
@@ -44,6 +45,8 @@ function Skott:initialize(slot)
     self:addComponent(Area(36, 36))
 
     self:addComponent(Draggable(slot))
+
+    self:addComponent(Inspectable(nil, 2, 0, 'hero', hero))
 end
 
 return Skott
