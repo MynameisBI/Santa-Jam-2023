@@ -4,7 +4,8 @@ Images = {
   environment = Clove.importAll('assets/environment', true),
   heroes = Clove.importAll('assets/heroes', true),
   mods = Clove.importAll('assets/mods', true),
-  icons = Clove.importAll('assets/icons', true)
+  icons = Clove.importAll('assets/icons', true),
+  enemies = Clove.importAll('assets/enemies', true)
 }
 
 -- local lg = love.graphics

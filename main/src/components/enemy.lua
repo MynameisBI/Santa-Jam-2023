@@ -7,16 +7,16 @@ function Enemy:initialize(name, speed, stats)
 
     self.name = name
     self.speed = speed or 10
-    self.stats = stats or Enemy.Stats()
+    self.stats = baseStats or Enemy.Stats()
 end
 
-Enemy.Stats = Class('Stats')
+Enemy.Stats = Class('Enemy Stats')
 
 function Enemy.Stats:initialize(physicalArmor, psychicArmor, HP, maxHP)
     self.HP = HP or 100
     self.maxHP = maxHP or 100
-    self.physicalArmor = physicalArmor
-    self.psychicArmor = psychicArmor
+    self.physicalArmor = physicalArmor or 20
+    self.psychicArmor = psychicArmor or 20
 end
 
 function Enemy.Stats:getValues()

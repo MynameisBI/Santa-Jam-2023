@@ -57,6 +57,24 @@ local DeathsPromise = require 'src.entities.mods.deathsPromise'
 local HUD = require 'src.gui.game.hud'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
+-- Enemies
+-- mini enemies
+local Mino = require 'src.entities.enemies.mino'
+local Peach = require 'src.entities.enemies.peach'
+local Amber = require 'src.entities.enemies.amber'
+-- heavy enemies
+local Rini = require 'src.entities.enemies.rini'
+local Spinel = require 'src.entities.enemies.spinel'
+local Elio =  require 'src.entities.enemies.elio'
+-- gigantic enemies
+local Arno = require 'src.entities.enemies.arno'
+local Quad = require 'src.entities.enemies.quad'
+local Granite = require 'src.entities.enemies.granite'
+-- fast enemies
+local Pepero = require 'src.entities.enemies.pepero'
+local Sev = require 'src.entities.enemies.sev'
+local Leo = require 'src.entities.enemies.leo'
+
 
 local Game = Class('Game', State)
 
@@ -112,7 +130,7 @@ function Game:enter(from)
   self:addEntity(Aurora(slots[15]))
   self:addEntity(Alestra(slots[16]))
 
-  -- self:addEntity(Bullet)
+  -- self:addEntity(Mino())
 
   local modSlots = {}
   for x = 1, 10 do

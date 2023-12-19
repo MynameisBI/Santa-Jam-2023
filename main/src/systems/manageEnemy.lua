@@ -3,7 +3,24 @@ local Input = require 'src.components.input'
 local System = require 'src.systems.system'
 local Enemy = require 'src.components.enemy'
 local Transform = require 'src.components.transform'
-local Sprite = require 'src.components.sprite'
+
+-- Enemies
+-- mini enemies
+local Mino = require 'src.entities.enemies.mino'
+local Peach = require 'src.entities.enemies.peach'
+local Amber = require 'src.entities.enemies.amber'
+-- heavy enemies
+local Rini = require 'src.entities.enemies.rini'
+local Spinel = require 'src.entities.enemies.spinel'
+local Elio =  require 'src.entities.enemies.elio'
+-- gigantic enemies
+local Arno = require 'src.entities.enemies.arno'
+local Quad = require 'src.entities.enemies.quad'
+local Granite = require 'src.entities.enemies.granite'
+-- fast enemies
+local Pepero = require 'src.entities.enemies.pepero'
+local Sev = require 'src.entities.enemies.sev'
+local Leo = require 'src.entities.enemies.leo'
 
 local ManageEnemy = System:subclass('ManageEnemy')
 
@@ -31,38 +48,17 @@ function ManageEnemy:update(transform, sprite, dt)
         
     end
 
-    self:moveEnemy(dt)
-end
-
-function ManageEnemy:moveEnemy(dt)
-    for i = #self.enemies, 1, -1 do
-        local enemy = self.enemies[i]
-        local transform = enemy:getComponent('Transform')
-        local sprite = enemy:getComponent('Sprite')
-        local enemyinfo = enemy:getComponent('Enemy')
-
-
-        transform:setGlobalPosition(transform.x - enemyinfo.speed*dt, transform.y)
-    end
-
 end
 
 function ManageEnemy:spawn()
-    local enemyStats = {
-        physicalArmor = 30,
-        psychicArmor = 40,
-        HP = 100,
-        maxHP = 100
-    }
+    -- local Mino = Mino()
 
-    local enemy = Entity(
-        Transform(430, 230, 0, 0.5, 0.5),
-        Sprite(Images.environment.sky, 10),
-        Enemy('a', 10, enemyStats)
-    )
-    self.enemies[#self.enemies + 1] = enemy
+    -- local Sev = Sev()
 
-    Hump.Gamestate.current():addEntity(enemy)
+
+    -- Hump.Gamestate.current():addEntity(Sev)
+
+    -- -- Hump.Gamestate.current():addEntity(Mino)
 end
 
 return ManageEnemy
