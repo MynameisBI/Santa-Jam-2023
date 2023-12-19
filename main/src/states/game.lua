@@ -75,18 +75,14 @@ local Pepero = require 'src.entities.enemies.pepero'
 local Sev = require 'src.entities.enemies.sev'
 local Leo = require 'src.entities.enemies.leo'
 
-
 local Game = Class('Game', State)
 
 function Game:enter(from)
   State.enter(self, from)
 
-  self:addSystem(DragAndDrop())
-  self:addSystem(DrawSlot())
-  self:addSystem(ManageTeamSynergy())
-  self:addSystem(ManageHero())
-  self:addSystem(Inspect())
-  self:addSystem(ManageEnemy())
+  self:addSystems()
+  self:initializeEnemies()
+  self:initializeModSlots()
 
   local slots = {}
   table.insert(slots, self:addEntity(Slot('bench', 145, 185)))
@@ -130,8 +126,46 @@ function Game:enter(from)
   self:addEntity(Aurora(slots[15]))
   self:addEntity(Alestra(slots[16]))
 
-  -- self:addEntity(Mino())
 
+  local teamSynergy = TeamSynergy(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
+  self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
+
+  local resources = Resources()
+  local phase = Phase(); phase:switch('planning')
+  self:addEntity(Entity(resources), Phase())
+
+  self.guis = {
+    HUD(resources, teamSynergy),
+    BattleRewardWindow(),
+    HeroRewardWindow()
+  }
+end
+
+function Game:addSystems()
+  self:addSystem(DragAndDrop())
+  self:addSystem(DrawSlot())
+  self:addSystem(ManageTeamSynergy())
+  self:addSystem(ManageHero())
+  self:addSystem(Inspect())
+  self:addSystem(ManageEnemy())
+end
+
+function Game:initializeEnemies()
+  self:addEntity(Mino())
+  self:addEntity(Peach())
+  self:addEntity(Amber())
+  self:addEntity(Rini())
+  self:addEntity(Spinel())
+  self:addEntity(Elio())
+  self:addEntity(Arno())
+  self:addEntity(Quad())
+  self:addEntity(Granite())
+  self:addEntity(Pepero())
+  self:addEntity(Sev())
+  self:addEntity(Leo())
+end
+
+function Game:initializeModSlots()
   local modSlots = {}
   for x = 1, 10 do
     for y = 1, 2 do
@@ -157,20 +191,8 @@ function Game:enter(from)
   self:addEntity(BionicColumn(modSlots[18]))
   self:addEntity(EnhancerFumes(modSlots[19]))
   self:addEntity(DeathsPromise(modSlots[20]))
-
-  local teamSynergy = TeamSynergy(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
-  self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
-
-  local resources = Resources()
-  local phase = Phase(); phase:switch('planning')
-  self:addEntity(Entity(resources), Phase())
-
-  self.guis = {
-    HUD(resources, teamSynergy),
-    BattleRewardWindow(),
-    HeroRewardWindow()
-  }
 end
+
 
 function Game:update(dt)
   State.update(self, dt)

@@ -25,7 +25,7 @@ local Leo = require 'src.entities.enemies.leo'
 local ManageEnemy = System:subclass('ManageEnemy')
 
 function ManageEnemy:initialize()
-    System.initialize(self, 'Transform', 'Sprite')
+    System.initialize(self, 'Transform', 'Enemy')
     self.input = Input()
     self.timer = Hump.Timer()
     self.enemies = {}
@@ -34,7 +34,7 @@ function ManageEnemy:initialize()
     print('enemy spawner initialized')
 end
 
-function ManageEnemy:update(transform, sprite, dt)
+function ManageEnemy:update(transform, enemy, dt)
     self.timer:update(dt)
 
     if self.input:isScancodePressed('q') and not self.spawnCD then
