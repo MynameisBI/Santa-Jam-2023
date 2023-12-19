@@ -1,3 +1,19 @@
+local HarmonizerUnit = require 'src.entities.mods.harmonizerUnit'
+local QuantumToken = require 'src.entities.mods.quantumToken'
+local HullTransformer = require 'src.entities.mods.hullTransformer'
+local BrainImplant = require 'src.entities.mods.brainImplant'
+local SyntheticCore = require 'src.entities.mods.syntheticCore'
+local NoradInhaler = require 'src.entities.mods.noradInhaler'
+local TheConductor = require 'src.entities.mods.theConductor'
+local SkaterayEqualizer = require 'src.entities.mods.skaterayEqualizer'
+local RadioPopper = require 'src.entities.mods.radioPopper'
+local AsymframeVisionary = require 'src.entities.mods.asymframeVisionary'
+local AbovesSliver = require 'src.entities.mods.abovesSliver'
+local SubcellularSupervisor = require 'src.entities.mods.subcellularSupervisor'
+local NeuralProcessor = require 'src.entities.mods.neuralProcessor'
+local BionicColumn = require 'src.entities.mods.bionicColumn'
+local EnhancerFumes = require 'src.entities.mods.enhancerFumes'
+local DeathsPromise = require 'src.entities.mods.deathsPromise'
 local Component = require 'src.components.component'
 
 local Hero = Class('Hero', Component)
@@ -29,7 +45,6 @@ function Hero:initialize(name, traits, baseStats, skill)
   self.skill = skill or Hero.Skill()
 
   self.modEntities = nil
-  self.tier1ModIds = {}
 end
 
 
@@ -46,43 +61,12 @@ function Hero:addExp(exp)
 end
 
 
-Hero.Stats = Class('Hero Stats')
-
-function Hero.Stats:initialize(attackDamage, realityPower, attackSpeed, range, critChance, critDamage)
-  self.attackDamage = attackDamage or 33
-  self.realityPower = realityPower or 0
-  self.attackSpeed = attackSpeed or 0
-  self.range = range or 300
-  self.critChance = critChance or 0
-  self.critDamage = critDamage or 0
-end
-
-function Hero.Stats:__add(otherStats)
-  return Hero.Stats(
-    self.attackDamage + otherStats.attackDamage,
-    self.realityPower + otherStats.realityPower,
-    self.attackSpeed + otherStats.attackSpeed,
-    self.range + otherStats.range,
-    self.critChance + otherStats.critChance,
-    self.critDamage + otherStats.critDamage
-  )
-end
-
-function Hero.Stats:getValues()
-  return {
-    attackDamage = self.attackDamage,
-    realityPower = self.realityPower,
-    attackSpeed = self.attackSpeed,
-    range = self.range,
-    critChance = self.critChance,
-    critDamage = self.critDamage,
-  }
-end
+Hero.Stats = require 'src.type.allyStats'
 
 -- Usage:
--- `hero:addBaseStats(level, Hero.Stats(...))`
+-- `hero:addBaseStats(level, AllyStats(...))`
 function Hero:addBaseStats(level, stats)
-  assert(stats.class.name == 'Hero Stats', 'stat parameter must be instance of Hero.Stats')
+  assert(stats.class.name == 'Hero Stats', 'stat parameter must be instance of AllyStats')
   self.baseStats[level] = stats
 end
 
@@ -95,9 +79,9 @@ function Hero:resetModifierStatses()
 end
 
 -- Usage:
--- `hero:addModifierStats(Hero.Stats(...))`
+-- `hero:addModifierStats(AllyStats(...))`
 function Hero:addModifierStats(stats)
-  assert(stats.class.name == 'Hero Stats', 'stat parameter must be instance of Hero.Stats')
+  assert(stats.class.name == 'Hero Stats', 'stat parameter must be instance of AllyStats')
   table.insert(self.modifierStatses, stats)
 end
 
@@ -135,9 +119,9 @@ function Hero.Skill:getPercentTimeLeft()
 end
 
 
--- N = 1, P = 2, B = 4
+-- S = 1, P = 2, B = 4
 -- tier2Mods[N+N] = NN
-local tier2Mods = {
+local TIER_2_MODS = {
   [2] = HarmonizerUnit,
   [3] = QuantumToken,
   [5] = HullTransformer,
@@ -145,8 +129,8 @@ local tier2Mods = {
   [6] = SyntheticCore,
   [8] = NoradInhaler,
 }
--- N = 1, P = 3, B = 9
-local tier3Mods = {
+-- S = 1, P = 3, B = 9
+local TIER_3_MODS = {
   [3] = TheConductor,
   [5] = SkaterayEqualizer,
   [10] = RadioPopper,
@@ -160,10 +144,41 @@ local tier3Mods = {
 }
 
 function Hero:addMod(modEntity)
+  assert(type(modEntity), 'Invalid mod entity')
+
   if self.modEntity == nil then
     self.modEntity = modEntity
-  else
+    return true
 
+  else
+    local currentMod = self.modEntity:getComponent('Mod')
+    local toAddedMod = modEntity:getComponent('Mod')
+    local resultModId = currentMod.id..toAddedMod.id
+    if #resultModId == 2 then
+      local modIndex = 0
+      for i = 1, 2 do
+        local char = resultModId:sub(i, i)
+        if char == 'S' then modIndex = modIndex + 1
+        elseif char == 'P' then modIndex = modIndex + 2
+        elseif char == 'B' then modIndex = modIndex + 4
+        end
+      end
+      self.modEntity = TIER_2_MODS[modIndex]()
+      return true    
+    elseif #resultModId == 3 then
+      local modIndex = 0
+      for i = 1, 3 do
+        local char = resultModId:sub(i, i)
+        if char == 'S' then modIndex = modIndex + 1
+        elseif char == 'P' then modIndex = modIndex + 3
+        elseif char == 'B' then modIndex = modIndex + 9
+        end
+      end
+      self.modEntity = TIER_3_MODS[modIndex]()
+      return true
+    else
+      return false
+    end
   end
 end
 

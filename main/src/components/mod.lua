@@ -1,4 +1,4 @@
-local Hero = require 'src.components.hero'
+local AllyStats = require 'src.type.allyStats'
 local Component = require 'src.components.component'
 
 local Mod = Class('Mod', Component)
@@ -11,7 +11,7 @@ function Mod:initialize(id, name, description, ...)
 
   self.name = name or ''
   self.description = description or ''
-  self.stats = Hero.Stats(...)
+  self.stats = AllyStats(...)
 end
 
 return Mod

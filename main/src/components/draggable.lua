@@ -8,9 +8,11 @@ local HERO_Y_OFFSET = 4
 function Draggable:initialize(slot, draggableType)
   Component.initialize(self)
 
-  assert(slot, 'Draggable must have a Slot entity parent')
-  slot:getComponent('DropSlot').draggable = self
-  self.slot = slot
+  -- assert(slot, 'Draggable must have a Slot entity parent')
+  if slot then
+    slot:getComponent('DropSlot').draggable = self
+    self.slot = slot
+  end
   -- You can't do this bc the entity hasn't been fully initialized
   -- So we call this when the entity has been fully initialized
   -- self:setEntityPosToSlot(slot)
@@ -20,12 +22,14 @@ end
 
 -- The entity has been initialized
 function Draggable:entityadded()
-  self:setEntityPosToSlot(self.slot)
+  if self.slot then
+    self:setEntityPosToSlot(self.slot)
+  end
 end
 
 -- These functions probably don't belong here, they belong to the system
 function Draggable:setSlot(slot)
-  assert(slot, 'Draggable must have a Slot entity parent')
+  -- assert(slot, 'Draggable must have a Slot entity parent')
   slot:getComponent('DropSlot').draggable = self
   self.slot = slot
   -- Assuming the entity has been initialize, we can call this

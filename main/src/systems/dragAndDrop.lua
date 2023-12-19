@@ -92,9 +92,11 @@ function DragAndDrop:earlysystemmousereleased(x, y, button)
 
         elseif hero then
           local modEntity = currentDraggable:getEntity()
-          Hump.Gamestate.current():removeEntity(modEntity)
-          hero:addMod(modEntity)
-          
+          if hero:addMod(modEntity) then
+            Hump.Gamestate.current():removeEntity(modEntity)
+          else
+            self.dragAndDropInfo.draggable:setSlot(self.dragAndDropInfo.oldSlot)
+          end
         end
 
       else
