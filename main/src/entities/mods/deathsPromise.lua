@@ -7,7 +7,7 @@ function DeathsPromise:initialize(slot)
     'BBB',
     'Death\'s Promise',
     '+ 35 CDR\n+ 100 Energy',
-    0, 15, 0, 0, 0, 0
+    0, 15, 0, 0, 0, 0, 0.35, 100
   )
 end
 

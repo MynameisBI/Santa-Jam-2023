@@ -1,12 +1,14 @@
 local AllyStats = Class('AllyStats', Component)
 
-function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, critChance, critDamage)
+function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, critChance, critDamage, cooldownReduction, energy)
   self.attackDamage = attackDamage or 33
   self.realityPower = realityPower or 0
   self.attackSpeed = attackSpeed or 0
   self.range = range or 300
   self.critChance = critChance or 0
   self.critDamage = critDamage or 0
+  self.cooldownReduction = cooldownReduction or 0
+  self.energy = energy or 0
 end
 
 function AllyStats:__add(otherStats)
@@ -16,7 +18,9 @@ function AllyStats:__add(otherStats)
     self.attackSpeed + otherStats.attackSpeed,
     self.range + otherStats.range,
     self.critChance + otherStats.critChance,
-    self.critDamage + otherStats.critDamage
+    self.critDamage + otherStats.critDamage,
+    self.cooldownReduction + otherStats.cooldownReduction,
+    self.energy + otherStats.energy
   )
 end
 
@@ -28,6 +32,8 @@ function AllyStats:getValues()
     range = self.range,
     critChance = self.critChance,
     critDamage = self.critDamage,
+    cooldownReduction = self.cooldownReduction,
+    energy = self.energy,
   }
 end
 

@@ -7,7 +7,7 @@ function NoradInhaler:initialize(slot)
     'BB',
     'Norad Inhaler',
     '+ 15 CDR\n+ 50 Energy',
-    0, 0, 0, 0, 0, 0
+    0, 0, 0, 0, 0, 0, 15, 50
   )
 end
 

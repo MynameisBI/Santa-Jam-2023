@@ -20,9 +20,9 @@ function HeroEntity:initialize(slot, image, name, traits, baseStats, skill)
 
     self:addComponent(Area(36, 36))
 
-    self:addComponent(Inspectable(nil, 3, 1, 'hero', Hero(name, traits, baseStats, skill)))
+    local hero = self:addComponent(Hero(name, traits, baseStats, skill))
 
-    self:addComponent(Hero(name, traits, baseStats, skill))
+    self:addComponent(Inspectable(nil, 3, 1, 'hero', hero))
 
     self:addComponent(Draggable(slot, 'hero'))
 end

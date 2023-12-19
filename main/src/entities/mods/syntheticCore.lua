@@ -7,7 +7,7 @@ function SyntheticCore:initialize(slot)
     'PB',
     'Synthetic Core',
     '+ 200 Energy',
-    0, 0, 0, 0, 0, 0
+    0, 0, 0, 0, 0, 0, 0, 200
   )
 end
 

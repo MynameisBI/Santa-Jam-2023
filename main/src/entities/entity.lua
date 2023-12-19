@@ -35,6 +35,7 @@ end
 function Entity:addComponent(component)
   self[component.class.name] = component
   component._entity = self
+  return component
 end
 
 function Entity:getComponent(className)

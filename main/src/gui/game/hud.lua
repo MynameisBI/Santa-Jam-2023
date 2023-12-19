@@ -1,5 +1,7 @@
 local Phase = require 'src.components.phase'
 local CurrentInspectable = require 'src.components.currentInspectable'
+local DragAndDropInfo = require 'src.components.dragAndDropInfo'
+local Hero = require 'src.components.hero'
 
 -- This should have been a system but it will mess up the draw order with the modal windows,
 -- so it's a seperate class for now
@@ -60,6 +62,8 @@ local STAT_DISPLAY_NAMES = {
   range = 'RANGE',
   critChance = 'CCHANCE',
   critDamage = 'CDMG',
+  cooldownReduction = 'CDR',
+  energy = 'Energy'
 }
 
 function HUD:initialize(resources, teamSynergy)
@@ -73,6 +77,8 @@ function HUD:initialize(resources, teamSynergy)
   self.teamSynergy = teamSynergy
 
   self.currentInspectable = CurrentInspectable()
+
+  self.dragAndDropInfo = DragAndDropInfo()
 end
 
 function HUD:update(dt)
@@ -171,7 +177,12 @@ function HUD:draw()
 
 
   -- Inspector
-  local x, y, w, h = 650, 80, 195, 360
+  -- for _, hero in ipairs(Hump.Gamestate)
+  -- if (hero.name == 'Cole') then
+  --   print(hero.modEntity)
+  -- end
+
+  local x, y, w, h = 630, 80, 215, 360
   local inspectable = self.currentInspectable.inspectable
   if inspectable then
     love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
@@ -211,20 +222,21 @@ function HUD:draw()
 
         local mx, my = love.mouse.getPosition()
         if x + 12 < mx and mx < x + 54 and y + 62 < my and my < y + 104 then
-          self:drawModTooltip(modEntity, mx, my, 'right')
+          self:drawModTooltip(modEntity:getComponent('Mod'), mx, my, 'right')
         end
       end
 
       -- Stats
       local statValues = hero:getStats()
-      local stats = {'attackDamage', 'realityPower', 'attackSpeed', 'range', 'critChance', 'critDamage'}
-      love.graphics.setColor(1, 1, 1)
+      local stats = {'attackDamage', 'realityPower', 'attackSpeed', 'range', 'critChance', 'critDamage',
+          'cooldownReduction', 'energy'}
+      love.graphics.setColor(0.8, 0.8, 0.8)
       love.graphics.setFont(Fonts.medium)
       local statY = y + 120
       for i = 1, #stats do
         love.graphics.print(STAT_DISPLAY_NAMES[stats[i]], x + 12, statY)
         love.graphics.print(tostring(statValues[stats[i]]),
-            x + 174 - Fonts.medium:getWidth(tostring(statValues[stats[i]])), statY)
+            x + w - 11 - Fonts.medium:getWidth(tostring(statValues[stats[i]])), statY)
         statY = statY + 17
       end
     end
@@ -278,7 +290,18 @@ function HUD:draw()
   local modEntities = Hump.Gamestate.current():getEntitiesWithComponent('Mod')
   for _, modEntity in ipairs(modEntities) do
     if modEntity:getComponent('Area'):hasWorldPoint(mx, my) then
-      self:drawModTooltip(modEntity, mx, my)
+      local mod = modEntity:getComponent('Mod')
+      if not self.dragAndDropInfo.draggable then
+        self:drawModTooltip(mod, mx, my)
+      else
+        local hoveredMod = self.dragAndDropInfo.draggable:getEntity():getComponent('Mod')
+        if hoveredMod then
+          local resultModEntity = Hero.getModEntityFromModCombination(mod, hoveredMod)
+          if resultModEntity then
+            self:drawModTooltip(resultModEntity:getComponent('Mod'), mx, my)
+          end
+        end
+      end
     end
   end
   local heroes = Hump.Gamestate.current():getEntitiesWithComponent('Hero')
@@ -286,7 +309,7 @@ function HUD:draw()
   for _, hero in ipairs(heroes) do
     local hx, hy = hero:getComponent('Transform'):getGlobalPosition()
     if hx - 3 < mx and mx < hx + 15 and hy - 5 < my and my < hy + 7 then
-      self:drawModTooltip(hero:getComponent('Hero').modEntity, mx, my)
+      self:drawModTooltip(hero:getComponent('Hero').modEntity:getComponent('Mod'), mx, my)
     end
   end
 end
@@ -307,24 +330,47 @@ function HUD:drawBar(value, maxValue, color, font, x, y, w, h)
   love.graphics.print(t, x + w / 2 - font:getWidth(t) / 2, y + h / 2 - font:getHeight() / 2)
 end
 
-function HUD:drawModTooltip(modEntity, x, y, align)
-  local w, h = 300, 100
-
-  local mod = modEntity:getComponent('Mod')
+function HUD:drawModTooltip(mod, x, y, align)
+  local w, h = 300, 104
   
   local x = x
   if align == 'right' then
     x = x - w
   end
 
+  if #mod.id >= 2 then h = h + 40 end
+
   love.graphics.setColor(0.15, 0.15, 0.15, 0.6)
   love.graphics.rectangle('fill', x, y, w, h)
-
+  
   love.graphics.setColor(0.8, 0.8, 0.8)
   love.graphics.setFont(Fonts.big)
   love.graphics.print(mod.name, x + 12, y + 6)
+
+  if #mod.id >= 2 then
+    love.graphics.setColor(1, 1, 1)
+    for i = 1, #mod.id do
+      local modX, modY = x + 12 + (i-1) * 70, y + 28
+      local char = mod.id:sub(i, i)
+      if char == 'S' then
+        love.graphics.draw(Images.mods.scrapPack, modX, modY, 0, 3, 3)
+      elseif char == 'P' then
+        love.graphics.draw(Images.mods.psychePack, modX, modY, 0, 3, 3)
+      elseif char == 'B' then
+        love.graphics.draw(Images.mods.bioPack, modX, modY, 0, 3, 3)
+      end
+    end
+  
+    love.graphics.setColor(0.8, 0.8, 0.8)
+    love.graphics.setFont(Fonts.big)
+    for i = 1, #mod.id-1 do
+      local plusX, plusY = x + 60 + (i-1) * 70, y + 36
+      love.graphics.print('+', plusX, plusY)
+    end
+  end
+
   love.graphics.setFont(Fonts.medium)
-  love.graphics.print(mod.description, x + 12, y + 32)
+  love.graphics.print(mod.description, x + 12, #mod.id >= 2 and y + 70 or y + 32)
 end
 
 return HUD

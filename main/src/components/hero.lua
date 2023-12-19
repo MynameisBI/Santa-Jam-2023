@@ -44,7 +44,7 @@ function Hero:initialize(name, traits, baseStats, skill)
 
   self.skill = skill or Hero.Skill()
 
-  self.modEntities = nil
+  self.modEntity = nil
 end
 
 
@@ -153,32 +153,43 @@ function Hero:addMod(modEntity)
   else
     local currentMod = self.modEntity:getComponent('Mod')
     local toAddedMod = modEntity:getComponent('Mod')
-    local resultModId = currentMod.id..toAddedMod.id
-    if #resultModId == 2 then
-      local modIndex = 0
-      for i = 1, 2 do
-        local char = resultModId:sub(i, i)
-        if char == 'S' then modIndex = modIndex + 1
-        elseif char == 'P' then modIndex = modIndex + 2
-        elseif char == 'B' then modIndex = modIndex + 4
-        end
-      end
-      self.modEntity = TIER_2_MODS[modIndex]()
-      return true    
-    elseif #resultModId == 3 then
-      local modIndex = 0
-      for i = 1, 3 do
-        local char = resultModId:sub(i, i)
-        if char == 'S' then modIndex = modIndex + 1
-        elseif char == 'P' then modIndex = modIndex + 3
-        elseif char == 'B' then modIndex = modIndex + 9
-        end
-      end
-      self.modEntity = TIER_3_MODS[modIndex]()
+    local newModEntity = Hero.getModEntityFromModCombination(currentMod, toAddedMod)
+    if newModEntity then
+      self.modEntity = newModEntity
       return true
     else
       return false
     end
+  end
+end
+
+function Hero.getModEntityFromModCombination(mod1, mod2)
+  local resultModId = mod1.id..mod2.id
+
+  if #resultModId == 2 then
+    local modIndex = 0
+    for i = 1, 2 do
+      local char = resultModId:sub(i, i)
+      if char == 'S' then modIndex = modIndex + 1
+      elseif char == 'P' then modIndex = modIndex + 2
+      elseif char == 'B' then modIndex = modIndex + 4
+      end
+    end
+    return TIER_2_MODS[modIndex]()
+
+  elseif #resultModId == 3 then
+    local modIndex = 0
+    for i = 1, 3 do
+      local char = resultModId:sub(i, i)
+      if char == 'S' then modIndex = modIndex + 1
+      elseif char == 'P' then modIndex = modIndex + 3
+      elseif char == 'B' then modIndex = modIndex + 9
+      end
+    end
+    return TIER_3_MODS[modIndex]()
+
+  else
+    return false
   end
 end
 

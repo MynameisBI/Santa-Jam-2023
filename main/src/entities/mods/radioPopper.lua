@@ -7,7 +7,7 @@ function RadioPopper:initialize(slot)
     'SSB',
     'Radio Popper',
     '+ 0.7 AS\n- 20 CDR',
-    0, 0, 0.7, 0, 0, 0
+    0, 0, 0.7, 0, 0, 0, -0.2, 0
   )
 end
 
