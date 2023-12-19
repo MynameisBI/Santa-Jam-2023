@@ -1,5 +1,4 @@
 local Entity = require 'src.entities.entity'
-local Input = require 'src.components.input'
 local System = require 'src.systems.system'
 local Enemy = require 'src.components.enemy'
 local Transform = require 'src.components.transform'
@@ -26,7 +25,6 @@ local ManageEnemy = System:subclass('ManageEnemy')
 
 function ManageEnemy:initialize()
     System.initialize(self, 'Transform', 'Enemy')
-    self.input = Input()
     self.timer = Hump.Timer()
     self.enemies = {}
 
@@ -37,7 +35,7 @@ end
 function ManageEnemy:update(transform, enemy, dt)
     self.timer:update(dt)
 
-    if self.input:isScancodePressed('q') and not self.spawnCD then
+    if self.spawnCD then
         self:spawn()
         print('spawn')
 
@@ -45,20 +43,10 @@ function ManageEnemy:update(transform, enemy, dt)
         self.timer:after(2, function()
             self.spawnCD = false
         end)
-        
     end
 
+    transform:setGlobalPosition(transform.x-100*dt, transform.y)
 end
 
-function ManageEnemy:spawn()
-    -- local Mino = Mino()
-
-    -- local Sev = Sev()
-
-
-    -- Hump.Gamestate.current():addEntity(Sev)
-
-    -- -- Hump.Gamestate.current():addEntity(Mino)
-end
 
 return ManageEnemy

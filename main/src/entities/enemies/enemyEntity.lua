@@ -10,7 +10,7 @@ local EnemyEntity = Class('EnemyEntity', Entity)
 function EnemyEntity:initialize(image, name, speed, baseStats)
     Entity.initialize(self)
 
-    self:addComponent(Transform(460, 230, 0, 2, 2))
+    self:addComponent(Transform(800, 270, 0, 2, 2))
 
     self:addComponent(Sprite(image, 10))
 

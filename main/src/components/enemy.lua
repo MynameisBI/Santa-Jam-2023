@@ -6,17 +6,18 @@ function Enemy:initialize(name, speed, stats)
     Component.initialize(self)
 
     self.name = name
-    self.speed = speed or 10
+    -- speed (slow = 10, medium = 25, fast = 40)
+    self.speed = speed
     self.stats = baseStats or Enemy.Stats()
 end
 
 Enemy.Stats = Class('Enemy Stats')
 
 function Enemy.Stats:initialize(physicalArmor, psychicArmor, HP, maxHP)
-    self.HP = HP or 100
-    self.maxHP = maxHP or 100
-    self.physicalArmor = physicalArmor or 20
-    self.psychicArmor = psychicArmor or 20
+    self.HP = HP
+    self.maxHP = maxHP
+    self.physicalArmor = physicalArmor
+    self.psychicArmor = psychicArmor
 end
 
 function Enemy.Stats:getValues()

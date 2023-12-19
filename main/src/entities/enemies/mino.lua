@@ -4,7 +4,7 @@ local EnemyEntity = require 'src.entities.enemies.enemyEntity'
 local Mino = Class('Mino', EnemyEntity)
 
 function Mino:initialize()
-    EnemyEntity.initialize(self, Images.enemies.mini, 'Mino', 10, Enemy.Stats(30, 40, 100, 100))
+    EnemyEntity.initialize(self, Images.enemies.mini, 'Mino', 40, Enemy.Stats(80, 80, 0, 0))
 
     local animator = self:getComponent('Animator')
     animator:setGrid(18, 18, Images.enemies.mini:getWidth(), Images.enemies.mini:getHeight())
