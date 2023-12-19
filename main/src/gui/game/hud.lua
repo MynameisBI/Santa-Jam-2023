@@ -123,7 +123,7 @@ function HUD:draw()
   for i = 1, #self.teamSynergy.synergies do
     local synergy = self.teamSynergy.synergies[i]
     local id = ('synergy %d'):format(i)
-    self.suit:Button(Images.icons[synergy.trait..tostring('Icon')],
+    self.suit:Button(Images.icons[synergy.trait..'Icon'],
       {
         id = id,
         draw = function(image, opt, x, y, w, h)
