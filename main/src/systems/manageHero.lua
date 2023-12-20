@@ -1,44 +1,48 @@
 local Entity = require 'src.entities.entity'
 local Input = require 'src.components.input'
-local System = require 'src.systems.system'
-
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 local Bullet = require 'src.components.bullet'
+local TeamSynergy = require 'src.components.teamSynergy'
+
+local System = require 'src.systems.system'
 
 local ManageHero = System:subclass('ManageHero')
 
 function ManageHero:initialize()
     self.heroes = {}
-    System.initialize(self, 'Transform', 'Sprite', 'Area')
+    System.initialize(self, 'Transform', 'Hero', 'TeamUpdateObserver')
     self.input = Input()
     self.timer = Hump.Timer()
     self.bullets = {}
+
+    self.teamSynergy = TeamSynergy()
 end
 
-function ManageHero:update(transform, sprite, area, dt)
+function ManageHero:update(transform, hero, teamUpdateObserver, dt)
+    -- self.target = {x = 800, y = 800}
+
+    -- self.timer:update(dt)
+    -- -- self:setTarget()
+
+    -- -- normal attack
+    -- if self.input:isScancodePressed('space') and not self.atkCD then
+    --     self:attack()
+    --     print('shoot')
+
+    --     self.atkCD = true
+    --     self.timer:after(2, function()
+    --         self.atkCD = false
+    --     end)
+    -- end
+
+    -- for i = #self.bullets, 1, -1 do
+    --     local bullet = self.bullets[i]
+    --     local transform = bullet:getComponent('Transform')
+    --     transform:setGlobalPosition(transform.x + 1, transform.y + 1)
+    -- end
     
-    self.target = {x = 800, y = 800}
-
-    self.timer:update(dt)
-    -- self:setTarget()
-
-    -- normal attack
-    if self.input:isScancodePressed('space') and not self.atkCD then
-        self:attack()
-        print('shoot')
-
-        self.atkCD = true
-        self.timer:after(2, function()
-            self.atkCD = false
-        end)
-    end
-
-    for i = #self.bullets, 1, -1 do
-        local bullet = self.bullets[i]
-        local transform = bullet:getComponent('Transform')
-        transform:setGlobalPosition(transform.x + 1, transform.y + 1)
-    end
+    hero.skill.secondsUntilSkillReady = hero.skill.secondsUntilSkillReady - dt
 end
 
 function ManageHero:setup()
@@ -55,7 +59,6 @@ function ManageHero:attack()
         Bullet(self, self.target, 200)
     )
     self.bullets[#self.bullets + 1] = bullet
-    
 
     Hump.Gamestate.current():addEntity(bullet)
 end
@@ -75,5 +78,3 @@ end
 
 
 return ManageHero
-
-

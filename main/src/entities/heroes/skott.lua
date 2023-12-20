@@ -9,7 +9,7 @@ local Skott = Class('Skott', HeroEntity)
 function Skott:initialize(slot)
     Entity.initialize(self)
 
-    HeroEntity.initialize(self, slot, Images.heroes["s'kott"], 'Skott', {'defect', 'artificer', 'cracker'},
+    HeroEntity.initialize(self, slot, Images.heroes["s'kott"], 'S\'kott', {'defect', 'artificer', 'cracker'},
         {
             [1] = Hero.Stats(40, 30, 1.0, 300, 0, 0),
             [2] = Hero.Stats(60, 45, 1.0, 300, 0, 0),

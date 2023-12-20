@@ -246,21 +246,21 @@ function HUD:draw()
   -- Lower buttons
   love.graphics.setFont(Fonts.medium)
   local currentPhase = self.phase:current()
-  self.suit.layout:reset(250, 475)
-  self.suit.layout:padding(15)
   if currentPhase == 'planning' then
+    self.suit.layout:reset(250, 475)
+    self.suit.layout:padding(15)
     if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
         self.suit.layout:col(110, 51)).hit then
       if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
-        print('add slot')
+        self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
       end
     end
 
     if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
     self.suit.layout:col(110, 51)).hit then
       if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
-        local style = 50
-        self.resources:modifyStyle(style)
+        print('add slot')
+        self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
       end
     end
 
@@ -273,12 +273,12 @@ function HUD:draw()
 
     local skillW, skillH = 110, 51
     local paddingX = 15
-    self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 409)
-    self.suit.layout:padding(15)
+    self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 475)
+    self.suit.layout:padding(paddingX)
     for i = 1, #heroComponents do
       if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
           self.suit.layout:col(skillW, skillH)).hit then
-        print('use skill')
+        heroComponents[i].skill:cast()
       end
     end
   end

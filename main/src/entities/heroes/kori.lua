@@ -9,7 +9,7 @@ local Kori = Class('Kori', HeroEntity)
 function Kori:initialize(slot)
     Entity.initialize(self)
 
-    HeroEntity.initialize(self, slot, Images.heroes.kori, 'Kori', {'bigEar', 'defect'},
+    HeroEntity.initialize(self, slot, Images.heroes.kori, 'Kori', {'bigEar', 'defect', 'trailblazer'},
         {
             [1] = Hero.Stats(40, 30, 1.0, 300, 0, 0),
             [2] = Hero.Stats(60, 45, 1.0, 300, 0, 0),

@@ -1,5 +1,3 @@
-local Hero = require 'src.components.hero'
-
 local Component = require 'src.components.component'
 
 local TeamUpdateObserver = Class('TeamUpdateObserver', Component)

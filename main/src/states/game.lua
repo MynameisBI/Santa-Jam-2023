@@ -7,6 +7,7 @@ local ManageTeamSynergy = require 'src.systems.manageTeamSynergy'
 local Inspect = require 'src.systems.inspect'
 local ManageHero = require 'src.systems.manageHero'
 local ManageEnemy = require 'src.systems.manageEnemy'
+local ManageResources = require 'src.systems.manageResources'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
@@ -127,7 +128,8 @@ function Game:enter(from)
   self:addEntity(Alestra(slots[16]))
 
 
-  local teamSynergy = TeamSynergy(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
+  local teamSynergy = TeamSynergy()
+  teamSynergy:setTeamSlots(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
   self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
 
   local resources = Resources()
@@ -148,6 +150,7 @@ function Game:addSystems()
   self:addSystem(ManageHero())
   self:addSystem(Inspect())
   self:addSystem(ManageEnemy())
+  self:addSystem(ManageResources())
 end
 
 function Game:initializeEnemies()

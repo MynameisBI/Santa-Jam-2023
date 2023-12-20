@@ -1,14 +1,21 @@
-local Hero = require 'src.components.hero'
-
 local SingletonComponent = require 'src.components.singletonComponent'
 
 local TeamSynergy = Class('TeamSynergy', SingletonComponent)
 
-function TeamSynergy:initialize(teamSlots)
+function TeamSynergy:initialize()
   SingletonComponent.initialize(self)
 
-  self.teamSlots = teamSlots or {}
+  self.teamSlots = {}
+
+  -- `synergy` properties
+    -- `trait`
+    -- `count`
+    -- `nextThresholdIndex`
   self.synergies = {}
+end
+
+function TeamSynergy:setTeamSlots(teamSlots)
+  self.teamSlots = teamSlots
 end
 
 function TeamSynergy:getHeroComponentsInTeam()
@@ -20,6 +27,16 @@ function TeamSynergy:getHeroComponentsInTeam()
     end
   end
   return heroComponents
+end
+
+function TeamSynergy:getTeamEnergy()
+  local energy = 0
+  local heroComponents = self:getHeroComponentsInTeam()
+  for _, heroComponent in ipairs(heroComponents) do
+    local stats = heroComponent:getStats()
+    energy = energy + stats.energy
+  end
+  return energy
 end
 
 TeamSynergy.TRAIT_THRESHOLD = {

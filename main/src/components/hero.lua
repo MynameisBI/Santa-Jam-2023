@@ -14,6 +14,8 @@ local NeuralProcessor = require 'src.entities.mods.neuralProcessor'
 local BionicColumn = require 'src.entities.mods.bionicColumn'
 local EnhancerFumes = require 'src.entities.mods.enhancerFumes'
 local DeathsPromise = require 'src.entities.mods.deathsPromise'
+local Resources = require 'src.components.resources'
+
 local Component = require 'src.components.component'
 
 local Hero = Class('Hero', Component)
@@ -39,8 +41,7 @@ function Hero:initialize(name, traits, baseStats, skill)
     [4] = Hero.Stats(),
   }
 
-  self.modifierStatses = {}
-  self.passive = {}
+  self.adjustments = {}
 
   self.skill = skill or Hero.Skill()
 
@@ -74,26 +75,26 @@ function Hero:getBaseStats()
   return self.baseStats[self.level]
 end
 
-function Hero:resetModifierStatses()
-  self.modifierStatses = {}
-end
-
--- Usage:
--- `hero:addModifierStats(AllyStats(...))`
-function Hero:addModifierStats(stats)
-  assert(stats.class.name == 'Hero Stats', 'stat parameter must be instance of AllyStats')
-  table.insert(self.modifierStatses, stats)
-end
-
 function Hero:getStats()
   local stats = self.baseStats[self.level]
   if self.modEntity then
     stats = stats + self.modEntity:getComponent('Mod').stats
   end
-  for i, modifierStats in ipairs(self.modifierStatses) do
-    stats = stats + modifierStats
-  end
+  -- for i, modifierStats in ipairs(self.modifierStatses) do
+  --   stats = stats + modifierStats
+  -- end
   return stats
+end
+
+
+function Hero:resetAdjustments()
+  self.adjustments = {}
+end
+
+-- <onGetStats>, 
+function Hero:addAdjustment(adjustment)
+  assert(type(adjustment) == 'table', 'Invalid adjustment')
+  table.insert(self.adjustments, adjustment)
 end
 
 
@@ -107,7 +108,10 @@ function Hero.Skill:initialize(description, energy, cooldown, fn)
   self.cooldown = cooldown or 8
   self.secondsUntilSkillReady = 0
 
-  self.fn = fn or function() end
+  self._fn = fn or function() end
+
+  self.maxCharge = 0
+  self.charge = 0
 end
 
 function Hero.Skill:isSKillReady()
@@ -116,6 +120,22 @@ end
 
 function Hero.Skill:getPercentTimeLeft()
   return self.secondsUntilSkillReady / self.cooldown
+end
+
+function Hero.Skill:cast()
+  if not Resources():modifyEnergy(-self.energy) then return false end
+
+  if self.charge >= 1 then
+    self.charge = self.charge - 1
+    self._fn()
+
+  elseif self.secondsUntilSkillReady <= 0 then
+    self.secondsUntilSkillReady = self.cooldown
+    self._fn()
+
+  end
+
+  return true
 end
 
 
@@ -133,7 +153,7 @@ local TIER_2_MODS = {
 local TIER_3_MODS = {
   [3] = TheConductor,
   [5] = SkaterayEqualizer,
-  [10] = RadioPopper,
+  [11] = RadioPopper,
   [7] = AsymframeVisionary,
   [13] = AbovesSliver,
   [19] = SubcellularSupervisor,

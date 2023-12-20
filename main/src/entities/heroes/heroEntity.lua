@@ -5,6 +5,7 @@ local Hero = require 'src.components.hero'
 local Draggable = require 'src.components.draggable'
 local Area = require 'src.components.area'
 local Inspectable = require 'src.components.inspectable'
+local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
 local Entity = require 'src.entities.entity'
 
 local HeroEntity = Class('HeroEntity', Entity)
@@ -25,6 +26,8 @@ function HeroEntity:initialize(slot, image, name, traits, baseStats, skill)
     self:addComponent(Inspectable(nil, 3, 1, 'hero', hero))
 
     self:addComponent(Draggable(slot, 'hero'))
+
+    self:addComponent(TeamUpdateObserver())
 end
 
 return HeroEntity

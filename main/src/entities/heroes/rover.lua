@@ -9,7 +9,7 @@ local Rover = Class('Rover', HeroEntity)
 function Rover:initialize(slot)
     Entity.initialize(self)
 
-    HeroEntity.initialize(self, slot, Images.heroes.rover, 'Rover', {'bigEar', 'droneMaestro'},
+    HeroEntity.initialize(self, slot, Images.heroes.rover, 'Rover', {'bigEar', 'trailblazer'},
         {
             [1] = Hero.Stats(40, 30, 1.0, 300, 0, 0),
             [2] = Hero.Stats(60, 45, 1.0, 300, 0, 0),

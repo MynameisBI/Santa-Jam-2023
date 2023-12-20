@@ -1,10 +1,17 @@
+local Phase = require 'src.components.phase'
+local TeamSynergy = require 'src.components.teamSynergy'
+
 local SingletonComponent = require 'src.components.singletonComponent'
 
 local Resources = Class('Resources', SingletonComponent)
 
 Resources.UPGRADE_MONEY_THRESHOLD = {10, 20, 30, 40}
+Resources.UPGRADE_ENERGY_GAIN = 100
 
 Resources.PERFORM_MONEY_THRESHOLD = {8, 12, 16, 20, 24, 28}
+Resources.PERFORM_STYLE_GAIN = 50
+
+Resources.ENERGY_PERCENT_REGEN_RATE = 0.1
 
 function Resources:initialize(teamSlots, startingMoney, startingStyle)
   SingletonComponent.initialize(self)
@@ -18,9 +25,9 @@ function Resources:initialize(teamSlots, startingMoney, startingStyle)
   self.performMoneyThresholdIndex = 1
 
   self._health = 100
-  self._maxHealth = 100
+  self._baseMaxHealth = 100
   self._energy = 200
-  self._maxEnergy = 200
+  self._baseMaxEnergy = 200
 end
 
 function Resources:modifyMoney(modifier)
@@ -60,6 +67,7 @@ end
 
 function Resources:modifyHealth(modifier)
   self._health = self._health + modifier
+  self._health = math.min(self:getMaxHealth(), self._energy)
   if self._health < 0 then
     self._health = self._health - modifier
     return false
@@ -71,21 +79,22 @@ function Resources:getHealth()
   return self._health
 end
 
-function Resources:modifyMaxHealth(modifier)
-  self._maxHealth = self._maxHealth + modifier
-  if self._maxHealth < 0 then
-    self._maxHealth = self._maxHealth - modifier
+function Resources:modifyBaseMaxHealth(modifier)
+  self._baseMaxHealth = self._baseMaxHealth + modifier
+  if self._baseMaxHealth < 0 then
+    self._baseMaxHealth = self._baseMaxHealth - modifier
     return false
   end
   return true
 end
 
 function Resources:getMaxHealth()
-  return self._maxHealth
+  return self._baseMaxHealth
 end
 
 function Resources:modifyEnergy(modifier)
   self._energy = self._energy + modifier
+  self._energy = math.min(self:getMaxEnergy(), self._energy)
   if self._energy < 0 then
     self._energy = self._energy - modifier
     return false
@@ -94,20 +103,25 @@ function Resources:modifyEnergy(modifier)
 end
 
 function Resources:getEnergy()
-  return self._energy
+  local phase = Phase():current()
+  if phase == 'planning' then
+    return self:getMaxEnergy()
+  elseif phase == 'battle' then
+    return self._energy
+  end
 end
 
-function Resources:modifyMaxEnergy(modifier)
-  self._maxEnergy = self._maxEnergy + modifier
-  if self._maxEnergy < 0 then
-    self._maxEnergy = self._maxEnergy - modifier
+function Resources:modifyBaseMaxEnergy(modifier)
+  self._baseMaxEnergy = self._baseMaxEnergy + modifier
+  if self._baseMaxEnergy < 0 then
+    self._baseMaxEnergy = self._baseMaxEnergy - modifier
     return false
   end
   return true
 end
 
 function Resources:getMaxEnergy()
-  return self._maxEnergy
+  return self._baseMaxEnergy + TeamSynergy():getTeamEnergy()
 end
 
 return Resources
