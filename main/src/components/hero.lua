@@ -45,6 +45,7 @@ function Hero:initialize(name, traits, baseStats, bulletClass, skill)
   self.secondsUntilAttackReady = 0
 
   self.skill = skill or Hero.Skill()
+  self.skill.hero = self
 
   self.modEntity = nil
 end
@@ -123,6 +124,8 @@ function Hero.Skill:initialize(description, energy, cooldown, fn)
 
   self.maxCharge = 0
   self.charge = 0
+
+  self.hero = nil
 end
 
 function Hero.Skill:isSKillReady()
@@ -138,11 +141,11 @@ function Hero.Skill:cast()
 
   if self.charge >= 1 then
     self.charge = self.charge - 1
-    self._fn()
+    self._fn(self.hero)
 
   elseif self.secondsUntilSkillReady <= 0 then
     self.secondsUntilSkillReady = self.cooldown
-    self._fn()
+    self._fn(self.hero)
 
   end
 

@@ -9,6 +9,7 @@ local ManageHero = require 'src.systems.manageHero'
 local ManageEnemy = require 'src.systems.manageEnemy'
 local ManageResources = require 'src.systems.manageResources'
 local ManageBullet = require 'src.systems.manageBullet'
+local UpdateTargetSkill = require 'src.systems.updateTargetSKill'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
@@ -152,6 +153,7 @@ function Game:addSystems()
   self:addSystem(ManageEnemy())
   self:addSystem(ManageResources())
   self:addSystem(ManageBullet())
+  self:addSystem(UpdateTargetSkill())
 end
 
 function Game:initializeEnemies()

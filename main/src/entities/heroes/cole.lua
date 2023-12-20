@@ -1,7 +1,7 @@
-
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
 local BulletEntity = require 'src.entities.bullets.bulletEntity'
+local TargetSkillEntity = require 'src.entities.skills.targetSkillEntity'
 
 local Entity = require 'src.entities.entity'
 
@@ -20,8 +20,15 @@ function Cole:initialize(slot)
         BulletEntity,
         Hero.Skill('Cole',
             40, 8,
-            function()
-                print('machine guns!!!')
+            function(hero)
+                local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
+                enemyEntities = Lume.shuffle(enemyEntities)
+                for i = 1, math.min(#enemyEntities, 8) do
+                  Hump.Gamestate.current():addEntity(
+                    TargetSkillEntity(Images.icons.candyheadIcon, hero, enemyEntities[i],
+                        {damageType = 'true', attackDamageRatio = 1, canCrit = true}, 0.6)
+                  )
+                end
             end
         ))
         local animator = self:getComponent('Animator')
