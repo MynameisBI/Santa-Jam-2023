@@ -48,9 +48,13 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
       
       if hero.bulletClass == nil then
         local x, y = transform:getGlobalPosition()
-        local enemyEntity = Lume.nearest(x, y, Hump.Gamestate.current():getEntitiesWithComponent('Enemy'),
+        local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
+        local nearestEnemyEntity = Lume.nearest(x, y, enemyEntities,
             function(enemyEntity) return enemyEntity:getComponent('Transform'):getGlobalPosition() end)
-        print(tostring(enemyEntity)..' take '..tostring(hero:getStats().attackDamage)..' damage')
+        local ex, ey = nearestEnemyEntity:getComponent('Transform'):getGlobalPosition()
+        if Lume.distance(x, y, ex, ey) <= stats.range then
+          print(tostring(enemyEntity)..' take '..tostring(stats.attackDamage)..' damage')
+        end
 
       else
 
