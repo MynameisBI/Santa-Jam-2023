@@ -16,6 +16,7 @@ function Keon:initialize(slot)
             [3] = Hero.Stats(90, 68, 1.0, 300, 0, 0),
             [4] = Hero.Stats(135, 101, 1.0, 300, 0, 0)
         },
+        nil,
         Hero.Skill('Keon',
             40, 8,
             function()

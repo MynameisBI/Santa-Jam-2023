@@ -26,8 +26,11 @@ function Lume.nearest(ox, oy, points, getPointPosFn)
   local minDist = math.huge
   local nearestPoint = nil
   for _, point in ipairs(points) do
-    local px, py = getPointPosFn(point)
-    local dist = Lume.distance(ox, oy, px, py)
+    local px, py
+    if getPointPosFn then px, py = getPointPosFn(point)
+    else px, py = point.x, point.y
+    end
+    local dist = Lume.distance(ox, oy, px, py, true)
     if dist < minDist then
       minDist = dist
       nearestPoint = point

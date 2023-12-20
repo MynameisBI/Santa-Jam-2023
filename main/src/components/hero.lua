@@ -26,7 +26,7 @@ local Hero = Class('Hero', Component)
     -- coordinator, artificer, trailblazer, droneMaestro, cracker
 -- `baseStats` is a table of objects of class Hero.Stats
 -- `skill` is an object of class Hero.Skill
-function Hero:initialize(name, traits, baseStats, skill)
+function Hero:initialize(name, traits, baseStats, bulletClass, skill)
   Component.initialize(self)
 
   self.name = name
@@ -41,11 +41,17 @@ function Hero:initialize(name, traits, baseStats, skill)
     [4] = Hero.Stats(),
   }
 
-  self.adjustments = {}
+  self.bulletClass = bulletClass
+  self.secondsUntilAttackReady = 0
 
   self.skill = skill or Hero.Skill()
 
   self.modEntity = nil
+end
+
+
+function Hero:hasTrait(trait)
+  return Lume.find(self.traits, trait) and true or false
 end
 
 

@@ -39,6 +39,10 @@ function TeamSynergy:getTeamEnergy()
   return energy
 end
 
+function TeamSynergy:hasHeroComponent(heroComponent)
+  return Lume.find(self:getHeroComponentsInTeam(), heroComponent) and true or false
+end
+
 TeamSynergy.TRAIT_THRESHOLD = {
   bigEar = {2, 4, 6},
   sentient = {2, 3, 4},

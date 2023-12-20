@@ -3,65 +3,83 @@ local Input = require 'src.components.input'
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 local Bullet = require 'src.components.bullet'
+
 local TeamSynergy = require 'src.components.teamSynergy'
+local Phase = require 'src.components.phase'
 
 local System = require 'src.systems.system'
 
 local ManageHero = System:subclass('ManageHero')
 
 function ManageHero:initialize()
-    self.heroes = {}
-    System.initialize(self, 'Transform', 'Hero', 'TeamUpdateObserver')
-    self.input = Input()
-    self.timer = Hump.Timer()
-    self.bullets = {}
+  System.initialize(self, 'Transform', 'Hero', 'TeamUpdateObserver')
+  self.input = Input()
+  self.timer = Hump.Timer()
+  self.bullets = {}
 
-    self.teamSynergy = TeamSynergy()
+  self.teamSynergy = TeamSynergy()
+  self.phase = Phase()
+  self.lastFramePhase = self.phase:current()
 end
 
 function ManageHero:update(transform, hero, teamUpdateObserver, dt)
-    -- self.target = {x = 800, y = 800}
+  local isInTeam = self.teamSynergy:hasHeroComponent(hero)
 
-    -- self.timer:update(dt)
-    -- -- self:setTarget()
 
-    -- -- normal attack
-    -- if self.input:isScancodePressed('space') and not self.atkCD then
-    --     self:attack()
-    --     print('shoot')
+  -- On switch to battle phase
+  if self.lastFramePhase ~= self.phase:current() then
+    self:onPhaseSwitch(self.phase:current(), isInTeam, hero)
+  end
 
-    --     self.atkCD = true
-    --     self.timer:after(2, function()
-    --         self.atkCD = false
-    --     end)
-    -- end
 
-    -- for i = #self.bullets, 1, -1 do
-    --     local bullet = self.bullets[i]
-    --     local transform = bullet:getComponent('Transform')
-    --     transform:setGlobalPosition(transform.x + 1, transform.y + 1)
-    -- end
-    
+  self:updateHero(self.phase:current(), isInTeam, transform, hero, dt)
+end
+
+function ManageHero:latesystemupdate(dt)
+  self.lastFramePhase = self.phase:current()
+end
+
+function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
+  if phase == 'battle' and isInTeam then
+    hero.secondsUntilAttackReady = hero.secondsUntilAttackReady - dt
+    if hero.secondsUntilAttackReady <= 0 then
+      local stats = hero:getStats()
+      hero.secondsUntilAttackReady = 1 / stats.attackSpeed 
+      
+      if hero.bulletClass == nil then
+        local x, y = transform:getGlobalPosition()
+        local enemyEntity = Lume.nearest(x, y, Hump.Gamestate.current():getEntitiesWithComponent('Enemy'),
+            function(enemyEntity) return enemyEntity:getComponent('Transform'):getGlobalPosition() end)
+        print(tostring(enemyEntity)..' take '..tostring(hero:getStats().attackDamage)..' damage')
+
+      else
+
+      end
+    end
+
     hero.skill.secondsUntilSkillReady = hero.skill.secondsUntilSkillReady - dt
+  end
 end
 
-function ManageHero:setup()
-    self.atkCD = false
-    self.skillCD = false
-    self.isDead = false
+function ManageHero:onPhaseSwitch(phase, isInTeam, hero)
+  if phase == 'battle' then
+    if isInTeam then
+      print(hero.name..' ready to battle')
+    end
+  end
 end
 
-function ManageHero:attack()
-    -- add bullet
-    local bullet = Entity(
-        Transform(self.x, self.y, 0, 0.5, 0.5),
-        Sprite(Images.diamond, 2),
-        Bullet(self, self.target, 200)
-    )
-    self.bullets[#self.bullets + 1] = bullet
+-- function ManageHero:attack()
+--   -- add bullet
+--   local bullet = Entity(
+--       Transform(self.x, self.y, 0, 0.5, 0.5),
+--       Sprite(Images.diamond, 2),
+--       Bullet(self, self.target, 200)
+--   )
+--   self.bullets[#self.bullets + 1] = bullet
 
-    Hump.Gamestate.current():addEntity(bullet)
-end
+--   Hump.Gamestate.current():addEntity(bullet)
+-- end
 
 -- function Hero:setTarget()
 --     local temp = math.sqrt(self.x - enemies[1].x)^2 + (self.y - enemies[1].y)^2
