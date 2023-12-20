@@ -1,6 +1,6 @@
-
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
+local AreaSkillEntity = require 'src.entities.skills.areaSkillEntity'
 
 local Entity = require 'src.entities.entity'
 
@@ -19,8 +19,11 @@ function Raylee:initialize(slot)
         nil,
         Hero.Skill('Raylee',
             40, 8,
-            function()
-                print('machine guns!!!')
+            function(hero)
+              Hump.Gamestate.current():addEntity(
+                AreaSkillEntity(Images.icons.candyheadIcon, hero, 450, 280, 300,
+                    {damageType = 'reality', realityPowerRatio = 4}, 0.6)
+              )
             end
         ))
         local animator = self:getComponent('Animator')

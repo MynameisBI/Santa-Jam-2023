@@ -9,7 +9,8 @@ local ManageHero = require 'src.systems.manageHero'
 local ManageEnemy = require 'src.systems.manageEnemy'
 local ManageResources = require 'src.systems.manageResources'
 local ManageBullet = require 'src.systems.manageBullet'
-local UpdateTargetSkill = require 'src.systems.updateTargetSKill'
+local UpdateTargetSkill = require 'src.systems.updateTargetSkill'
+local UpdateAreaSkill = require 'src.systems.updateAreaSkill'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
@@ -154,11 +155,15 @@ function Game:addSystems()
   self:addSystem(ManageResources())
   self:addSystem(ManageBullet())
   self:addSystem(UpdateTargetSkill())
+  self:addSystem(UpdateAreaSkill())
 end
 
 function Game:initializeEnemies()
   local mino = Mino()
   mino:getComponent('Transform'):setGlobalPosition(1000, 300)
+  self:addEntity(mino)
+  mino = Mino()
+  mino:getComponent('Transform'):setGlobalPosition(1200, 260)
   self:addEntity(mino)
   -- self:addEntity(Peach())
   -- self:addEntity(Amber())
