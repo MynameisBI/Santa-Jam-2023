@@ -8,12 +8,12 @@ local Inspect = require 'src.systems.inspect'
 local ManageHero = require 'src.systems.manageHero'
 local ManageEnemy = require 'src.systems.manageEnemy'
 local ManageResources = require 'src.systems.manageResources'
+local ManageBullet = require 'src.systems.manageBullet'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
 local Resources = require 'src.components.resources'
 local Phase = require 'src.components.phase'
-local Bullet = require 'src.components.bullet'
 local Enemy = require 'src.components.enemy'
 -- Entities
 local Entity = require 'src.entities.entity'
@@ -151,10 +151,13 @@ function Game:addSystems()
   self:addSystem(Inspect())
   self:addSystem(ManageEnemy())
   self:addSystem(ManageResources())
+  self:addSystem(ManageBullet())
 end
 
 function Game:initializeEnemies()
-  self:addEntity(Mino())
+  local mino = Mino()
+  mino:getComponent('Transform'):setGlobalPosition(1000, 300)
+  self:addEntity(mino)
   -- self:addEntity(Peach())
   -- self:addEntity(Amber())
   -- self:addEntity(Rini())

@@ -2,24 +2,20 @@ local Component = require 'src.components.component'
 
 local Bullet = Class('Bullet', Component)
 
-function Bullet:initialize(source, target, speed)
-    Component.initialize(self)
+function Bullet:initialize(hero, enemyEntity, speed)
+  Component.initialize(self)
 
-    self.x = 10
-    self.y = 10
-    self.hero = source
-    self.target = {x = 1, y = 1}
-    self.speed = speed
+  assert(hero ~= nil, 'Hero cannot be nil')
+  self.hero = hero
+  
+  assert(enemyEntity ~= nil, 'Enemy entity cannot be nil')
+  self.enemyTransform = enemyEntity:getComponent('Transform')
+  self.enemy = enemyEntity:getComponent('Enemy')
+  assert(self.enemyTransform and self.enemy, 'Invalid enemy entity')
 
-    self.angle = math.atan2(self.target.y - self.y, self.target.x - self.x)
-end
+  self.speed = speed or 500
 
-
-
-function Bullet:draw()
-    love.graphics.setColor(0, 1, 1)
-    love.graphics.circle('fill', self.x, self.y, 8)
-    print('draw bullet')
+  -- self.angle = math.atan2(self.target.y - self.y, self.target.x - self.x)
 end
 
 return Bullet

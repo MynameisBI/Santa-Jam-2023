@@ -1,6 +1,7 @@
 
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
+local BulletEntity = require 'src.entities.bullets.bulletEntity'
 
 local Entity = require 'src.entities.entity'
 
@@ -11,12 +12,12 @@ function Cole:initialize(slot)
 
     HeroEntity.initialize(self, slot, Images.heroes.cole, 'Cole', {'bigEar', 'coordinator'},
         {
-            [1] = Hero.Stats(40, 30, 1.0, 300, 0, 0),
-            [2] = Hero.Stats(60, 45, 1.0, 300, 0, 0),
-            [3] = Hero.Stats(90, 68, 1.0, 300, 0, 0),
-            [4] = Hero.Stats(135, 101, 1.0, 300, 0, 0)
+            [1] = Hero.Stats(40, 30, 1.0, 500, 0, 0),
+            [2] = Hero.Stats(60, 45, 1.0, 500, 0, 0),
+            [3] = Hero.Stats(90, 68, 1.0, 500, 0, 0),
+            [4] = Hero.Stats(135, 101, 1.0, 500, 0, 0)
         },
-        nil,
+        BulletEntity,
         Hero.Skill('Cole',
             40, 8,
             function()

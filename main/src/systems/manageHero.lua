@@ -1,9 +1,3 @@
-local Entity = require 'src.entities.entity'
-local Input = require 'src.components.input'
-local Transform = require 'src.components.transform'
-local Sprite = require 'src.components.sprite'
-local Bullet = require 'src.components.bullet'
-
 local TeamSynergy = require 'src.components.teamSynergy'
 local Phase = require 'src.components.phase'
 
@@ -13,9 +7,6 @@ local ManageHero = System:subclass('ManageHero')
 
 function ManageHero:initialize()
   System.initialize(self, 'Transform', 'Hero', 'TeamUpdateObserver')
-  self.input = Input()
-  self.timer = Hump.Timer()
-  self.bullets = {}
 
   self.teamSynergy = TeamSynergy()
   self.phase = Phase()
@@ -46,18 +37,21 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
       local stats = hero:getStats()
       hero.secondsUntilAttackReady = 1 / stats.attackSpeed 
       
-      if hero.bulletClass == nil then
-        local x, y = transform:getGlobalPosition()
-        local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
-        local nearestEnemyEntity = Lume.nearest(x, y, enemyEntities,
-            function(enemyEntity) return enemyEntity:getComponent('Transform'):getGlobalPosition() end)
-        local ex, ey = nearestEnemyEntity:getComponent('Transform'):getGlobalPosition()
-        if Lume.distance(x, y, ex, ey) <= stats.range then
-          print(tostring(enemyEntity)..' take '..tostring(stats.attackDamage)..' damage')
+      local x, y = transform:getGlobalPosition()
+      local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
+      local nearestEnemyEntity = Lume.nearest(x, y, enemyEntities,
+          function(enemyEntity) return enemyEntity:getComponent('Transform'):getGlobalPosition() end)
+      local ex, ey = nearestEnemyEntity:getComponent('Transform'):getGlobalPosition()
+
+      if Lume.distance(x, y, ex, ey) <= stats.range then
+        if hero.bulletClass == nil then
+          print(tostring(nearestEnemyEntity)..' take '..tostring(stats.attackDamage)..' damage')
+        else
+          Hump.Gamestate.current():addEntity(
+            hero.bulletClass(x, y, Images.icons.candyheadIcon, hero, nearestEnemyEntity)
+          )
         end
-
-      else
-
+        
       end
     end
 
