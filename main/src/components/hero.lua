@@ -92,6 +92,11 @@ function Hero:getStats()
   return stats
 end
 
+function Hero:getBasicAttackDamage()
+  local stats = self:getStats()
+  return stats.attackDamage * ((math.random() > stats.critChance) and 1 or stats.critDamage)
+end
+
 
 function Hero:resetAdjustments()
   self.adjustments = {}

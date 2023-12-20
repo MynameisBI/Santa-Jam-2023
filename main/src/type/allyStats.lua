@@ -6,7 +6,7 @@ function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, cr
   self.attackSpeed = attackSpeed or 0
   self.range = range or 300
   self.critChance = critChance or 0
-  self.critDamage = critDamage or 0
+  self.critDamage = 2
   self.cooldownReduction = cooldownReduction or 0
   self.energy = energy or 0
 end

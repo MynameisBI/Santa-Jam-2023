@@ -45,7 +45,7 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
 
       if Lume.distance(x, y, ex, ey) <= stats.range then
         if hero.bulletClass == nil then
-          print(tostring(nearestEnemyEntity)..' take '..tostring(stats.attackDamage)..' damage')
+          print(tostring(nearestEnemyEntity)..' take '..tostring(hero:getBasicAttackDamage())..' damage')
         else
           Hump.Gamestate.current():addEntity(
             hero.bulletClass(x, y, Images.icons.candyheadIcon, hero, nearestEnemyEntity)

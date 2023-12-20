@@ -15,7 +15,7 @@ function ManageBullet:update(transform, bullet, dt)
   local sqrtDistToEnemy = Lume.distance(bx, by, ex, ey, true)
 
   if sqrtDistToEnemy < 25 then
-    print(tostring(bullet.enemy)..' take '..tostring(bullet.hero:getStats().attackDamage)..' damage')
+    print(tostring(bullet.enemy)..' take '..tostring(bullet.hero:getBasicAttackDamage())..' damage')
     Hump.Gamestate.current():removeEntity(transform:getEntity())
   else
     transform:setGlobalPosition(bx + distX, by + distY)
