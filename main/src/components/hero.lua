@@ -40,6 +40,9 @@ function Hero:initialize(name, traits, baseStats, bulletClass, skill)
     [3] = Hero.Stats(),
     [4] = Hero.Stats(),
   }
+  self.modifierStatses = {}
+  -- TemporaryStats is just AllyStats with a `duration` properties
+  self.temporaryModifierStatses = {}
 
   self.bulletClass = bulletClass
   self.secondsUntilAttackReady = 0
@@ -48,8 +51,11 @@ function Hero:initialize(name, traits, baseStats, bulletClass, skill)
   self.skill.hero = self
 
   self.modEntity = nil
-end
 
+  -- Overridable functions:
+    -- getStats(hero), getBasicAttackDamage(hero), onSkillCast(skill), getMaxChargeCount(skill)
+  self.overrides = {}
+end
 
 function Hero:hasTrait(trait)
   return Lume.find(self.traits, trait) and true or false
@@ -82,31 +88,36 @@ function Hero:getBaseStats()
   return self.baseStats[self.level]
 end
 
+function Hero:addModiferStats(stats)
+  table.insert(self.modifierStatses, stats)
+end
+
+function Hero:addTemporaryModifierStats(stats, duration)
+  stats.duration = duration or 3
+  table.insert(self.temporaryModifierStatses, stats)
+end
+
 function Hero:getStats()
+  if self.overrides.getStats then return self.overrides.getStats(self) end
+
   local stats = self.baseStats[self.level]
   if self.modEntity then
     stats = stats + self.modEntity:getComponent('Mod').stats
   end
-  -- for i, modifierStats in ipairs(self.modifierStatses) do
-  --   stats = stats + modifierStats
-  -- end
+  for _, modifierStats in ipairs(self.modifierStatses) do
+    stats = stats + modifierStats
+  end
+  for _, temporaryModifierStats in ipairs(self.temporaryModifierStatses) do
+    stats = stats + temporaryModifierStats
+  end
   return stats
 end
 
 function Hero:getBasicAttackDamage()
+  if self.overrides.getBasicAttackDamage then return self.overrides.getBasicAttackDamage(self) end
+
   local stats = self:getStats()
   return stats.attackDamage * ((math.random() > stats.critChance) and 1 or stats.critDamage)
-end
-
-
-function Hero:resetAdjustments()
-  self.adjustments = {}
-end
-
--- <onGetStats>, 
-function Hero:addAdjustment(adjustment)
-  assert(type(adjustment) == 'table', 'Invalid adjustment')
-  table.insert(self.adjustments, adjustment)
 end
 
 
@@ -117,15 +128,24 @@ function Hero.Skill:initialize(description, energy, cooldown, fn)
 
   self.energy = energy or 60
 
-  self.cooldown = cooldown or 8
+  self._baseCooldown = baseCooldown or 8
   self.secondsUntilSkillReady = 0
 
   self._fn = fn or function() end
 
-  self.maxCharge = 0
-  self.charge = 0
+  self.chargeCount = nil
 
   self.hero = nil
+end
+
+function Hero.Skill:getCooldown()
+  return self._baseCooldown * (1 - self.hero:getStats().cooldownReduction)
+end
+
+function Hero.Skill:getMaxChargeCount()
+  if self.hero.overrides.getMaxChargeCount then return self.hero.overrides.getMaxChargeCount(self) end
+
+  return 0
 end
 
 function Hero.Skill:isSKillReady()
@@ -133,23 +153,27 @@ function Hero.Skill:isSKillReady()
 end
 
 function Hero.Skill:getPercentTimeLeft()
-  return self.secondsUntilSkillReady / self.cooldown
+  return self.secondsUntilSkillReady / self:getCooldown()
 end
 
 function Hero.Skill:cast()
-  if not Resources():modifyEnergy(-self.energy) then return false end
-
-  if self.charge >= 1 then
-    self.charge = self.charge - 1
+  if self.chargeCount >= 1 then
+    self.chargeCount = self.chargeCount - 1
+    if not Resources():modifyEnergy(-self.energy) then return false end
     self._fn(self.hero)
+    if self.hero.overrides.onSkillCast then return self.hero.overrides.onSkillCast(self) end
+    return true
 
   elseif self.secondsUntilSkillReady <= 0 then
-    self.secondsUntilSkillReady = self.cooldown
+    local stats = self.hero:getStats()
+    self.secondsUntilSkillReady = self:getCooldown()
+    if not Resources():modifyEnergy(-self.energy) then return false end
     self._fn(self.hero)
-
+    if self.hero.overrides.onSkillCast then return self.hero.overrides.onSkillCast(self) end
+    return true
   end
 
-  return true
+  return false
 end
 
 

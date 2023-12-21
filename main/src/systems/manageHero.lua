@@ -16,12 +16,10 @@ end
 function ManageHero:update(transform, hero, teamUpdateObserver, dt)
   local isInTeam = self.teamSynergy:hasHeroComponent(hero)
 
-
   -- On switch to battle phase
   if self.lastFramePhase ~= self.phase:current() then
     self:onPhaseSwitch(self.phase:current(), isInTeam, hero)
   end
-
 
   self:updateHero(self.phase:current(), isInTeam, transform, hero, dt)
 end
@@ -55,14 +53,29 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
       end
     end
 
-    hero.skill.secondsUntilSkillReady = hero.skill.secondsUntilSkillReady - dt
+    local skill = hero.skill
+    if skill.secondsUntilSkillReady > 0 then
+      skill.secondsUntilSkillReady = skill.secondsUntilSkillReady - dt
+    else
+      if skill.chargeCount < skill:getMaxChargeCount() then
+        skill.chargeCount = skill.chargeCount + 1
+        skill.secondsUntilSkillReady = skill.secondsUntilSkillReady + skill:getCooldown()
+      end
+    end
+
+    for i = #hero.temporaryModifierStatses, 1, -1 do
+      hero.temporaryModifierStatses[i].duration = hero.temporaryModifierStatses[i].duration - dt
+      if hero.temporaryModifierStatses[i].duration <= 0 then
+        table.remove(hero.temporaryModifierStatses, i)
+      end
+    end
   end
 end
 
 function ManageHero:onPhaseSwitch(phase, isInTeam, hero)
   if phase == 'battle' then
     if isInTeam then
-      print(hero.name..' ready to battle')
+      hero.skill.chargeCount = hero.skill:getMaxChargeCount()
     end
   end
 end

@@ -128,7 +128,6 @@ function HUD:draw()
         id = id,
         draw = function(image, opt, x, y, w, h)
           if synergy.nextThresholdIndex ~= 1 then
-            -- love.graphics.setColor(83/255, 92/255, 99/255, 0.66)
             love.graphics.setColor(113/255, 122/255, 129/255, 0.75)
             love.graphics.rectangle('fill', x, y, 78, 32)
           end

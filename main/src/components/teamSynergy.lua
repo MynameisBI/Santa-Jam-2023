@@ -10,7 +10,7 @@ function TeamSynergy:initialize()
   -- `synergy` properties
     -- `trait`
     -- `count`
-    -- `nextThresholdIndex`
+    -- `nextThresholdIndex`: the `nextThresholdIndex` will always be the current threshold+1, even when the threshold doesn't exist
   self.synergies = {}
 end
 
