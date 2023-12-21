@@ -44,7 +44,11 @@ function ManageCandy:earlysystemupdate(dt)
     if self.secondsToSpawnCandy <= 0 then
       self.secondsToSpawnCandy = self.secondsToSpawnCandy + self.secondsPerCandySpawn
 
-      for i = 1, 2 do
+      local level3Heroes = Lume.filter(Hump.Gamestate.current():getComponents('Hero'), function(hero)
+        return hero.level >= 3
+      end) 
+
+      for i = 1, 3 + #level3Heroes do
         local targetX, targetY = math.random(420, 740), math.random(230, 350)
         Hump.Gamestate.current():addEntity(Entity(
           Transform(targetX - 150, targetY - 800, 0, 2, 2),
