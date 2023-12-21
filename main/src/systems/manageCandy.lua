@@ -28,8 +28,10 @@ function ManageCandy:earlysystemupdate(dt)
     if self.phase:current() == 'battle' then
       local candyheadSynergy = Lume.match(self.teamSynergy.synergies, function(synergy) return synergy.trait == 'candyhead' end)
       if candyheadSynergy then
-        self.spawningCandy = true
-        self.secondsToSpawnCandy = self.secondsPerCandySpawn
+        if candyheadSynergy.nextThresholdIndex ~= 1 then
+          self.spawningCandy = true
+          self.secondsToSpawnCandy = self.secondsPerCandySpawn
+        end
       end
 
     elseif self.phase:current() == 'planning' then

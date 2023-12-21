@@ -12,6 +12,7 @@ local ManageBullet = require 'src.systems.manageBullet'
 local UpdateTargetSkill = require 'src.systems.updateTargetSkill'
 local UpdateAreaSkill = require 'src.systems.updateAreaSkill'
 local ManageCandy = require 'src.systems.manageCandy'
+local ManageDrone = require 'src.systems.manageDrone'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
@@ -158,6 +159,7 @@ function Game:addSystems()
   self:addSystem(UpdateTargetSkill())
   self:addSystem(UpdateAreaSkill())
   self:addSystem(ManageCandy())
+  self:addSystem(ManageDrone())
 end
 
 function Game:initializeEnemies()

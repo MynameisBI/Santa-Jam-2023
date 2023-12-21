@@ -127,7 +127,9 @@ function HUD:draw()
       {
         id = id,
         draw = function(image, opt, x, y, w, h)
-          if synergy.nextThresholdIndex ~= 1 then
+          local isActive = (synergy.trait ~= 'coordinator' and synergy.nextThresholdIndex ~= 1) or
+              (synergy.trait == 'coordinator' and (synergy.count == 1 or synergy.count == 3))
+          if isActive then
             love.graphics.setColor(113/255, 122/255, 129/255, 0.75)
             love.graphics.rectangle('fill', x, y, 78, 32)
           end
@@ -164,7 +166,7 @@ function HUD:draw()
           love.graphics.setColor(0.7, 0.7, 0.7)
           love.graphics.print(tostring(synergy.count)..nextThreshold, x + 40, y + 9)
 
-          if synergy.nextThresholdIndex == 1 then
+          if not isActive then
             love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
             love.graphics.rectangle('fill', x, y, 78, 32)
           end

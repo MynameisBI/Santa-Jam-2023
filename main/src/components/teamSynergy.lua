@@ -2,6 +2,28 @@ local SingletonComponent = require 'src.components.singletonComponent'
 
 local TeamSynergy = Class('TeamSynergy', SingletonComponent)
 
+TeamSynergy.TRAIT_THRESHOLD = {
+  bigEar = {2, 4, 6},
+  sentient = {2, 3, 4},
+  defect = {2, 3, 4, 5},
+  candyhead = {2},
+  coordinator = {1, 3},
+  artificer = {2},
+  trailblazer = {2, 3, 4},
+  droneMaestro = {1, 3, 5},
+  cracker = {2, 3}
+}
+
+TeamSynergy.BIG_EAR_CDR_THRESHOLD = {0.05, 0.2, 0.45}
+TeamSynergy.SENTIENT_AS_THRESHOLD = {0.2, 0.325, 0.5}
+TeamSynergy.DEFECT_RP_THRESHOLD = {20, 35, 50, 65}
+
+TeamSynergy.COORDINATOR_CRIT_THRESHOLD = {0.3, 0.6}
+TeamSynergy.ARTIFICER_ENERGY_THRESHOLD = {50}
+TeamSynergy.TRAILBLAZER_DAMAGE_BONUS_THRESHOLD = {0.5, 0.75, 1}
+TeamSynergy.DRONE_MAESTRO_DRONE_DAMAGE_THRESHOLD = {10, 16, 24} 
+TeamSynergy.CRACKER_CRACK_INTERVAL_THRESHOLD = {4, 2}
+
 function TeamSynergy:initialize()
   SingletonComponent.initialize(self)
 
@@ -42,17 +64,5 @@ end
 function TeamSynergy:hasHeroComponent(heroComponent)
   return Lume.find(self:getHeroComponentsInTeam(), heroComponent) and true or false
 end
-
-TeamSynergy.TRAIT_THRESHOLD = {
-  bigEar = {2, 4, 6},
-  sentient = {2, 3, 4},
-  defect = {2, 3, 4, 5},
-  candyhead = {2},
-  coordinator = {1, 3},
-  artificer = {2, 3},
-  trailblazer = {2, 4},
-  droneMaestro = {1, 3, 5},
-  cracker = {2, 3}
-}
 
 return TeamSynergy

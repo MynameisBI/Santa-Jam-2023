@@ -14,9 +14,8 @@ function UpdateAreaSkill:update(transform, areaSkill, dt)
     local continuousInfo = areaSkill.continuousInfo
 
     if continuousInfo == nil then
-      local heroStats = areaSkill.hero:getStats()
       local damageInfo = areaSkill.damageInfo
-      self:damageEnemiesInArea(heroStats, damageInfo, areaSkill.x, areaSkill.y, areaSkill.range)
+      self:damageEnemiesInArea(areaSkill.hero, damageInfo, areaSkill.x, areaSkill.y, areaSkill.range)
 
       Hump.Gamestate.current():removeEntity(transform:getEntity())
 
@@ -25,9 +24,8 @@ function UpdateAreaSkill:update(transform, areaSkill, dt)
         continuousInfo.secondsUnitlNextTick = continuousInfo.secondsUnitlNextTick - dt
 
       else
-        local heroStats = areaSkill.hero:getStats()
         local damageInfo = areaSkill.damageInfo
-        self:damageEnemiesInArea(heroStats, damageInfo, areaSkill.x, areaSkill.y, areaSkill.range)
+        self:damageEnemiesInArea(areaSkill.hero, damageInfo, areaSkill.x, areaSkill.y, areaSkill.range)
         
         continuousInfo.tickCount = continuousInfo.tickCount - 1
         if continuousInfo.tickCount <= 0 then 
@@ -40,9 +38,9 @@ function UpdateAreaSkill:update(transform, areaSkill, dt)
   end
 end
 
-function UpdateAreaSkill:damageEnemiesInArea(stats, damageInfo, areaX, areaY, areaR)
-  local damage = stats.attackDamage * damageInfo.attackDamageRatio + stats.realityPower * damageInfo.realityPowerRatio
-  if damageInfo.canCrit and math.random() < stats.critChance then damage = damage * stats.critDamage end
+function UpdateAreaSkill:damageEnemiesInArea(hero, damageInfo, areaX, areaY, areaR)
+  local damage = hero:getDamageFromRatio(damageInfo.attackDamageRatio,
+      damageInfo.realityPowerRatio, damageInfo.canCrit)
 
   local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
   enemyEntities = Lume.filter(enemyEntities, function(enemyEntity)

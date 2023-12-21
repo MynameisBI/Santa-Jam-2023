@@ -16,9 +16,8 @@ function UpdateTargetSkill:update(transform, targetSkill, dt)
     local continuousInfo = targetSkill.continuousInfo
 
     if continuousInfo == nil then
-      local heroStats = targetSkill.hero:getStats()
       local damageInfo = targetSkill.damageInfo
-      self:damageEnemy(heroStats, damageInfo, targetSkill.enemyEntity)
+      self:damageEnemy(targetSkill.hero, damageInfo, targetSkill.enemyEntity)
 
       Hump.Gamestate.current():removeEntity(transform:getEntity())
 
@@ -27,9 +26,8 @@ function UpdateTargetSkill:update(transform, targetSkill, dt)
         continuousInfo.secondsUnitlNextTick = continuousInfo.secondsUnitlNextTick - dt
 
       else
-        local heroStats = targetSkill.hero:getStats()
         local damageInfo = targetSkill.damageInfo
-        self:damageEnemy(heroStats, damageInfo, targetSkill.enemyEntity)
+        self:damageEnemy(targetSkill.hero, damageInfo, targetSkill.enemyEntity)
         
         continuousInfo.tickCount = continuousInfo.tickCount - 1
         if continuousInfo.tickCount <= 0 then 
@@ -42,9 +40,9 @@ function UpdateTargetSkill:update(transform, targetSkill, dt)
   end
 end
 
-function UpdateTargetSkill:damageEnemy(stats, damageInfo, enemyEntity)
-  local damage = stats.attackDamage * damageInfo.attackDamageRatio + stats.realityPower * damageInfo.realityPowerRatio
-    if damageInfo.canCrit and math.random() < stats.critChance then damage = damage * stats.critDamage end
+function UpdateTargetSkill:damageEnemy(hero, damageInfo, enemyEntity)
+  local damage = hero:getDamageFromRatio(damageInfo.attackDamageRatio,
+      damageInfo.realityPowerRatio, damageInfo.canCrit) 
 
   print(('%s take %d %s damage'):format(
       tostring(enemyEntity), damage, damageInfo.damageType))

@@ -11,7 +11,9 @@ Resources.UPGRADE_ENERGY_GAIN = 100
 Resources.PERFORM_MONEY_THRESHOLD = {8, 12, 16, 20, 24, 28}
 Resources.PERFORM_STYLE_GAIN = 50
 
-Resources.ENERGY_PERCENT_REGEN_RATE = 0.1
+Resources.ENERGY_PERCENT_REGEN_RATE = 0.05
+
+Resources.SECONDS_PER_ARTIFICER_REGEN = 4
 
 function Resources:initialize(teamSlots, startingMoney, startingStyle)
   SingletonComponent.initialize(self)

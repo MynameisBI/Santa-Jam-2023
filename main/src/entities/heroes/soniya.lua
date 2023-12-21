@@ -9,7 +9,7 @@ local Soniya = Class('Soniya', HeroEntity)
 function Soniya:initialize(slot)
     Entity.initialize(self)
 
-    HeroEntity.initialize(self, slot, Images.heroes.soniya, 'Soniya', {'sentient', 'droneMaestro'},
+    HeroEntity.initialize(self, slot, Images.heroes.soniya, 'Soniya', {'sentient', 'cracker'},
         {
             [1] = Hero.Stats(40, 30, 1.0, 300, 0, 0),
             [2] = Hero.Stats(60, 45, 1.0, 300, 0, 0),

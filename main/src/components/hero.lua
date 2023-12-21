@@ -53,7 +53,9 @@ function Hero:initialize(name, traits, baseStats, bulletClass, skill)
   self.modEntity = nil
 
   -- Overridable functions:
-    -- getStats(hero), getBasicAttackDamage(hero), onSkillCast(skill), getMaxChargeCount(skill)
+    -- getStats(hero), getBasicAttackDamage(hero, enemyEntity),
+    -- getDamageFromRatio(hero, attackDamageRatio, realityDamageRatio, canCrit, enemyEntity)
+    -- onSkillCast(skill), getMaxChargeCount(skill)
   self.overrides = {}
 end
 
@@ -113,11 +115,20 @@ function Hero:getStats()
   return stats
 end
 
-function Hero:getBasicAttackDamage()
-  if self.overrides.getBasicAttackDamage then return self.overrides.getBasicAttackDamage(self) end
+function Hero:getBasicAttackDamage(enemyEntity)
+  if self.overrides.getBasicAttackDamage then return self.overrides.getBasicAttackDamage(self, enemyEntity) end
+
+  return self:getDamageFromRatio(1, 0, true, enemyEntity)
+end
+
+function Hero:getDamageFromRatio(attackDamageRatio, realityPowerRatio, canCrit, enemyEntity)
+  if self.overrides.getDamageFromRatio then
+    return self.overrides.getDamageFromRatio(self, attackDamageRatio, realityPowerRatio, canCrit, enemyEntity)
+  end
 
   local stats = self:getStats()
-  return stats.attackDamage * ((math.random() > stats.critChance) and 1 or stats.critDamage)
+  return (stats.attackDamage * attackDamageRatio + stats.realityPower * realityPowerRatio) *
+      ((math.random() > stats.critChance) and 1 or stats.critDamage)
 end
 
 
