@@ -54,10 +54,10 @@ function Drone:entityadded()
     self.isUpper = not self.isUpper
   end
 
-  self.timer:tween(1, self, {targetX = math.random(Drone.MIN_X, Drone.MAX_X)}, 'out-quad',
-      function() self.timer:after(0.75, self.pingpongX) end)
-  self.timer:tween(1, self, {targetY = self.baseY}, 'out-back',
-      function() self.timer:after(0.25, self.pingpongY) end)
+  self.timer:tween(0.75, self, {targetX = math.random(Drone.MIN_X, Drone.MAX_X)}, 'out-quad',
+      function() self.timer:after(0.1, self.pingpongX) end)
+  self.timer:tween(0.75, self, {targetY = self.baseY}, 'out-back',
+      function() self.timer:after(0, self.pingpongY) end)
 end
 
 function Drone:getBasicAttackDamage()

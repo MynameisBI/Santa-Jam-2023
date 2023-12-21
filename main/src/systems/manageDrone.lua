@@ -51,12 +51,13 @@ function ManageDrone:earlysystemupdate(dt)
     if self.secondsToSpawnDrone <= 0 then
       self.secondsToSpawnDrone = self.secondsToSpawnDrone + self.secondsPerDroneSpawn
 
-      local droneComponents = self.teamSynergy:getHeroComponentsInTeam()
-      for _, droneComponent in ipairs(droneComponents) do
-        local x, y = droneComponent:getEntity():getComponent('Transform'):getGlobalPosition()
+      local droneMaestroHeroes = Lume.filter(self.teamSynergy:getHeroComponentsInTeam(),
+          function(hero) return hero:hasTrait('droneMaestro') end) 
+      for _, droneMaestroHero in ipairs(droneMaestroHeroes) do
+        local x, y = droneMaestroHero:getEntity():getComponent('Transform'):getGlobalPosition()
         Hump.Gamestate.current():addEntity(Entity(
           Transform(x, y, 0, 2, 2),
-          Sprite(Images.icons.candyheadIcon, 14),
+          Sprite(Images.pets.drone, 14),
           Drone(self.droneDamage)
         ))
       end
@@ -82,7 +83,7 @@ function ManageDrone:update(transform, drone, dt)
 
     if Lume.distance(x, y, ex, ey) <= stats.range then
       Hump.Gamestate.current():addEntity(
-        BulletEntity(x, y, Images.icons.candyheadIcon, drone, nearestEnemyEntity)
+        BulletEntity(x, y, Images.pets.drone, drone, nearestEnemyEntity)
       )
     end
   end

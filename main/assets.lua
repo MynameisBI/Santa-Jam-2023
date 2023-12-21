@@ -3,9 +3,10 @@ Images = {
   diamond = love.graphics.newImage('assets/diamond.png'),
   environment = Clove.importAll('assets/environment', true),
   heroes = Clove.importAll('assets/heroes', true),
+  pets = Clove.importAll('assets/pets', true),
   mods = Clove.importAll('assets/mods', true),
   icons = Clove.importAll('assets/icons', true),
-  enemies = Clove.importAll('assets/enemies', true)
+  enemies = Clove.importAll('assets/enemies', true),
 }
 
 -- local lg = love.graphics

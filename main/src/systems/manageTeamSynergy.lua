@@ -48,9 +48,11 @@ function ManageTeamSynergy:onTeamUpdated(teamSynergy)
   end
 
   table.sort(teamSynergy.synergies, function(syn1, syn2)
-    if syn1.nextThresholdIndex == 1 and syn2.nextThresholdIndex ~= 1 then
+    if (syn1.nextThresholdIndex == 1 or (syn1.trait == 'coordinator' and syn1.count == 2)) and
+        (syn2.nextThresholdIndex ~= 1 or (syn2.trait == 'coordinator' and syn2.count ~= 2)) then
       return false
-    elseif syn1.nextThresholdIndex ~= 1 and syn2.nextThresholdIndex == 1 then
+    elseif (syn1.nextThresholdIndex ~= 1 or (syn1.trait == 'coordinator' and syn1.count ~= 2)) and
+        (syn2.nextThresholdIndex == 1 or (syn2.trait == 'coordinator' and syn2.count == 2)) then
       return true
     else
       return syn1.count > syn2.count
