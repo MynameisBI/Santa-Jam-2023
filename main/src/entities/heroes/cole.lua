@@ -26,7 +26,8 @@ function Cole:initialize(slot)
                 for i = 1, math.min(#enemyEntities, 8) do
                   Hump.Gamestate.current():addEntity(
                     TargetSkillEntity(Images.icons.candyheadIcon, hero, enemyEntities[i],
-                        {damageType = 'true', attackDamageRatio = 1, canCrit = true}, 0.6)
+                        {damageType = 'true', attackDamageRatio = 1, canCrit = true}, 0.6,
+                        {tickCount = 6, secondsPerTick = 0.5})
                   )
                 end
             end

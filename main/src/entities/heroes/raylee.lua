@@ -22,7 +22,8 @@ function Raylee:initialize(slot)
             function(hero)
               Hump.Gamestate.current():addEntity(
                 AreaSkillEntity(Images.icons.candyheadIcon, hero, 450, 280, 300,
-                    {damageType = 'reality', realityPowerRatio = 4}, 0.6)
+                    {damageType = 'reality', realityPowerRatio = 4}, 0.6,
+                    {tickCount = 6, secondsPerTick = 0.25})
               )
             end
         ))

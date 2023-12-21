@@ -6,14 +6,14 @@ local Entity = require 'src.entities.entity'
 
 local AreaSkillEntity = Class('AreaSkillEntity', Entity)
 
-function AreaSkillEntity:initialize(image, hero, x, y, range, damageInfo, secondsUntilDetonate)
+function AreaSkillEntity:initialize(image, hero, x, y, range, damageInfo, secondsUntilDetonate, continuousInfo)
   Entity.initialize(self)
 
   self:addComponent(Transform(x, y, 0, 2, 2))
 
   self:addComponent(Sprite(image, 16))
 
-  self:addComponent(AreaSkill(hero, x, y, range, damageInfo, secondsUntilDetonate))
+  self:addComponent(AreaSkill(hero, x, y, range, damageInfo, secondsUntilDetonate, continuousInfo))
 end
 
 return AreaSkillEntity
