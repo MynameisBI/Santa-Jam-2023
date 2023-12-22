@@ -56,19 +56,20 @@ function ManageEnemy:earlysystemupdate(dt)
 end
 
     if self.phase:current() == 'battle' then
-    for i = #self.spawnQueue, 1, -2 do
+      for i = #self.spawnQueue, 1, -2 do
         self.spawnQueue[i] = self.spawnQueue[i] - dt
         if self.spawnQueue[i] <= 0 then
-        local enemyEntity = self.spawnQueue[i-1]()
-        enemyEntity:getComponent('Transform'):setGlobalPosition(
-            1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
-            math.random(210, 330)
-        )
-        Hump.Gamestate.current():addEntity(enemyEntity)
-        table.remove(self.spawnQueue, i-1)
-        table.remove(self.spawnQueue, i)
+          print(self.spawnQueue[i-1])
+          local enemyEntity = self.spawnQueue[i-1]()
+          enemyEntity:getComponent('Transform'):setGlobalPosition(
+              1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
+              math.random(210, 330)
+          )
+          Hump.Gamestate.current():addEntity(enemyEntity)
+          table.remove(self.spawnQueue, i-1)
+          table.remove(self.spawnQueue, i-1)
         end
-    end
+      end
     end
 end
 
