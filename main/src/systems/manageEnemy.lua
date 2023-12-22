@@ -38,7 +38,7 @@ end
 
 function ManageEnemy:earlysystemupdate(dt)
   if self.lastFramePhase ~= self.phase:current() and self.phase:current() == 'battle' then
-    local round = self.phase:dequeueRound()
+    local round = self.phase:getCurrentRound()
 
     if round.mainType == 'enemy' then
       self.spawnQueue = {
@@ -81,6 +81,7 @@ function ManageEnemy:update(transform, enemy, dt)
     Hump.Gamestate.current():removeEntity(transform:getEntity())
 
     if #self.spawnQueue <= 0 and #Hump.Gamestate.current():getComponents('Enemy') <= 0 then
+      self.phase:switchNextRound()
       self.phase:switch('planning')
     end
   end

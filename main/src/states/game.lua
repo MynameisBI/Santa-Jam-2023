@@ -257,14 +257,34 @@ function Game:draw()
     self.guis[1]:draw()
   end
 
-  love.graphics.print(love.timer.getFPS())
+  -- love.graphics.print(love.timer.getFPS())
 end
 
 function Game:keypressed(key, scancode, isRepeat)
-  State.keypressed(self, key, scancode, isRepeat)
-
   if love.keyboard.isDown('lctrl') and scancode == 'b' then
     self.guis[2]:open()
+  end
+
+  if not self.guis[2].isOpened and not self.guis[3].isOpened then
+    State.keypressed(self, key, scancode, isRepeat)
+  end
+end
+
+function Game:keyreleased(key, scancode, isRepeat)
+  if not self.guis[2].isOpened and not self.guis[3].isOpened then
+    State.keyreleased(self, key, scancode, isRepeat)
+  end
+end
+
+function Game:mousepressed(...)
+  if not self.guis[2].isOpened and not self.guis[3].isOpened then
+    State.mousepressed(self, ...)
+  end
+end
+
+function Game:mousereleased(...)
+  if not self.guis[2].isOpened and not self.guis[3].isOpened then
+    State.mousereleased(self, ...)
   end
 end
 

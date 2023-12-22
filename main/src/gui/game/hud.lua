@@ -66,6 +66,8 @@ local STAT_DISPLAY_NAMES = {
   energy = 'Energy'
 }
 
+local PROGRESSION_BAR_MOVE_TIME = 1
+
 function HUD:initialize(resources, teamSynergy)
   self.suit = Suit.new()
 
@@ -79,10 +81,19 @@ function HUD:initialize(resources, teamSynergy)
   self.currentInspectable = CurrentInspectable()
 
   self.dragAndDropInfo = DragAndDropInfo()
+
+  self.roundCount = 4
+  self.rounds = {}
+  for i = 1, self.roundCount do
+    table.insert(self.rounds, self.phase.rounds[i])
+  end
+  self.roundPercentPositions = {0.25, 0.5, 0.75, 1, 1.25}
+
+  self.timer = Hump.Timer()
 end
 
 function HUD:update(dt)
-
+  self.timer:update(dt)
 end
 
 function HUD:draw()
@@ -114,6 +125,21 @@ function HUD:draw()
   self:drawBar(self.resources:getEnergy(), self.resources:getMaxEnergy(),
       {61/255, 90/255, 237/255}, Fonts.small,
       275, 30, love.graphics.getWidth() - 275 * 2, 15)
+
+
+  -- Progression bar
+  love.graphics.setColor(0.4, 0.4, 0.4)
+  love.graphics.rectangle('fill', 685, 25, 150, 6)
+
+  love.graphics.setColor(0.8, 0.8, 0.8)
+  for i = 1, self.roundCount do
+    local round = self.phase.rounds[i]
+    if round then
+      love.graphics.setFont(Fonts.medium)
+      love.graphics.print(round.mainType, 685 + self.roundPercentPositions[i] * 150, 28, math.pi/2)
+    end
+    -- love.graphics.circle('fill', 685 + self.roundPercentPositions[i] * 150, 28, 8)
+  end
 
 
   -- Synergy
@@ -266,7 +292,13 @@ function HUD:draw()
     end
 
     if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
+      if self.phase.rounds[1] then
+        if self.phase.rounds[1].mainType == 'dealer' then
+          self.phase:switchNextRound()
+        end
+      end
       self.phase:switch('battle')
+      self.phase:startCurrentRound()
     end
 
   elseif currentPhase == 'battle' then
@@ -313,6 +345,19 @@ function HUD:draw()
       self:drawModTooltip(hero:getComponent('Hero').modEntity:getComponent('Mod'), mx, my)
     end
   end
+end
+
+function HUD:onRoundStart(phase)
+  self.timer:tween(PROGRESSION_BAR_MOVE_TIME,
+      self.roundPercentPositions, {0, 0.25, 0.5, 0.75, 1}, 'out-quint',
+      function()
+        self.roundCount = 5
+      end)
+end
+
+function HUD:onRoundEnd(phase)
+  self.roundPercentPositions = {0.25, 0.5, 0.75, 1, 1.25}
+  self.roundCount = 4
 end
 
 function HUD:drawBar(value, maxValue, color, font, x, y, w, h)
