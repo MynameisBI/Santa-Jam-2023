@@ -24,7 +24,7 @@ function DragAndDrop:update(draggable, transform, area, hero, mod, dt)
 end
 
 function DragAndDrop:mousepressed(draggable, transform, area, hero, mod, x, y, button)
-  if button ~= 1 or (Phase():current() ~= 'planning' and draggable.draggableType ~= 'mod') then return end
+  if button ~= 1 or (Phase():current() == 'battle' and draggable.draggableType ~= 'mod') then return end
   
   if area:hasWorldPoint(x, y) then
     

@@ -1,8 +1,3 @@
-local Entity = require 'src.entities.entity'
-local System = require 'src.systems.system'
-local Enemy = require 'src.components.enemy'
-local Transform = require 'src.components.transform'
-
 -- Enemies
 -- mini enemies
 local Mino = require 'src.entities.enemies.mino'
@@ -12,7 +7,7 @@ local Amber = require 'src.entities.enemies.amber'
 local Rini = require 'src.entities.enemies.rini'
 local Spinel = require 'src.entities.enemies.spinel'
 local Elio =  require 'src.entities.enemies.elio'
--- gigantic enemies
+-- gigantic enemiesTransform
 local Arno = require 'src.entities.enemies.arno'
 local Quad = require 'src.entities.enemies.quad'
 local Granite = require 'src.entities.enemies.granite'
@@ -21,32 +16,78 @@ local Pepero = require 'src.entities.enemies.pepero'
 local Sev = require 'src.entities.enemies.sev'
 local Leo = require 'src.entities.enemies.leo'
 
+local Phase = require 'src.components.phase'
+
+local System = require 'src.systems.system'
+
 local ManageEnemy = System:subclass('ManageEnemy')
+
+local ENEMY_X_VARIANCE = 60
 
 function ManageEnemy:initialize()
     System.initialize(self, 'Transform', 'Enemy')
     self.timer = Hump.Timer()
-    self.enemies = {}
 
-    self.spawnCD = false
-    print('enemy spawner initialized')
+  self.phase = Phase()
+  self.lastFramePhase = self.phase:current()
+
+  self.spawnQueue = {}
+  self.isReadyToSpawn = true
+  print('enemy spawner initialized')
+end
+
+function ManageEnemy:earlysystemupdate(dt)
+  if self.lastFramePhase ~= self.phase:current() and self.phase:current() == 'battle' then
+    local round = self.phase:dequeueRound()
+
+    if round.mainType == 'enemy' then
+      self.spawnQueue = {
+        Mino, 0, Mino, 0,
+        Mino, 3, Mino, 3,
+        Mino, 6, Mino, 6, Mino, 6, Mino, 6, Mino, 6, Mino, 6,
+      }
+
+    elseif round.mainType == 'elite' then
+      
+
+    elseif round.mainType == 'dealer' then
+      
+
+    end
+  end
+
+  if self.phase:current() == 'battle' then
+    for i = #self.spawnQueue, 1, -2 do
+      self.spawnQueue[i] = self.spawnQueue[i] - dt
+      if self.spawnQueue[i] <= 0 then
+        local enemyEntity = self.spawnQueue[i-1]()
+        enemyEntity:getComponent('Transform'):setGlobalPosition(
+          1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
+          math.random(210, 340)
+        )
+        Hump.Gamestate.current():addEntity(enemyEntity)
+        table.remove(self.spawnQueue, i-1)
+        table.remove(self.spawnQueue, i-1)
+      end
+    end
+  end
 end
 
 function ManageEnemy:update(transform, enemy, dt)
-    self.timer:update(dt)
-
-    if self.spawnCD then
-        self:spawn()
-        print('spawn')
-
-        self.spawnCD = true
-        self.timer:after(2, function()
-            self.spawnCD = false
-        end)
-    end
-
     transform:setGlobalPosition(transform.x-100*dt, transform.y)
+
+  local x, y = transform:getGlobalPosition()
+  if x < -50 then
+    Hump.Gamestate.current():removeEntity(transform:getEntity())
+
+    if #self.spawnQueue <= 0 and #Hump.Gamestate.current():getComponents('Enemy') <= 0 then
+      self.phase:switch('planning')
+    end
+  end
 end
 
+function ManageEnemy:latesystemupdate(dt)
+  self.lastFramePhase = self.phase:current()
+end
 
 return ManageEnemy

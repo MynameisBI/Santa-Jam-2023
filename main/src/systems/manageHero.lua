@@ -39,17 +39,20 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
       local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
       local nearestEnemyEntity = Lume.nearest(x, y, enemyEntities,
           function(enemyEntity) return enemyEntity:getComponent('Transform'):getGlobalPosition() end)
-      local ex, ey = nearestEnemyEntity:getComponent('Transform'):getGlobalPosition()
+      
+      if nearestEnemyEntity then
+        local ex, ey = nearestEnemyEntity:getComponent('Transform'):getGlobalPosition()
 
-      if Lume.distance(x, y, ex, ey) <= stats.range then
-        if hero.bulletClass == nil then
-          print(tostring(nearestEnemyEntity)..' take '..tostring(hero:getBasicAttackDamage(nearestEnemyEntity))..' damage')
-        else
-          Hump.Gamestate.current():addEntity(
-            hero.bulletClass(x, y, Images.icons.candyheadIcon, hero, nearestEnemyEntity)
-          )
+        if Lume.distance(x, y, ex, ey) <= stats.range then
+          if hero.bulletClass == nil then
+            print(tostring(nearestEnemyEntity)..' take '..tostring(hero:getBasicAttackDamage(nearestEnemyEntity))..' damage')
+          else
+            Hump.Gamestate.current():addEntity(
+              hero.bulletClass(x, y, Images.pets.alestraBullet, hero, nearestEnemyEntity)
+            )
+          end
+          
         end
-        
       end
     end
 

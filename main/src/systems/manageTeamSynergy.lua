@@ -1,4 +1,3 @@
-local Phase = require 'src.components.phase'
 local AllyStats = require 'src.type.allyStats'
 
 local System = require 'src.systems.system'
@@ -7,8 +6,6 @@ local ManageTeamSynergy = Class('ManageTeamSynergy', System)
 
 function ManageTeamSynergy:initialize()
   System.initialize(self, 'TeamSynergy', 'TeamUpdateObserver')
-
-  self.lastFramePhase = Phase():current()
 end
 
 function ManageTeamSynergy:update(teamSynergy, teamUpdateObserver, dt)
@@ -16,14 +13,6 @@ function ManageTeamSynergy:update(teamSynergy, teamUpdateObserver, dt)
   if teamUpdateObserver.teamUpdated then
     self:onTeamUpdated(teamSynergy)
     teamUpdateObserver.teamUpdated = false
-  end
-
-
-  -- on battle start event for heroes in team
-  local thisFramePhase = Phase():current()
-  if self.lastFramePhase ~= thisFramePhase and thisFramePhase == 'battle' then
-    local heroComponents = teamSynergy:getHeroComponentsInTeam()
-    
   end
 end
 

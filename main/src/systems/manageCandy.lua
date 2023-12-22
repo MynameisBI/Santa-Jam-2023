@@ -51,11 +51,11 @@ function ManageCandy:earlysystemupdate(dt)
       end) 
 
       for i = 1, 3 + #level3Heroes do
-        local targetX, targetY = math.random(420, 740), math.random(230, 350)
+        local targetX, targetY = math.random(420, 740), math.random(220, 330)
         Hump.Gamestate.current():addEntity(Entity(
           Transform(targetX - 150, targetY - 800, 0, 2, 2),
-          Sprite(Images.icons.candyheadIcon, 16),
-          Candy(targetX, targetY, 240, 1200 + math.random(-300, 300))
+          Sprite(Images.pets.candy, 16),
+          Candy(targetX, targetY, 240, 800 + math.random(-200, 200))
         ))
       end
     end

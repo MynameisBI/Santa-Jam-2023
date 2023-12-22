@@ -137,7 +137,7 @@ function Game:enter(from)
   self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
 
   local resources = Resources()
-  local phase = Phase(); phase:switch('planning')
+  local phase = Phase()
   self:addEntity(Entity(resources), Phase())
 
   self.guis = {
@@ -163,12 +163,12 @@ function Game:addSystems()
 end
 
 function Game:initializeEnemies()
-  local mino = Mino()
-  mino:getComponent('Transform'):setGlobalPosition(1000, 300)
-  self:addEntity(mino)
-  mino = Mino()
-  mino:getComponent('Transform'):setGlobalPosition(1200, 260)
-  self:addEntity(mino)
+  -- local mino = Mino()
+  -- mino:getComponent('Transform'):setGlobalPosition(1000, 300)
+  -- self:addEntity(mino)
+  -- mino = Mino()
+  -- mino:getComponent('Transform'):setGlobalPosition(1200, 260)
+  -- self:addEntity(mino)
   -- self:addEntity(Peach())
   -- self:addEntity(Amber())
   -- self:addEntity(Rini())
