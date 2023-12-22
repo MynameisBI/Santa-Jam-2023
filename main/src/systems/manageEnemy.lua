@@ -3,6 +3,7 @@ local System = require 'src.systems.system'
 local Enemy = require 'src.components.enemy'
 local Transform = require 'src.components.transform'
 local Phase = require 'src.components.phase'
+local Input = require 'src.components.input'
 
 -- Enemies
 -- mini enemies
@@ -28,6 +29,7 @@ local ENEMY_X_VARIANCE = 60
 function ManageEnemy:initialize()
     System.initialize(self, 'Transform', 'Area', 'Enemy')
     self.timer = Hump.Timer()
+    self.input = Input()
 
     self.phase = Phase()
     self.lastFramePhase = self.phase:current()
@@ -56,20 +58,20 @@ function ManageEnemy:earlysystemupdate(dt)
 end
 
     if self.phase:current() == 'battle' then
-      for i = #self.spawnQueue, 1, -2 do
+    for i = #self.spawnQueue, 1, -2 do
         self.spawnQueue[i] = self.spawnQueue[i] - dt
         if self.spawnQueue[i] <= 0 then
-          print(self.spawnQueue[i-1])
-          local enemyEntity = self.spawnQueue[i-1]()
-          enemyEntity:getComponent('Transform'):setGlobalPosition(
-              1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
-              math.random(210, 330)
-          )
-          Hump.Gamestate.current():addEntity(enemyEntity)
-          table.remove(self.spawnQueue, i-1)
-          table.remove(self.spawnQueue, i-1)
+        print(self.spawnQueue[i-1])
+        local enemyEntity = self.spawnQueue[i-1]()
+        enemyEntity:getComponent('Transform'):setGlobalPosition(
+            1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
+            math.random(210, 330)
+        )
+        Hump.Gamestate.current():addEntity(enemyEntity)
+        table.remove(self.spawnQueue, i-1)
+        table.remove(self.spawnQueue, i-1)
         end
-      end
+    end
     end
 end
 
@@ -106,7 +108,7 @@ function ManageEnemy:update(transform, area, enemy, dt)
     transform:setGlobalPosition(transform.x-100*dt, transform.y)
 
     local x, y = transform:getGlobalPosition()
-    if x < -50 then
+    if x < 250 then
         Hump.Gamestate.current():removeEntity(transform:getEntity())
 
         if #self.spawnQueue <= 0 and #Hump.Gamestate.current():getComponents('Enemy') <= 0 then
@@ -131,4 +133,5 @@ function ManageEnemy:worlddraw(transform, area, enemy)
         love.graphics.rectangle('fill', x, y - 10, ratio*w, h/10)
     end
 end
+
 return ManageEnemy

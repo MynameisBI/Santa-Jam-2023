@@ -1,9 +1,11 @@
 local Component = require 'src.components.component'
+local Input = require 'src.components.input'
 
 local Enemy = Class('Enemy', Component)
 
 function Enemy:initialize(name, speed, stats)
     Component.initialize(self)
+    self.input = Input()
 
     self.name = name
     -- speed (slow = 10, medium = 25, fast = 40)
@@ -29,9 +31,17 @@ function Enemy.Stats:getValues()
     }
 end
 
-function Enemy:takeDamage(damage)
-    local damage = damage or 0
+function Enemy:takeDamage(damage, damageType)
+    if damageType = 'physical' then
+        damage = damage - self.stats.physicalArmor
+    elseif damageType = 'reality' then
+        damage = damage - self.stats.psychicArmor
+    elseif damageType = 'true' then
+        damage = damage
+    end
+
     self.stats.HP = self.stats.HP - damage
 end
+
 
 return Enemy
