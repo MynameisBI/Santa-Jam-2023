@@ -12,7 +12,7 @@ function DrawSlot:worlddraw(transform, area, dropSlot)
   if dropSlot.draggable then
     local hero = dropSlot.draggable:getEntity():getComponent('Hero')
 
-    if hero then 
+    if hero then
       local x, y = transform:getGlobalPosition()
       local w, h = area:getSize()
 
