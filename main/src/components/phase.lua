@@ -11,7 +11,7 @@ function Phase:initialize()
     {mainType = 'enemy', subType = 'a'},
     {mainType = 'dealer', subType = 'A'},
     {mainType = 'enemy', subType = 'b'},
-    {mainType = 'enemy', subType = 'A'},
+    {mainType = 'elite', subType = 'A'},
     {mainType = 'enemy', subType = 'B'},
   }
   self.currentRound = nil

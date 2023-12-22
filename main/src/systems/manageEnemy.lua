@@ -43,8 +43,8 @@ function ManageEnemy:earlysystemupdate(dt)
     if round.mainType == 'enemy' then
       self.spawnQueue = {
         Mino, 0, Mino, 0,
-        Mino, 3, Mino, 3,
-        Mino, 6, Mino, 6, Mino, 6, Mino, 6, Mino, 6, Mino, 6,
+        Rini, 3, Rini, 3,
+        Arno, 6, Arno, 6, Pepero, 6, Pepero, 6, Pepero, 6, Pepero, 6,
       }
 
     elseif round.mainType == 'elite' then
@@ -63,7 +63,7 @@ function ManageEnemy:earlysystemupdate(dt)
         local enemyEntity = self.spawnQueue[i-1]()
         enemyEntity:getComponent('Transform'):setGlobalPosition(
           1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
-          math.random(210, 340)
+          math.random(210, 330)
         )
         Hump.Gamestate.current():addEntity(enemyEntity)
         table.remove(self.spawnQueue, i-1)

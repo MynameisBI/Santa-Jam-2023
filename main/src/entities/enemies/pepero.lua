@@ -8,7 +8,7 @@ function Pepero:initialize()
 
     local animator = self:getComponent('Animator')
     animator:setGrid(18, 18, Images.enemies.fast:getWidth(), Images.enemies.fast:getHeight())
-    animator:addAnimation('move', {'1-4', 1}, 0.55, true)
+    animator:addAnimation('move', {'1-4', 1}, 0.075, true)
     animator:setCurrentAnimationName('move')
 end
 

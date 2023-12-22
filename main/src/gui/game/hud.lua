@@ -128,17 +128,39 @@ function HUD:draw()
 
 
   -- Progression bar
-  love.graphics.setColor(0.4, 0.4, 0.4)
-  love.graphics.rectangle('fill', 685, 25, 150, 6)
+  love.graphics.setColor(0.4, 0.42, 0.44, 0.7)
+  love.graphics.rectangle('fill', 673, 25, 174, 2, 2)
 
-  love.graphics.setColor(0.8, 0.8, 0.8)
+  love.graphics.setColor(1, 1, 1)
   for i = 1, self.roundCount do
     local round = self.phase.rounds[i]
     if round then
-      love.graphics.setFont(Fonts.medium)
-      love.graphics.print(round.mainType, 685 + self.roundPercentPositions[i] * 150, 28, math.pi/2)
+      love.graphics.draw(Images.icons[round.mainType..'Icon'],
+          Lume.round(685 + self.roundPercentPositions[i] * 150) - 6, 18, 0, 2, 2)
     end
     -- love.graphics.circle('fill', 685 + self.roundPercentPositions[i] * 150, 28, 8)
+  end
+
+  love.graphics.setColor(0.4, 0.42, 0.44)
+  love.graphics.rectangle('fill', 685, 12, 2, 2)
+  love.graphics.rectangle('fill', 683, 10, 2, 2)
+  love.graphics.rectangle('fill', 687, 10, 2, 2)
+  love.graphics.rectangle('fill', 685, 38, 2, 2)
+  love.graphics.rectangle('fill', 683, 40, 2, 2)
+  love.graphics.rectangle('fill', 687, 40, 2, 2)
+
+  for i = 1, self.roundCount do
+    local round = self.phase.rounds[i]
+    if round then
+      local x, y, w, h = Lume.round(685 + self.roundPercentPositions[i] * 150 - 6) - 2, 16, 18, 22
+      local mx, my = love.mouse.getPosition()
+      if x < mx and mx < x + w and y < my and my < y + h then
+        love.graphics.setColor(0.8, 0.8, 0.8)
+        love.graphics.setFont(Fonts.medium)
+
+        love.graphics.printf(round.mainType:gsub("^%l", string.upper), 712, y + 35, 100, 'center')
+      end
+    end
   end
 
 
