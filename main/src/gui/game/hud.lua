@@ -10,48 +10,48 @@ local HUD = Class('HUD')
 local TRAIT_DESCRIPTIONS = {
   bigEar = {
     title = 'Big Ear',
-    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
-    threshold = '(2)\n(4)\n(6)'
+    body = 'Increase skill cooldown reduction. Skill have 1 more charge.',
+    threshold = '(2) +5 cooldown reduction\n(4) +20 cooldown reduction\n(6) +45 cooldown reduction'
   },
   sentient = {
     title = 'Sentient',
-    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
-    threshold = '(2)\n(4)\n(6)'
+    body = 'Increase attack speed. Doubled for 2 seconds after skill cast.',
+    threshold = '(2) +20% attack speed\n(4) +32.5% attack speed \n(6) +50% attack speed'
   },
   defect = {
     title = 'Defect',
-    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
-    threshold = '(2)\n(4)\n(6)'
+    body = 'Convert all bonus AD into RP. Receive additional RP.',
+    threshold = '(2) +20 RP\n(3) +35 RP\n(4) +50 RP\n(5) +65 RP'
   },
   candyhead = {
     title = 'Candyhead',
-    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
-    threshold = '(2)\n(4)\n(6)'
+    body = 'Periodically summon 3 candies on the battlefield dealing \ndamage and stun enemies.',
+    threshold = '\n(2) For each level 3 hero in your team, summon 1 more candy.'
   },
   coordinator = {
     title = 'Coordinator',
-    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
-    threshold = '(2)\n(4)\n(6)'
+    body = 'Only active when you have exactly 1 or 3 Coordinators.',
+    threshold = '(1) +30% crit chance \n(3) +60% crit chance'
   },
   artificer = {
     title = 'Artificer',
-    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
-    threshold = '(2)\n(4)\n(6)'
+    body = 'Every 4 seconds regenerate energy.',
+    threshold = '(2) +50 energy'
   },
   trailblazer = {
     title = 'Trailblazer',
-    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
-    threshold = '(2)\n(4)\n(6)'
+    body = 'Attacks deal more damage the nearer the enemies.',
+    threshold = '(2) +0-50% more damage\n(3) +0-75% more damage\n(4) +0-100% more damage'
   },
   droneMaestro = {
     title = 'Drone Maestro',
-    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
-    threshold = '(2)\n(4)\n(6)'
+    body = 'Drone Maestro spawns a drone every 5 seconds.\nDrones exist until the end of battle.',
+    threshold = '\n(1) Drones deal 10 damage\n(3) Drones deal 16 damage\n(5) Drones deal 24 damage'
   },
   cracker = {
     title = 'Cracker',
-    body = 'Increase skill cooldown reduction. Skill have 1 more charge',
-    threshold = '(2)\n(4)\n(6)'
+    body = 'Periodically remove the highest health enemy out of the field.\nHave a 33% chance to drop 1 gold.',
+    threshold = '\n(2) Every 4 seconds\n(3) Every 2 second'
   },
 }
 
@@ -184,7 +184,7 @@ function HUD:draw()
 
           if self.suit:isHovered(id) then
             love.graphics.rectangle('fill', x + 78, y, 10, 32)
-            love.graphics.rectangle('fill', x + 88, topY, 110, 160)
+            love.graphics.rectangle('fill', x + 88, topY, 550, 160)
 
             local description = TRAIT_DESCRIPTIONS[synergy.trait]
             if description then
@@ -215,7 +215,7 @@ function HUD:draw()
           love.graphics.print(tostring(synergy.count)..nextThreshold, x + 40, y + 9)
 
           if not isActive then
-            love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+            love.graphics.setColor(0.2, 0.2, 0.2, 0.7)
             love.graphics.rectangle('fill', x, y, 78, 32)
           end
         end
@@ -226,11 +226,6 @@ function HUD:draw()
 
 
   -- Inspector
-  -- for _, hero in ipairs(Hump.Gamestate)
-  -- if (hero.name == 'Cole') then
-  --   print(hero.modEntity)
-  -- end
-
   local x, y, w, h = 630, 80, 215, 360
   local inspectable = self.currentInspectable.inspectable
   if inspectable then
@@ -306,7 +301,7 @@ function HUD:draw()
     end
 
     if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
-    self.suit.layout:col(110, 51)).hit then
+    self.suit.layout:col(100, 51)).hit then
       if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
         print('add slot')
         self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)

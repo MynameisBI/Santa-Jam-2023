@@ -78,10 +78,10 @@ end
 function ManageEnemy:update(transform, area, enemy, dt)
     self.timer:update(dt)
 
-    if self.spawnCD then
-        self:spawn()
-        print('spawn')
-    end
+    -- if self.spawnCD then
+    --     self:spawn()
+    --     print('spawn')
+    -- end
 
     if self.phase:current() == 'battle' then
         for i = #self.spawnQueue, 1, -2 do
@@ -102,14 +102,16 @@ function ManageEnemy:update(transform, area, enemy, dt)
             end)
         end
     end
+
 end
 
 function ManageEnemy:update(transform, area, enemy, dt)
     transform:setGlobalPosition(transform.x-100*dt, transform.y)
 
     local x, y = transform:getGlobalPosition()
-    if x < 250 then
+    if enemy.stats.HP <= 0 then
         Hump.Gamestate.current():removeEntity(transform:getEntity())
+        print('enemy removed')
 
         if #self.spawnQueue <= 0 and #Hump.Gamestate.current():getComponents('Enemy') <= 0 then
         self.phase:switchNextRound()
@@ -126,12 +128,19 @@ function ManageEnemy:worlddraw(transform, area, enemy)
     if enemy then
         local x, y = transform:getGlobalPosition()
         local w, h = area:getSize()
-        local ratio = enemy.stats.HP / enemy.stats.maxHP
+        local ratio = math.max(0, enemy.stats.HP / enemy.stats.maxHP)
         
         --draw HP bar
         love.graphics.setColor(1, 0, 0)
         love.graphics.rectangle('fill', x, y - 10, ratio*w, h/10)
     end
+end
+
+function ManageEnemy:removeEnemies(enemy)
+    if enemy.stats.HP <= 0 then
+        Hump.Gamestate.current():removeEntity(transform:getEntity())
+    end
+    print('enemy removed')
 end
 
 return ManageEnemy

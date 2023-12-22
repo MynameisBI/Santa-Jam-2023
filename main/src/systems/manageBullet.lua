@@ -16,6 +16,7 @@ function ManageBullet:update(transform, bullet, dt)
 
   if sqrtDistToEnemy < bullet.hitSqrtDist then
     print(tostring(bullet.enemy:getEntity())..' take '..tostring(bullet.hero:getBasicAttackDamage(bullet.enemy:getEntity()))..' damage')
+    bullet.enemy:takeDamage(bullet.hero:getBasicAttackDamage(bullet.enemy:getEntity()))
     Hump.Gamestate.current():removeEntity(transform:getEntity())
   else
     transform:setGlobalPosition(bx + distX, by + distY)
@@ -42,6 +43,6 @@ function ManageBullet:worlddraw(transform, bullet)
   --     love.graphics.polygon('fill', x1, y1, x2, y2, x3, y3, x4, y4)
   --   end
   -- end)
-end 
+end
 
 return ManageBullet

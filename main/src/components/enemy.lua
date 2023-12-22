@@ -43,5 +43,4 @@ function Enemy:takeDamage(damage, damageType)
     self.stats.HP = self.stats.HP - damage
 end
 
-
 return Enemy
