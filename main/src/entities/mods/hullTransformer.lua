@@ -3,7 +3,7 @@ local ModEntity = require 'src.entities.mods.modEntity'
 local HullTransformer = Class('HullTransformer', ModEntity)
 
 function HullTransformer:initialize(slot)
-  ModEntity.initialize(self, slot, Images.mods.placeholder, 
+  ModEntity.initialize(self, slot, Images.mods.hullTransformer, 
     'SB',
     'Hull Transformer',
     '+ 0.2 AS',

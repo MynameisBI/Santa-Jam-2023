@@ -164,62 +164,62 @@ function HUD:draw()
   end
 
 
+  -- Lower buttons
+  love.graphics.setFont(Fonts.medium)
+  local currentPhase = self.phase:current()
+  if currentPhase == 'planning' then
+    self.suit.layout:reset(250, 475)
+    self.suit.layout:padding(15)
+    if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
+        self.suit.layout:col(110, 51)).hit then
+      if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
+        self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
+      end
+    end
+
+    if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
+    self.suit.layout:col(100, 51)).hit then
+      if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
+        print('add slot')
+        self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
+      end
+    end
+
+    if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
+      if self.phase.rounds[1] then
+        if self.phase.rounds[1].mainType == 'dealer' then
+          self.phase:switchNextRound()
+        end
+      end
+      self.phase:switch('battle')
+      self.phase:startCurrentRound()
+    end
+
+  elseif currentPhase == 'battle' then
+    local heroComponents = self.teamSynergy:getHeroComponentsInTeam()
+
+    local skillW, skillH = 110, 51
+    local paddingX = 15
+    self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 475)
+    self.suit.layout:padding(paddingX)
+    for i = 1, #heroComponents do
+      if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
+          self.suit.layout:col(skillW, skillH)).hit then
+        heroComponents[i].skill:cast()
+      end
+    end
+  end
+
+
   -- Synergy
   local topX, topY = 23, 93
   self.suit.layout:reset(topX, topY)
   self.suit.layout:padding(11)
   for i = 1, #self.teamSynergy.synergies do
-    local synergy = self.teamSynergy.synergies[i]
     local id = ('synergy %d'):format(i)
-    self.suit:Button(Images.icons[synergy.trait..'Icon'],
-      {
-        id = id,
-        draw = function(image, opt, x, y, w, h)
-          local isActive = (synergy.trait ~= 'coordinator' and synergy.nextThresholdIndex ~= 1) or
-              (synergy.trait == 'coordinator' and (synergy.count == 1 or synergy.count == 3))
-          if isActive then
-            love.graphics.setColor(113/255, 122/255, 129/255, 0.75)
-            love.graphics.rectangle('fill', x, y, 78, 32)
-          end
-
-          if self.suit:isHovered(id) then
-            love.graphics.rectangle('fill', x + 78, y, 10, 32)
-            love.graphics.rectangle('fill', x + 88, topY, 550, 160)
-
-            local description = TRAIT_DESCRIPTIONS[synergy.trait]
-            if description then
-              love.graphics.setColor(0.7, 0.7, 0.7)
-              love.graphics.setFont(Fonts.big)
-              love.graphics.print(description.title, x + 94, topY + 6)
-
-              love.graphics.setColor(0.7, 0.7, 0.7)
-              love.graphics.setFont(Fonts.medium)
-              love.graphics.print(description.body, x + 94, topY + 30)
-
-              love.graphics.setColor(0.7, 0.7, 0.7)
-              love.graphics.setFont(Fonts.medium)
-              love.graphics.print(description.threshold, x + 94, topY + 46)
-            end
-          end
-
-          love.graphics.setColor(1, 1, 1)
-          love.graphics.draw(image, x + 5, y + 4, 0, 2, 2)
-
-          love.graphics.setColor(0.7, 0.7, 0.7)
-          love.graphics.setFont(Fonts.medium)
-          local nextThreshold = self.teamSynergy.TRAIT_THRESHOLD[synergy.trait][synergy.nextThresholdIndex]
-          if nextThreshold ~= nil then nextThreshold = '/'..tostring(nextThreshold)
-          else nextThreshold = ''
-          end
-          love.graphics.setColor(0.7, 0.7, 0.7)
-          love.graphics.print(tostring(synergy.count)..nextThreshold, x + 40, y + 9)
-
-          if not isActive then
-            love.graphics.setColor(0.2, 0.2, 0.2, 0.7)
-            love.graphics.rectangle('fill', x, y, 78, 32)
-          end
-        end
-      },
+    self.suit:Button(Images.icons[self.teamSynergy.synergies[i].trait..'Icon'],
+      {id = id, hud = self, synergy = self.teamSynergy.synergies[i], synergyIndex = i,
+          draw = self.drawSynergy, topX = topX, topY = topY},
       self.suit.layout:row(78, 32)
     )
   end
@@ -286,53 +286,6 @@ function HUD:draw()
     end
   end
 
-
-  -- Lower buttons
-  love.graphics.setFont(Fonts.medium)
-  local currentPhase = self.phase:current()
-  if currentPhase == 'planning' then
-    self.suit.layout:reset(250, 475)
-    self.suit.layout:padding(15)
-    if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
-        self.suit.layout:col(110, 51)).hit then
-      if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
-        self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
-      end
-    end
-
-    if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
-    self.suit.layout:col(100, 51)).hit then
-      if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
-        print('add slot')
-        self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
-      end
-    end
-
-    if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
-      if self.phase.rounds[1] then
-        if self.phase.rounds[1].mainType == 'dealer' then
-          self.phase:switchNextRound()
-        end
-      end
-      self.phase:switch('battle')
-      self.phase:startCurrentRound()
-    end
-
-  elseif currentPhase == 'battle' then
-    local heroComponents = self.teamSynergy:getHeroComponentsInTeam()
-
-    local skillW, skillH = 110, 51
-    local paddingX = 15
-    self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 475)
-    self.suit.layout:padding(paddingX)
-    for i = 1, #heroComponents do
-      if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
-          self.suit.layout:col(skillW, skillH)).hit then
-        heroComponents[i].skill:cast()
-      end
-    end
-  end
-
   self.suit:draw()
 
   -- Mod tooltip
@@ -377,6 +330,7 @@ function HUD:onRoundEnd(phase)
   self.roundCount = 4
 end
 
+
 function HUD:drawBar(value, maxValue, color, font, x, y, w, h)
   local barWidth = love.graphics.getWidth() - x * 2
 
@@ -391,6 +345,63 @@ function HUD:drawBar(value, maxValue, color, font, x, y, w, h)
   love.graphics.setFont(font)
   local t = ('%d/%d'):format(value, maxValue)
   love.graphics.print(t, x + w / 2 - font:getWidth(t) / 2, y + h / 2 - font:getHeight() / 2)
+end
+
+function HUD.drawSynergy(image, opt, x, y, w, h)
+  local hud = opt.hud
+  local synergy = opt.synergy
+
+  local isActive = (synergy.trait ~= 'coordinator' and synergy.nextThresholdIndex ~= 1) or
+      (synergy.trait == 'coordinator' and (synergy.count == 1 or synergy.count == 3))
+  
+  if isActive then
+    love.graphics.setColor(103/255, 112/255, 119/255, 0.75)
+    love.graphics.rectangle('fill', x, y, 78, 32)
+  end
+
+  if hud.suit:isHovered(opt.id) then
+    if isActive then love.graphics.setColor(103/255, 112/255, 119/255, 0.75)
+    else love.graphics.setColor(0.2, 0.2, 0.2, 0.7)
+    end
+    love.graphics.rectangle('fill', x + 78, y, 10, 32)
+
+    local y = y
+    if opt.synergyIndex >= 6 then y = y - 128 end
+    love.graphics.rectangle('fill', x + 88, y, 550, 160)
+
+    local description = TRAIT_DESCRIPTIONS[synergy.trait]
+    if description then
+      if isActive then love.graphics.setColor(0.84, 0.84, 0.84)
+      else love.graphics.setColor(0.6, 0.6, 0.6)
+      end
+      
+      love.graphics.setFont(Fonts.big)
+      love.graphics.print(description.title, x + 94, y + 6)
+
+      love.graphics.setFont(Fonts.medium)
+      love.graphics.print(description.body, x + 94, y + 30)
+      
+      love.graphics.setFont(Fonts.medium)
+      love.graphics.print(description.threshold, x + 94, y + 46)
+    end
+  end
+
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.draw(image, x + 5, y + 4, 0, 2, 2)
+
+  love.graphics.setColor(0.7, 0.7, 0.7)
+  love.graphics.setFont(Fonts.medium)
+  local nextThreshold = hud.teamSynergy.TRAIT_THRESHOLD[synergy.trait][synergy.nextThresholdIndex]
+  if nextThreshold ~= nil then nextThreshold = '/'..tostring(nextThreshold)
+  else nextThreshold = ''
+  end
+  love.graphics.setColor(0.7, 0.7, 0.7)
+  love.graphics.print(tostring(synergy.count)..nextThreshold, x + 40, y + 9)
+
+  if not isActive then
+    love.graphics.setColor(0.2, 0.2, 0.2, 0.7)
+    love.graphics.rectangle('fill', x, y, 78, 32)
+  end
 end
 
 function HUD:drawModTooltip(mod, x, y, align)
