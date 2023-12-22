@@ -32,11 +32,11 @@ function Enemy.Stats:getValues()
 end
 
 function Enemy:takeDamage(damage, damageType)
-    if damageType = 'physical' then
+    if damageType == 'physical' then
         damage = damage - self.stats.physicalArmor
-    elseif damageType = 'reality' then
+    elseif damageType == 'reality' then
         damage = damage - self.stats.psychicArmor
-    elseif damageType = 'true' then
+    elseif damageType == 'true' then
         damage = damage
     end
 
