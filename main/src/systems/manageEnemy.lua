@@ -1,9 +1,7 @@
 local Entity = require 'src.entities.entity'
 local System = require 'src.systems.system'
-local Enemy = require 'src.components.enemy'
-local Transform = require 'src.components.transform'
 local Phase = require 'src.components.phase'
-local Input = require 'src.components.input'
+local Resources = require 'src.components.resources'
 
 -- Enemies
 -- mini enemies
@@ -29,14 +27,13 @@ local ENEMY_X_VARIANCE = 60
 function ManageEnemy:initialize()
     System.initialize(self, 'Transform', 'Area', 'Enemy')
     self.timer = Hump.Timer()
-    self.input = Input()
 
     self.phase = Phase()
     self.lastFramePhase = self.phase:current()
+    self.resources = Resources()
 
     self.spawnQueue = {}
     self.isReadyToSpawn = true
-    print('enemy spawner initialized')
     self.spawnCD = false
 end
 
@@ -61,7 +58,6 @@ end
     for i = #self.spawnQueue, 1, -2 do
         self.spawnQueue[i] = self.spawnQueue[i] - dt
         if self.spawnQueue[i] <= 0 then
-        print(self.spawnQueue[i-1])
         local enemyEntity = self.spawnQueue[i-1]()
         enemyEntity:getComponent('Transform'):setGlobalPosition(
             1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
@@ -77,11 +73,6 @@ end
 
 function ManageEnemy:update(transform, area, enemy, dt)
     self.timer:update(dt)
-
-    -- if self.spawnCD then
-    --     self:spawn()
-    --     print('spawn')
-    -- end
 
     if self.phase:current() == 'battle' then
         for i = #self.spawnQueue, 1, -2 do
@@ -109,13 +100,16 @@ function ManageEnemy:update(transform, area, enemy, dt)
     transform:setGlobalPosition(transform.x-100*dt, transform.y)
 
     local x, y = transform:getGlobalPosition()
-    if enemy.stats.HP <= 0 then
+    local isDead = enemy.stats.HP <= 0
+    local hasReachedPlatform = x < 330
+    if hasReachedPlatform then
+        self.resources:modifyHealth(-enemy.stats.damage)
+    end
+    if isDead or hasReachedPlatform then
         Hump.Gamestate.current():removeEntity(transform:getEntity())
-        print('enemy removed')
-
         if #self.spawnQueue <= 0 and #Hump.Gamestate.current():getComponents('Enemy') <= 0 then
-        self.phase:switchNextRound()
-        self.phase:switch('planning')
+            self.phase:switchNextRound()
+            self.phase:switch('planning')
         end
     end
 end

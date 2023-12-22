@@ -48,8 +48,7 @@ function UpdateAreaSkill:damageEnemiesInArea(hero, damageInfo, areaX, areaY, are
     return Lume.distance(x, y, areaX, areaY) <= areaR
   end)
   for _, enemyEntity in ipairs(enemyEntities) do
-    print(('%s take %d %s damage'):format(
-      tostring(enemyEntity), damage, damageInfo.damageType))
+    enemyEntity:getComponent('Enemy'):takeDamage(damage, damageInfo.damageType)
   end
 end
 

@@ -7,6 +7,11 @@ function UpdateTargetSkill:initialize()
 end
 
 function UpdateTargetSkill:update(transform, targetSkill, dt)
+  if targetSkill.enemyEntity:getComponent('Enemy').stats.HP <= 0 then
+    Hump.Gamestate.current():removeEntity(transform:getEntity())
+    return
+  end
+
   transform:setGlobalPosition(targetSkill.enemyEntity:getComponent('Transform'):getGlobalPosition())
 
   if targetSkill.secondsUntilDetonate > 0 then
@@ -43,9 +48,7 @@ end
 function UpdateTargetSkill:damageEnemy(hero, damageInfo, enemyEntity)
   local damage = hero:getDamageFromRatio(damageInfo.attackDamageRatio,
       damageInfo.realityPowerRatio, damageInfo.canCrit) 
-
-  print(('%s take %d %s damage'):format(
-      tostring(enemyEntity), damage, damageInfo.damageType))
+  enemyEntity:getComponent('Enemy'):takeDamage(damage, damageInfo.damageType)
 end
 
 return UpdateTargetSkill

@@ -69,10 +69,9 @@ end
 
 function Resources:modifyHealth(modifier)
   self._health = self._health + modifier
-  self._health = math.min(self:getMaxHealth(), self._energy)
+  self._health = math.min(self:getMaxHealth(), self._health)
   if self._health < 0 then
-    self._health = self._health - modifier
-    return false
+    print('lost')
   end
   return true
 end

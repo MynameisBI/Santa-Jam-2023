@@ -15,11 +15,21 @@ end
 
 Enemy.Stats = Class('Enemy Stats')
 
-function Enemy.Stats:initialize(maxHP, physicalArmor, psychicArmor)
+function Enemy.Stats:initialize(maxHP, physicalArmor, realityArmor, speed, damage)
+    assert(type(maxHP) == 'number', 'Invalid max HP')
     self.HP = maxHP
     self.maxHP = maxHP
+
+    assert(type(physicalArmor) == 'number' and 0 <= physicalArmor and physicalArmor <= 1,
+        'Invalid physical armor')
     self.physicalArmor = physicalArmor
-    self.psychicArmor = psychicArmor
+
+    assert(type(realityArmor) == 'number' and 0 <= realityArmor and realityArmor <= 1,
+        'Invalid physical armor')
+    self.realityArmor = realityArmor
+
+    self.speed = speed or 25
+    self.damage = damage or 2
 end
 
 function Enemy.Stats:getValues()
@@ -32,10 +42,11 @@ function Enemy.Stats:getValues()
 end
 
 function Enemy:takeDamage(damage, damageType)
+    assert(damageType == 'physical' or damageType == 'reality' or damageType == 'true', 'Invalid damage type')
     if damageType == 'physical' then
-        damage = damage - self.stats.physicalArmor
+        damage = damage * (1 - self.stats.physicalArmor) 
     elseif damageType == 'reality' then
-        damage = damage - self.stats.psychicArmor
+        damage = damage * (1 - self.stats.realityArmor)
     elseif damageType == 'true' then
         damage = damage
     end
