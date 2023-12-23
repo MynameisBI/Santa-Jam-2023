@@ -7,13 +7,21 @@ function DrawWorld:initialize()
 end
 
 function DrawWorld:update(transform, sprite, animator, dt)
-  if animator == nil then return end
+  if sprite.effectType ~= nil then
+    if sprite.effectType == 'fade' then
+      if sprite._alpha < 0 then
+        sprite.afterEffectFn(sprite)
+      end
+      sprite._alpha = sprite._alpha - dt * sprite.effectStrength
+    end
+  end
 
-  local animation = animator:getCurrentAnimation()
-
-  if animation == nil then return end
-
-  animation:update(dt)
+  if animator ~= nil then
+    local animation = animator:getCurrentAnimation()
+    if animation ~= nil then
+      animation:update(dt)
+    end
+  end
 end
 
 function DrawWorld:worlddraw(transform, sprite, animator)
@@ -38,6 +46,10 @@ function DrawWorld:worlddraw(transform, sprite, animator)
 
     end
   end)
+end
+
+function DrawWorld:_draw()
+
 end
 
 return DrawWorld

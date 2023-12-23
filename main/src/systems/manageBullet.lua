@@ -1,3 +1,7 @@
+local Entity = require 'src.entities.entity'
+local Transform = require 'src.components.transform'
+local Sprite = require 'src.components.sprite'
+
 local System = require 'src.systems.system'
 
 local ManageBullet = Class('ManageBullet', System)
@@ -23,25 +27,19 @@ function ManageBullet:update(transform, bullet, dt)
 
   transform.r = Lume.angle(bx, by, ex, ey)
 
-  -- for i = 1, #bullet.trailPoints do
-  --   bullet.trailPoints[i].existTime = bullet.trailPoints[i].existTime + dt
-  -- end
-  -- table.insert(bullet.trailPoints, {x = bx, y = by, existTime = 0})
-end
-
-function ManageBullet:worlddraw(transform, bullet)
-  -- Deep.queue(14, function()
-  --   for i = 1, #bullet.trailPoints-1 do
-  --     local x1, y1, x2, y2, x3, y3, x4, y4
-  --     x1, y1 = bullet.trailPoints[i].x, bullet.trailPoints[i].y
-  --     x4, y4 = bullet.trailPoints[i+1].x, bullet.trailPoints[i+1].y
-  --     local ox, oy = Lume.vector(Lume.angle(x1, y1, x4, y4) + math.pi/4, 4)
-  --     x2, y2 = x1 + ox, y1 + oy
-  --     x3, y3 = x4 + ox, y4 + oy
-  --     love.graphics.setColor(1, 1, 1)
-  --     love.graphics.polygon('fill', x1, y1, x2, y2, x3, y3, x4, y4)
+  -- for i = #bullet.trailPoints, 1, -1 do
+  --   bullet.trailPoints[i].opacity = bullet.trailPoints[i].opacity - dt * 5
+  --   if bullet.trailPoints[i].opacity <= 0 then
+  --     table.remove(bullet.trailPoints, i)
   --   end
-  -- end)
+  -- end
+  -- table.insert(bullet.trailPoints, {x = bx, y = by, opacity = 1, r = transform.r})
+
+  Hump.Gamestate.current():addEntity(Entity(
+    Transform(bx, by, transform.r, 2, 2), 
+    Sprite(Images.pets.alestraBullet, 14, 'fade', 5,
+        function(sprite) Hump.Gamestate.current():removeEntity(sprite:getEntity()) end)
+  ))
 end
 
 return ManageBullet

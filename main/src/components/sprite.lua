@@ -2,7 +2,7 @@ local Component = require 'src.components.component'
 
 local Sprite = Component:subclass('Sprite')
 
-function Sprite:initialize(image, layer)
+function Sprite:initialize(image, layer, effectType, effectStrength, after)
   Component.initialize(self)
   self.image = image
   
@@ -12,6 +12,10 @@ function Sprite:initialize(image, layer)
   self._green = 1
   self._blue = 1
   self._alpha = 1
+
+  self.effectType = effectType
+  self.effectStrength = effectStrength or 10
+  self.afterEffectFn = afterEffectFn or function(self) end
 end
 
 function Sprite:setColor(mode, r, g, b, a)
