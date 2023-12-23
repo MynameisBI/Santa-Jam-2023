@@ -4,7 +4,7 @@ local EnemyEntity = require 'src.entities.enemies.enemyEntity'
 local Rini = Class('Rini', EnemyEntity)
 
 function Rini:initialize()
-    EnemyEntity.initialize(self, Images.enemies.heavy, 'Rini', 25, Enemy.Stats(300, 0, 0.25))
+    EnemyEntity.initialize(self, Images.enemies.heavy, 'Rini', Enemy.Stats(300, 0, 0.25, 100, 2))
 
     local animator = self:getComponent('Animator')
     animator:setGrid(18, 18, Images.enemies.heavy:getWidth(), Images.enemies.heavy:getHeight())

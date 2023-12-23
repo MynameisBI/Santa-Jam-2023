@@ -25,18 +25,24 @@ function Animator:setGrid(...)
   self.grid = Anim8.newGrid(...)
 end
 
-function Animator:addAnimation(name, frames, durations, isLooping)
+function Animator:addAnimation(name, frames, durations, isLooping, onLoop)
   assert(self.grid ~= nil, 'A grid need to be set before adding new   animations')
   
-  if isLooping == nil then
-    isLooping = true
-  end
-  local onLoop
-  if not isLooping then
-    onLoop = function() return 'pauseAtEnd' end
+  local isLooping = isLooping or true
+  local onLoop = onLoop or function() end
+  local onLoop_
+  if isLooping then
+    onLoop_ = function(...)
+      onLoop(...)
+    end
+  else
+    onLoop_ = function(...)
+      onLoop(...)
+      return 'pauseAtEnd'
+    end
   end
 
-  self.animations[name] = Anim8.newAnimation(self.grid(unpack(frames)), durations, onLoop)
+  self.animations[name] = Anim8.newAnimation(self.grid(unpack(frames)), durations, onLoop_)
 end
 
 function Animator:setCurrentAnimationName(name)

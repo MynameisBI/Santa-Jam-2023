@@ -20,8 +20,6 @@ Suit = require 'libs.suit'
 Clove = require 'libs.clove'
 Deep = require 'libs.deep'
 
-love.graphics.setDefaultFilter('nearest', 'nearest')
-
 function Lume.nearest(ox, oy, points, getPointPosFn)
   local minDist = math.huge
   local nearestPoint = nil

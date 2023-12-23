@@ -2,6 +2,7 @@ local Phase = require 'src.components.phase'
 local CurrentInspectable = require 'src.components.currentInspectable'
 local DragAndDropInfo = require 'src.components.dragAndDropInfo'
 local Hero = require 'src.components.hero'
+local CurrentSkill = require 'src.components.skills.currentSkill'
 
 -- This should have been a system but it will mess up the draw order with the modal windows,
 -- so it's a seperate class for now
@@ -55,15 +56,23 @@ local TRAIT_DESCRIPTIONS = {
   },
 }
 
-local STAT_DISPLAY_NAMES = {
+local ALLY_STAT_DISPLAY_NAMES = {
   attackDamage = 'ATK',
   realityPower = 'RPW',
   attackSpeed = 'AS',
   range = 'RANGE',
-  critChance = 'CCHANCE',
-  critDamage = 'CDMG',
+  critChance = 'C.CHANCE',
+  critDamage = 'C.DAMAGE',
   cooldownReduction = 'CDR',
   energy = 'Energy'
+}
+
+local ENEMY_STAT_DISPLAY_NAMES = {
+  health = 'HEALTH',
+  physicalArmor = 'P.ARMOR',
+  realityArmor = 'R.ARMOR',
+  speed = 'SPEED',
+  damage = 'DAMAGE',
 }
 
 local PROGRESSION_BAR_MOVE_TIME = 1
@@ -165,47 +174,49 @@ function HUD:draw()
 
 
   -- Lower buttons
-  love.graphics.setFont(Fonts.medium)
-  local currentPhase = self.phase:current()
-  if currentPhase == 'planning' then
-    self.suit.layout:reset(250, 475)
-    self.suit.layout:padding(15)
-    if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
-        self.suit.layout:col(110, 51)).hit then
-      if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
-        self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
-      end
-    end
-
-    if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
-    self.suit.layout:col(100, 51)).hit then
-      if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
-        print('add slot')
-        self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
-      end
-    end
-
-    if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
-      if self.phase.rounds[1] then
-        if self.phase.rounds[1].mainType == 'dealer' then
-          self.phase:switchNextRound()
+  if CurrentSkill().currentSkill == nil then
+    love.graphics.setFont(Fonts.medium)
+    local currentPhase = self.phase:current()
+    if currentPhase == 'planning' then
+      self.suit.layout:reset(250, 475)
+      self.suit.layout:padding(15)
+      if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
+          self.suit.layout:col(110, 51)).hit then
+        if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
+          self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
         end
       end
-      self.phase:switch('battle')
-      self.phase:startCurrentRound()
-    end
 
-  elseif currentPhase == 'battle' then
-    local heroComponents = self.teamSynergy:getHeroComponentsInTeam()
+      if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
+      self.suit.layout:col(100, 51)).hit then
+        if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
+          print('add slot')
+          self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
+        end
+      end
 
-    local skillW, skillH = 110, 51
-    local paddingX = 15
-    self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 475)
-    self.suit.layout:padding(paddingX)
-    for i = 1, #heroComponents do
-      if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
-          self.suit.layout:col(skillW, skillH)).hit then
-        heroComponents[i].skill:cast()
+      if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
+        if self.phase.rounds[1] then
+          if self.phase.rounds[1].mainType == 'dealer' then
+            self.phase:switchNextRound()
+          end
+        end
+        self.phase:switch('battle')
+        self.phase:startCurrentRound()
+      end
+
+    elseif currentPhase == 'battle' then
+      local heroComponents = self.teamSynergy:getHeroComponentsInTeam()
+
+      local skillW, skillH = 110, 51
+      local paddingX = 15
+      self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 475)
+      self.suit.layout:padding(paddingX)
+      for i = 1, #heroComponents do
+        if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
+            self.suit.layout:col(skillW, skillH)).hit then
+          heroComponents[i].skill:cast()
+        end
       end
     end
   end
@@ -229,13 +240,13 @@ function HUD:draw()
   local x, y, w, h = 630, 80, 215, 360
   local inspectable = self.currentInspectable.inspectable
   if inspectable then
-    love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
-    love.graphics.rectangle('fill', x, y, w, h)
-
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(inspectable.image, inspectable.quad, x + 15, y + 10, 0, 3, 3)
-
     if inspectable.objectType == 'hero' then
+      love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+      love.graphics.rectangle('fill', x, y, w, h)
+
+      love.graphics.setColor(1, 1, 1)
+      love.graphics.draw(inspectable.image, inspectable.quad, x + 15, y + 10, 0, 3, 3)
+
       local hero = inspectable.object
 
       -- Name and traits
@@ -278,11 +289,46 @@ function HUD:draw()
       love.graphics.setFont(Fonts.medium)
       local statY = y + 120
       for i = 1, #stats do
-        love.graphics.print(STAT_DISPLAY_NAMES[stats[i]], x + 12, statY)
+        love.graphics.print(ALLY_STAT_DISPLAY_NAMES[stats[i]], x + 12, statY)
         love.graphics.print(tostring(statValues[stats[i]]),
             x + w - 11 - Fonts.medium:getWidth(tostring(statValues[stats[i]])), statY)
         statY = statY + 17
       end
+
+    elseif inspectable.objectType == 'enemy' then
+      local y, h = y + 100, h - 200
+
+      love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+      love.graphics.rectangle('fill', x, y, w, h)
+
+      love.graphics.setColor(1, 1, 1)
+      love.graphics.draw(inspectable.image, inspectable.quad, x + 15, y + 10, 0, 3, 3)
+
+      local enemy = inspectable.object
+      
+      -- Name
+      love.graphics.setColor(0.8, 0.8, 0.8)
+      love.graphics.setFont(Fonts.big)
+      love.graphics.print(string.upper(enemy.name), x + 67, y + 13)
+
+      -- Stats
+      local statValues = enemy.stats:getValues()
+      local stats = {'physicalArmor', 'realityArmor', 'speed', 'damage'}
+      love.graphics.setColor(0.8, 0.8, 0.8)
+      love.graphics.setFont(Fonts.medium)
+
+      local _t = ('%d/%d'):format(statValues.HP, statValues.maxHP)
+      love.graphics.print('HEALTH', x + 12, y + 68)
+      love.graphics.print(_t, x + w - 11 - Fonts.medium:getWidth(_t), y + 68)
+
+      local statY = y + 85
+      for i = 1, #stats do
+        love.graphics.print(ENEMY_STAT_DISPLAY_NAMES[stats[i]], x + 12, statY)
+        love.graphics.print(tostring(statValues[stats[i]]),
+            x + w - 11 - Fonts.medium:getWidth(tostring(statValues[stats[i]])), statY)
+        statY = statY + 17
+      end
+
     end
   end
 

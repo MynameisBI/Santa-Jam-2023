@@ -1,13 +1,18 @@
 -- Doesn't work with web build
+love.graphics.setDefaultFilter('nearest', 'nearest')
 Images = {
   diamond = love.graphics.newImage('assets/diamond.png'),
-  environment = Clove.importAll('assets/environment', true),
-  heroes = Clove.importAll('assets/heroes', true),
-  pets = Clove.importAll('assets/pets', true),
-  mods = Clove.importAll('assets/mods', true),
-  icons = Clove.importAll('assets/icons', true),
-  enemies = Clove.importAll('assets/enemies', true),
+  environment = Clove.importGraphics('assets/environment'),
+  heroes = Clove.importGraphics('assets/heroes'),
+  pets = Clove.importGraphics('assets/pets'),
+  effects = Clove.importGraphics('assets/effects'),
+  mods = Clove.importGraphics('assets/mods'),
+  icons = Clove.importGraphics('assets/icons'),
+  enemies = Clove.importGraphics('assets/enemies'),
 }
+
+-- love.graphics.setDefaultFilter('linear', 'linear')
+-- Images.pets = Clove.importAll('assets/pets', true),
 
 -- local lg = love.graphics
 -- Images = {

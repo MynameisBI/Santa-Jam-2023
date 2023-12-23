@@ -8,6 +8,16 @@ function Inspect:initialize()
   self.currentInspectable = CurrentInspectable()
 end
 
+function Inspect:earlysystemupdate(dt)
+  local inspectable = self.currentInspectable.inspectable
+  if inspectable == nil then return end
+  if inspectable.objectType == 'enemy' then
+    if inspectable.object.isDestroyed then
+      self.currentInspectable.inspectable = nil
+    end
+  end
+end
+
 function Inspect:earlysystemmousepressed(x, y, button)
   self.currentInspectable.inspectable = nil
 end

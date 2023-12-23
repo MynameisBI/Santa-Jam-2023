@@ -79,12 +79,15 @@ function ManageDrone:update(transform, drone, dt)
     local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
     local nearestEnemyEntity = Lume.nearest(x, y, enemyEntities,
         function(enemyEntity) return enemyEntity:getComponent('Transform'):getGlobalPosition() end)
-    local ex, ey = nearestEnemyEntity:getComponent('Transform'):getGlobalPosition()
+    
+    if nearestEnemyEntity then
+      local ex, ey = nearestEnemyEntity:getComponent('Transform'):getGlobalPosition()
 
-    if Lume.distance(x, y, ex, ey) <= stats.range then
-      Hump.Gamestate.current():addEntity(
-        BulletEntity(x, y, Images.pets.drone, drone, nearestEnemyEntity)
-      )
+      if Lume.distance(x, y, ex, ey) <= stats.range then
+        Hump.Gamestate.current():addEntity(
+          BulletEntity(x, y, Images.pets.drone, drone, nearestEnemyEntity)
+        )
+      end
     end
   end
 end

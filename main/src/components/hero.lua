@@ -15,6 +15,7 @@ local BionicColumn = require 'src.entities.mods.bionicColumn'
 local EnhancerFumes = require 'src.entities.mods.enhancerFumes'
 local DeathsPromise = require 'src.entities.mods.deathsPromise'
 local Resources = require 'src.components.resources'
+local CurrentSkill = require 'src.components.skills.currentSkill'
 
 local Component = require 'src.components.component'
 
@@ -134,7 +135,7 @@ end
 
 Hero.Skill = Class('Skill')
 
-function Hero.Skill:initialize(description, energy, cooldown, fn)
+function Hero.Skill:initialize(description, energy, cooldown, fn, hasSecondaryCast, secondaryW, secondaryH)
   self.description = description or ''
 
   self.energy = energy or 60
@@ -143,6 +144,8 @@ function Hero.Skill:initialize(description, energy, cooldown, fn)
   self.secondsUntilSkillReady = 0
 
   self._fn = fn or function() end
+  self.hasSecondaryCast = hasSecondaryCast or false
+  self.secondaryW, self.secondaryH = secondaryW or 200, secondaryH or 60
 
   self.chargeCount = nil
 
@@ -170,21 +173,23 @@ end
 function Hero.Skill:cast()
   if self.chargeCount >= 1 then
     self.chargeCount = self.chargeCount - 1
-    if not Resources():modifyEnergy(-self.energy) then return false end
-    self._fn(self.hero)
-    if self.hero.overrides.onSkillCast then return self.hero.overrides.onSkillCast(self) end
-    return true
 
   elseif self.secondsUntilSkillReady <= 0 then
     local stats = self.hero:getStats()
     self.secondsUntilSkillReady = self:getCooldown()
-    if not Resources():modifyEnergy(-self.energy) then return false end
-    self._fn(self.hero)
-    if self.hero.overrides.onSkillCast then return self.hero.overrides.onSkillCast(self) end
-    return true
+  
+  else
+    return false
   end
 
-  return false
+  if not Resources():modifyEnergy(-self.energy) then return false end
+
+  if not self.hasSecondaryCast then
+    self._fn(self.hero)
+    if self.hero.overrides.onSkillCast then return self.hero.overrides.onSkillCast(self) end
+  else
+    CurrentSkill().currentSkill = self
+  end
 end
 
 

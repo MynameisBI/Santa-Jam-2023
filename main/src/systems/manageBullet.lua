@@ -27,17 +27,9 @@ function ManageBullet:update(transform, bullet, dt)
 
   transform.r = Lume.angle(bx, by, ex, ey)
 
-  -- for i = #bullet.trailPoints, 1, -1 do
-  --   bullet.trailPoints[i].opacity = bullet.trailPoints[i].opacity - dt * 5
-  --   if bullet.trailPoints[i].opacity <= 0 then
-  --     table.remove(bullet.trailPoints, i)
-  --   end
-  -- end
-  -- table.insert(bullet.trailPoints, {x = bx, y = by, opacity = 1, r = transform.r})
-
   Hump.Gamestate.current():addEntity(Entity(
     Transform(bx, by, transform.r, 2, 2), 
-    Sprite(Images.pets.alestraBullet, 14, 'fade', 5,
+    Sprite(Images.pets.alestraBullet, 14, 'fade', 7.5,
         function(sprite) Hump.Gamestate.current():removeEntity(sprite:getEntity()) end)
   ))
 end

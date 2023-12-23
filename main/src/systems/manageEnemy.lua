@@ -55,49 +55,31 @@ function ManageEnemy:earlysystemupdate(dt)
 end
 
     if self.phase:current() == 'battle' then
-    for i = #self.spawnQueue, 1, -2 do
-        self.spawnQueue[i] = self.spawnQueue[i] - dt
-        if self.spawnQueue[i] <= 0 then
-        local enemyEntity = self.spawnQueue[i-1]()
-        enemyEntity:getComponent('Transform'):setGlobalPosition(
-            1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
-            math.random(210, 330)
-        )
-        Hump.Gamestate.current():addEntity(enemyEntity)
-        table.remove(self.spawnQueue, i-1)
-        table.remove(self.spawnQueue, i-1)
-        end
-    end
-    end
-end
-
-function ManageEnemy:update(transform, area, enemy, dt)
-    self.timer:update(dt)
-
-    if self.phase:current() == 'battle' then
         for i = #self.spawnQueue, 1, -2 do
-        self.spawnQueue[i] = self.spawnQueue[i] - dt
-        if self.spawnQueue[i] <= 0 then
+            self.spawnQueue[i] = self.spawnQueue[i] - dt
+            if self.spawnQueue[i] <= 0 then
             local enemyEntity = self.spawnQueue[i-1]()
             enemyEntity:getComponent('Transform'):setGlobalPosition(
-            1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
-            math.random(210, 340)
+                1000 + math.random(-ENEMY_X_VARIANCE, ENEMY_X_VARIANCE),
+                math.random(210, 330)
             )
             Hump.Gamestate.current():addEntity(enemyEntity)
             table.remove(self.spawnQueue, i-1)
             table.remove(self.spawnQueue, i-1)
-        end
-            self.spawnCD = true
-            self.timer:after(2, function()
-                self.spawnCD = false
-            end)
+            end
         end
     end
-
 end
 
 function ManageEnemy:update(transform, area, enemy, dt)
-    transform:setGlobalPosition(transform.x-100*dt, transform.y)
+    transform:setGlobalPosition(transform.x - enemy:getSpeed() * dt, transform.y)
+
+    for i = #enemy.effects, 1, -1 do
+        enemy.effects[i].duration = enemy.effects[i].duration - dt
+        if enemy.effects[i].duration <= 0 then
+            table.remove(enemy.effects, i)
+        end
+    end
 
     local x, y = transform:getGlobalPosition()
     local isDead = enemy.stats.HP <= 0
@@ -107,6 +89,7 @@ function ManageEnemy:update(transform, area, enemy, dt)
     end
     if isDead or hasReachedPlatform then
         Hump.Gamestate.current():removeEntity(transform:getEntity())
+        enemy.isDestroyed = true
         if #self.spawnQueue <= 0 and #Hump.Gamestate.current():getComponents('Enemy') <= 0 then
             self.phase:switchNextRound()
             self.phase:switch('planning')
@@ -125,8 +108,14 @@ function ManageEnemy:worlddraw(transform, area, enemy)
         local ratio = math.max(0, enemy.stats.HP / enemy.stats.maxHP)
         
         --draw HP bar
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.rectangle('fill', x, y - 10, ratio*w, h/10)
+        -- love.graphics.setColor(1, 0, 0)
+        -- love.graphics.rectangle('fill', x, y - 10, ratio*w, h/10)
+        Deep.queue(18, function()
+          love.graphics.setColor(0.8, 0.8, 0.8, 0.4)
+          love.graphics.rectangle('fill', x + 4, y - 4, w - 8, h/10)
+          love.graphics.setColor(0.8, 0.15, 0.2)
+          love.graphics.rectangle('fill', x + 4, y - 4, ratio*w - 8, h/10)
+        end)
     end
 end
 

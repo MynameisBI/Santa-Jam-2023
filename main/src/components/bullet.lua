@@ -14,9 +14,7 @@ function Bullet:initialize(hero, enemyEntity, speed)
   assert(self.enemyTransform and self.enemy, 'Invalid enemy entity')
 
   self.speed = speed or 800
-  self.hitSqrtDist = (self.speed / 45) ^ 2
-
-  self.trailPoints = {}
+  self.hitSqrtDist = ((self.speed / 40) * (60 / love.timer.getFPS())) ^ 2
 
   -- self.angle = math.atan2(self.target.y - self.y, self.target.x - self.x)
 end

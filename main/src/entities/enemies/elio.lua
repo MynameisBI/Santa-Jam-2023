@@ -4,7 +4,7 @@ local EnemyEntity = require 'src.entities.enemies.enemyEntity'
 local Elio = Class('Elio', EnemyEntity)
 
 function Elio:initialize()
-    EnemyEntity.initialize(self, Images.enemies.heavy, 'Elio', 25, Enemy.Stats(7200, 0, 0.75))
+    EnemyEntity.initialize(self, Images.enemies.heavy, 'Elio', Enemy.Stats(7200, 0, 0.75, 100, 2))
 
     local animator = self:getComponent('Animator')
     animator:setGrid(18, 18, Images.enemies.heavy:getWidth(), Images.enemies.heavy:getHeight())
