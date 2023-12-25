@@ -13,6 +13,9 @@ function Sprite:initialize(image, layer, effectType, effectStrength, after)
   self._blue = 1
   self._alpha = 1
 
+  self.ox = 0
+  self.oy = 0
+
   self.effectType = effectType
   self.effectStrength = effectStrength or 10
   self.afterEffectFn = afterEffectFn or function(self) end

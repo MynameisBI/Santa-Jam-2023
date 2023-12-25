@@ -3,7 +3,7 @@ local AllyStats = Class('AllyStats', Component)
 function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, critChance, critDamage, cooldownReduction, energy)
   self.attackDamage = attackDamage or 33
   self.realityPower = realityPower or 0
-  self.attackSpeed = attackSpeed or 0
+  self.attackSpeed = attackSpeed or 1
   self.range = range or 300
   self.critChance = critChance or 0
   self.critDamage = 2

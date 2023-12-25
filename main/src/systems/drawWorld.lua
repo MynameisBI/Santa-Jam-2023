@@ -34,14 +34,16 @@ function DrawWorld:worlddraw(transform, sprite, animator)
       love.graphics.circle('fill', x, y, 30 * transform.sx)
 
     elseif animator == nil then
-      love.graphics.draw(sprite.image, x, y, transform.r, transform.sx, transform.sy)
+      love.graphics.draw(sprite.image, x, y, transform.r, transform.sx, transform.sy,
+          transform.ox, transform.oy)
 
     else
       local animation = animator:getCurrentAnimation()
       if animation == nil then
         love.graphics.circle('fill', x, y, 30 * transform.sx)
       else
-        animation:draw(sprite.image, x, y, transform.r, transform.sx, transform.sy)
+        animation:draw(sprite.image, x, y, transform.r, transform.sx, transform.sy,
+            transform.ox, transform.oy)
       end
 
     end

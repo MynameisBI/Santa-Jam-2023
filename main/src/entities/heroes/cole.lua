@@ -2,6 +2,9 @@ local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
 local BulletEntity = require 'src.entities.bullets.bulletEntity'
 local TargetSkillEntity = require 'src.entities.skills.targetSkillEntity'
+local Transform = require 'src.components.transform'
+local Sprite = require 'src.components.sprite'
+local Timer = require 'src.components.timer'
 
 local Entity = require 'src.entities.entity'
 
@@ -20,16 +23,29 @@ function Cole:initialize(slot)
         BulletEntity,
         Hero.Skill('Cole',
             40, 8,
-            function(hero)
-                local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
-                enemyEntities = Lume.shuffle(enemyEntities)
-                for i = 1, math.min(#enemyEntities, 8) do
-                  Hump.Gamestate.current():addEntity(
-                    TargetSkillEntity(Images.icons.candyheadIcon, hero, enemyEntities[i],
-                        {damageType = 'true', attackDamageRatio = 1, canCrit = true}, 0.6,
-                        {tickCount = 6, secondsPerTick = 0.5})
-                  )
-                end
+            function(hero, mx, my)
+              local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
+              enemyEntities = Lume.shuffle(enemyEntities)
+              local stats = hero:getStats()
+              for i = 1, math.min(#enemyEntities, 8) do
+                local targetSkillEntity = Hump.Gamestate.current():addEntity(
+                  TargetSkillEntity(hero, enemyEntities[i],
+                      {damageType = 'true', attackDamageRatio = 1, canCrit = true}, 1 / stats.attackSpeed)
+                )
+
+                local effectEntity = Entity()
+                local transform = effectEntity:addComponent(Transform(18, 18, 0, 6, 6,
+                    Images.effects.coleAim:getWidth()/2, Images.effects.coleAim:getHeight()/2))
+                local sprite = effectEntity:addComponent(Sprite(Images.effects.coleAim, 16))
+                sprite:setColor('default', 1, 1, 1, 0)
+                local timerComponent = effectEntity:addComponent(Timer())
+                timerComponent.timer:after(1 / stats.attackSpeed,
+                    function() Hump.Gamestate.current():removeEntity(effectEntity) end)
+                effectEntity:getComponent('Transform'):setParent(targetSkillEntity:getComponent('Transform'))
+                timerComponent.timer:tween(0.5 / stats.attackSpeed, transform, {sx = 2, sy = 2}, 'quad')
+                timerComponent.timer:tween(0.5 / stats.attackSpeed, sprite, {_alpha = 1}, 'quad')
+                Hump.Gamestate.current():addEntity(effectEntity)
+              end
             end
         ))
         local animator = self:getComponent('Animator')

@@ -2,22 +2,28 @@ local Component = require 'src.components.component'
 
 local Transform = Component:subclass('Transform')
 
-function Transform:initialize(x, y, r, sx, sy)
+function Transform:initialize(x, y, r, sx, sy, ox, oy)
   Component.initialize(self)
   
   self.x, self.y = x or 0, y or 0
   self.r = r or 0
   self.sx, self.sy = sx or 1, sy or 1
+  self.ox, self.oy = ox or 0, oy or 0
 
   self.z = 0 -- Bring the layer attribute from sprite to here
 
   self.parent = nil
 end
 
+function Transform:setParent(transform)
+  assert(transform.class.name == 'Transform' and transform ~= self, 'Invalid Transform parent')
+  self.parent = transform
+end
+
 function Transform:getGlobalPosition()
   local globalX, globalY = self.x, self.y
   local parentTransform = self.parent
-  
+
   while parentTransform do
     globalX = globalX + parentTransform.x
     globalY = globalY + parentTransform.y
