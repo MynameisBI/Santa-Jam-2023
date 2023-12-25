@@ -8,9 +8,14 @@ local TargetSkillEntity = Class('TargetSkillEntity', Entity)
 function TargetSkillEntity:initialize(hero, enemyEntity, damageInfo, secondsUntilDetonate, continuousInfo)
   Entity.initialize(self)
 
-  self:addComponent(Transform(0, 0, 0, 2, 2))
+  local transform = self:addComponent(Transform(0, 0, 0, 2, 2))
 
   self:addComponent(TargetSkill(hero, enemyEntity, damageInfo, secondsUntilDetonate, continuousInfo))
+end
+
+function TargetSkillEntity:onAdded()
+  self:getComponent('Transform'):setGlobalPosition(
+      self:getComponent('TargetSkill').enemyEntity:getComponent('Transform'):getGlobalPosition())
 end
 
 return TargetSkillEntity

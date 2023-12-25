@@ -13,11 +13,13 @@ function Transform:initialize(x, y, r, sx, sy, ox, oy)
   self.z = 0 -- Bring the layer attribute from sprite to here
 
   self.parent = nil
+  self.children = {}
 end
 
 function Transform:setParent(transform)
   assert(transform.class.name == 'Transform' and transform ~= self, 'Invalid Transform parent')
   self.parent = transform
+  table.insert(transform.children, self)
 end
 
 function Transform:getGlobalPosition()

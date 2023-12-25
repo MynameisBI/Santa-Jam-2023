@@ -107,14 +107,11 @@ function ManageEnemy:worlddraw(transform, area, enemy)
         local w, h = area:getSize()
         local ratio = math.max(0, enemy.stats.HP / enemy.stats.maxHP)
         
-        --draw HP bar
-        -- love.graphics.setColor(1, 0, 0)
-        -- love.graphics.rectangle('fill', x, y - 10, ratio*w, h/10)
         Deep.queue(18, function()
           love.graphics.setColor(0.8, 0.8, 0.8, 0.4)
           love.graphics.rectangle('fill', x + 4, y - 4, w - 8, h/10)
           love.graphics.setColor(0.8, 0.15, 0.2)
-          love.graphics.rectangle('fill', x + 4, y - 4, ratio*w - 8, h/10)
+          love.graphics.rectangle('fill', x + 4, y - 4, ratio*(w - 8), h/10)
         end)
     end
 end
