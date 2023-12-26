@@ -57,73 +57,75 @@ function ManageTeamSynergy:onTeamUpdated(teamSynergy)
   -- Apply team synergy to individual heroes in team
   for _, synergy in ipairs(teamSynergy.synergies) do
     for _, hero in ipairs(heroComponents) do
-      if synergy.trait == 'bigEar' and synergy.nextThresholdIndex ~= 1 then
-        hero:addModiferStats(
-            AllyStats(0, 0, 0, 0, 0, 0, teamSynergy.BIG_EAR_CDR_THRESHOLD[synergy.nextThresholdIndex-1]))
-
-        hero.overrides.getMaxChargeCount = function(skill)
-          return 1
-        end
-        
-      elseif synergy.trait == 'sentient' and synergy.nextThresholdIndex ~= 1 then
-        hero:addModiferStats(
-            AllyStats(0, 0, teamSynergy.SENTIENT_AS_THRESHOLD[synergy.nextThresholdIndex-1], 0))
-
-        hero.overrides.onSkillCast = function(skill)
-          hero:addTemporaryModifierStats(
-              AllyStats(0, 0, teamSynergy.SENTIENT_AS_THRESHOLD[synergy.nextThresholdIndex-1], 0), 2)
-        end
-
-      elseif synergy.trait == 'defect' and synergy.nextThresholdIndex ~= 1 then
-        hero:addModiferStats(
-            AllyStats(0, teamSynergy.DEFECT_RP_THRESHOLD[synergy.nextThresholdIndex-1]))
-
-        hero.overrides.getStats = function(hero)
-          local stats = hero.baseStats[hero.level]
-          local baseAttackDamage = stats.attackDamage
-          if hero.modEntity then
-            stats = stats + hero.modEntity:getComponent('Mod').stats
+      if hero:hasTrait(synergy.trait) then
+        if synergy.trait == 'bigEar' and synergy.nextThresholdIndex ~= 1 then
+          hero:addModiferStats(
+              AllyStats(0, 0, 0, 0, 0, 0, teamSynergy.BIG_EAR_CDR_THRESHOLD[synergy.nextThresholdIndex-1]))
+  
+          hero.overrides.getMaxChargeCount = function(skill)
+            return 1
           end
-          for _, modifierStats in ipairs(hero.modifierStatses) do
-            stats = stats + modifierStats
+          
+        elseif synergy.trait == 'sentient' and synergy.nextThresholdIndex ~= 1 then
+          hero:addModiferStats(
+              AllyStats(0, 0, teamSynergy.SENTIENT_AS_THRESHOLD[synergy.nextThresholdIndex-1], 0))
+  
+          hero.overrides.onSkillCast = function(skill)
+            hero:addTemporaryModifierStats(
+                AllyStats(0, 0, teamSynergy.SENTIENT_AS_THRESHOLD[synergy.nextThresholdIndex-1], 0), 2)
           end
-          for _, temporaryModifierStats in ipairs(hero.temporaryModifierStatses) do
-            stats = stats + temporaryModifierStats
+  
+        elseif synergy.trait == 'defect' and synergy.nextThresholdIndex ~= 1 then
+          hero:addModiferStats(
+              AllyStats(0, teamSynergy.DEFECT_RP_THRESHOLD[synergy.nextThresholdIndex-1]))
+  
+          hero.overrides.getStats = function(hero)
+            local stats = hero.baseStats[hero.level]
+            local baseAttackDamage = stats.attackDamage
+            if hero.modEntity then
+              stats = stats + hero.modEntity:getComponent('Mod').stats
+            end
+            for _, modifierStats in ipairs(hero.modifierStatses) do
+              stats = stats + modifierStats
+            end
+            for _, temporaryModifierStats in ipairs(hero.temporaryModifierStatses) do
+              stats = stats + temporaryModifierStats
+            end
+            local bonusAttackDamage = stats.attackDamage - baseAttackDamage
+            stats.attackDamage = stats.attackDamage - bonusAttackDamage
+            stats.realityPower = stats.realityPower + bonusAttackDamage
+            return stats
           end
-          local bonusAttackDamage = stats.attackDamage - baseAttackDamage
-          stats.attackDamage = stats.attackDamage - bonusAttackDamage
-          stats.realityPower = stats.realityPower + bonusAttackDamage
-          return stats
-        end
-
-      elseif synergy.trait == 'candyhead' then
-
-      elseif synergy.trait == 'coordinator' then
-        if synergy.count == 1 then
-          hero:addModiferStats(AllyStats(0, 0, 0, 0, teamSynergy.COORDINATOR_CRIT_THRESHOLD[1], 0))
-        elseif synergy.count == 3 then
-          hero:addModiferStats(AllyStats(0, 0, 0, 0, teamSynergy.COORDINATOR_CRIT_THRESHOLD[2], 0))
-        end
-
-      elseif synergy.trait == 'artificer' then
+  
+        elseif synergy.trait == 'candyhead' then
+  
+        elseif synergy.trait == 'coordinator' then
+          if synergy.count == 1 then
+            hero:addModiferStats(AllyStats(0, 0, 0, 0, teamSynergy.COORDINATOR_CRIT_THRESHOLD[1], 0))
+          elseif synergy.count == 3 then
+            hero:addModiferStats(AllyStats(0, 0, 0, 0, teamSynergy.COORDINATOR_CRIT_THRESHOLD[2], 0))
+          end
+  
+        elseif synergy.trait == 'artificer' then
+          
+        elseif synergy.trait == 'trailblazer' and synergy.nextThresholdIndex ~= 1 then
+          hero.overrides.getBasicAttackDamage = function(hero, enemyEntity)
+            local baseDamage = hero:getDamageFromRatio(1, 0, true, enemyEntity)
+  
+            local hx, hy = hero:getEntity():getComponent('Transform'):getGlobalPosition()
+            local ex, ey = enemyEntity:getComponent('Transform'):getGlobalPosition()
+            local dist = Lume.distance(hx, hy, ex, ey)
+            local stats = hero:getStats()
+            return baseDamage * (1 + 
+                teamSynergy.TRAILBLAZER_DAMAGE_BONUS_THRESHOLD[synergy.nextThresholdIndex-1] * (1 - dist / stats.range))
+          end
         
-      elseif synergy.trait == 'trailblazer' and synergy.nextThresholdIndex ~= 1 then
-        hero.overrides.getBasicAttackDamage = function(hero, enemyEntity)
-          local baseDamage = hero:getDamageFromRatio(1, 0, true, enemyEntity)
-
-          local hx, hy = hero:getEntity():getComponent('Transform'):getGlobalPosition()
-          local ex, ey = enemyEntity:getComponent('Transform'):getGlobalPosition()
-          local dist = Lume.distance(hx, hy, ex, ey)
-          local stats = hero:getStats()
-          return baseDamage * (1 + 
-              teamSynergy.TRAILBLAZER_DAMAGE_BONUS_THRESHOLD[synergy.nextThresholdIndex-1] * (1 - dist / stats.range))
-        end
-      
-      elseif synergy.trait == 'droneMaestro' then
+        elseif synergy.trait == 'droneMaestro' then
+          
         
-      
-      elseif synergy.trait == 'cracker' then
-      
+        elseif synergy.trait == 'cracker' then
+        
+        end
       end
     end
   end

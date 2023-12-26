@@ -39,25 +39,27 @@ function Kori:initialize(slot)
         end
       end)
 
-      for ox = 50, 250, 50 do
-        for y = 200, 315, 55 do
-          local clawEntity = Entity()
-          local clawTransform = clawEntity:addComponent(Transform(hx + ox - 50, y - 400, 0, 2, 2))
-          clawEntity:addComponent(Sprite(Images.effects.koriClaw, 17))
-          local clawTimer = clawEntity:addComponent(Timer())
-          clawTimer.timer:tween(0.25, clawTransform, {x = hx + ox, y = y}, 'cubic', function()
-            clawTimer.timer:after(0.5, function() Hump.Gamestate.current():removeEntity(clawEntity) end)
-          end)
-          clawTimer.timer:every(0.01, function()
-            local clawGhost = Entity()
-            local cx, cy = clawTransform:getGlobalPosition()
-            clawGhost:addComponent(Transform(cx, cy, 0, 2, 2))
-            clawGhost:addComponent(Sprite(Images.effects.koriClaw, 16, 'fade', 7.5,
-                function(sprite) Hump.Gamestate.current():removeEntity(sprite:getEntity()) end))
-            Hump.Gamestate.current():addEntity(clawGhost)
-          end)
-          Hump.Gamestate.current():addEntity(clawEntity)
-        end
+      for x = 330, 530, 50 do
+        self:getComponent('Timer').timer:after((x - 330) / 50 * 0.075, function()
+          for y = 200, 315, 55 do
+            local clawEntity = Entity()
+            local clawTransform = clawEntity:addComponent(Transform(x - 50, y - 400, 0, 2, 2))
+            clawEntity:addComponent(Sprite(Images.effects.koriClaw, 17))
+            local clawTimer = clawEntity:addComponent(Timer())
+            clawTimer.timer:tween(0.25, clawTransform, {x = x, y = y}, 'cubic', function()
+              clawTimer.timer:after(0.5, function() Hump.Gamestate.current():removeEntity(clawEntity) end)
+            end)
+            clawTimer.timer:every(0.01, function()
+              local clawGhost = Entity()
+              local cx, cy = clawTransform:getGlobalPosition()
+              clawGhost:addComponent(Transform(cx, cy, 0, 2, 2))
+              clawGhost:addComponent(Sprite(Images.effects.koriClaw, 16, 'fade', 7.5,
+                  function(sprite) Hump.Gamestate.current():removeEntity(sprite:getEntity()) end))
+              Hump.Gamestate.current():addEntity(clawGhost)
+            end)
+            Hump.Gamestate.current():addEntity(clawEntity)
+          end
+        end)
       end
     end)
   )

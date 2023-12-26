@@ -4,7 +4,7 @@ function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, cr
   self.attackDamage = attackDamage or 33
   self.realityPower = realityPower or 0
   self.attackSpeed = attackSpeed or 1
-  self.range = range or 300
+  self.range = range or 0
   self.critChance = critChance or 0
   self.critDamage = 2
   self.cooldownReduction = cooldownReduction or 0
@@ -19,7 +19,7 @@ function AllyStats:__add(otherStats)
     self.attackDamage + otherStats.attackDamage,
     self.realityPower + otherStats.realityPower,
     self.attackSpeed + otherStats.attackSpeed,
-    self.range + otherStats.range,
+    self.range,
     self.critChance + otherStats.critChance,
     self.critDamage + otherStats.critDamage,
     self.cooldownReduction + otherStats.cooldownReduction,
