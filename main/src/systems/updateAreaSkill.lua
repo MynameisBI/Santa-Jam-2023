@@ -29,32 +29,31 @@ end
 function UpdateAreaSkill:update(transform, areaSkill, dt)
   if areaSkill.secondsUntilDetonate > 0 then
     areaSkill.secondsUntilDetonate = areaSkill.secondsUntilDetonate - dt
+    return
+  end
+
+  local continuousInfo = areaSkill.continuousInfo
+  if continuousInfo == nil then
+    local damageInfo = areaSkill.damageInfo
+    self:damageEnemiesInArea(areaSkill.hero, damageInfo,
+        areaSkill.targetInfo.x, areaSkill.targetInfo.y, areaSkill.w, areaSkil.h)
+
+    Hump.Gamestate.current():removeEntity(transform:getEntity())
 
   else
-    local continuousInfo = areaSkill.continuousInfo
-
-    if continuousInfo == nil then
-      local damageInfo = areaSkill.damageInfo
-      self:damageEnemiesInArea(areaSkill.hero, damageInfo,
-          areaSkill.targetInfo.x, areaSkill.targetInfo.y, areaSkill.w, areaSkil.h)
-
-      Hump.Gamestate.current():removeEntity(transform:getEntity())
+    if continuousInfo.secondsUnitlNextTick > 0 then
+      continuousInfo.secondsUnitlNextTick = continuousInfo.secondsUnitlNextTick - dt
 
     else
-      if continuousInfo.secondsUnitlNextTick > 0 then
-        continuousInfo.secondsUnitlNextTick = continuousInfo.secondsUnitlNextTick - dt
-
+      local damageInfo = areaSkill.damageInfo
+      self:damageEnemiesInArea(areaSkill.hero, damageInfo,
+          areaSkill.targetInfo.x - areaSkill.w/2, areaSkill.targetInfo.y - areaSkill.h/2, areaSkill.w, areaSkill.h)
+      
+      continuousInfo.tickCount = continuousInfo.tickCount - 1
+      if continuousInfo.tickCount <= 0 then 
+        Hump.Gamestate.current():removeEntity(transform:getEntity())
       else
-        local damageInfo = areaSkill.damageInfo
-        self:damageEnemiesInArea(areaSkill.hero, damageInfo,
-            areaSkill.targetInfo.x - areaSkill.w/2, areaSkill.targetInfo.y - areaSkill.h/2, areaSkill.w, areaSkill.h)
-        
-        continuousInfo.tickCount = continuousInfo.tickCount - 1
-        if continuousInfo.tickCount <= 0 then 
-          Hump.Gamestate.current():removeEntity(transform:getEntity())
-        else
-          continuousInfo.secondsUnitlNextTick = continuousInfo.secondsPerTick
-        end
+        continuousInfo.secondsUnitlNextTick = continuousInfo.secondsPerTick
       end
     end
   end
@@ -116,7 +115,7 @@ function UpdateAreaSkill:earlysystemmousepressed(x, y, button)
       currentSkill._fn(hero, x, y)
       self.currentSkillComponent.currentSkill = nil
       if hero.overrides.onSkillCast then return hero.overrides.onSkillCast(self) end
-      
+
     elseif button == 2 then
       self.currentSkillComponent.currentSkill = nil
 
