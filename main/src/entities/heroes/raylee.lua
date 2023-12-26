@@ -1,7 +1,6 @@
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
 local AreaSkillEntity = require 'src.entities.skills.areaSkillEntity'
-local CurrentSkill = require 'src.components.skills.currentSkill'
 local EnemyEffect = require 'src.type.enemyEffect'
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
@@ -22,23 +21,21 @@ function Raylee:initialize(slot)
       [4] = Hero.Stats(135, 101, 1.0, 300, 0, 0)
     },
     nil,
-    Hero.Skill('Raylee',
-      0, 0,
-      function(hero, x, y)
-        Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = x, y = y}, 200, 60,
-            {damageType = 'reality', realityPowerRatio = 4, effects = {EnemyEffect('reduceRealityArmor', 3)}}, 0.42)) 
+    Hero.Skill('Raylee', 50, 8, function(hero, x, y)
+      Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = x, y = y}, 200, 60,
+          {damageType = 'reality', realityPowerRatio = 2.5, effects = {EnemyEffect('reduceRealityArmor', 3)}}, 0.42)) 
 
-        local effectEntity = Entity()
-        effectEntity:addComponent(Transform(x - 100, y - 96, 0, 2, 2))
-        effectEntity:addComponent(Sprite(Images.effects.rayleeSkill, 16))
-        local animator = effectEntity:addComponent(Animator())
-        animator:setGrid(100, 60, Images.effects.rayleeSkill:getDimensions())
-        animator:addAnimation('default', {'1-10', 1}, 0.06, false,
-            function() Hump.Gamestate.current():removeEntity(effectEntity) end)
-        animator:setCurrentAnimationName('default')
-        Hump.Gamestate.current():addEntity(effectEntity)        
-      end, true, 200, 60
-    ))
+      local effectEntity = Entity()
+      effectEntity:addComponent(Transform(x - 100, y - 96, 0, 2, 2))
+      effectEntity:addComponent(Sprite(Images.effects.rayleeSkill, 16))
+      local animator = effectEntity:addComponent(Animator())
+      animator:setGrid(100, 60, Images.effects.rayleeSkill:getDimensions())
+      animator:addAnimation('default', {'1-10', 1}, 0.06, false,
+          function() Hump.Gamestate.current():removeEntity(effectEntity) end)
+      animator:setCurrentAnimationName('default')
+      Hump.Gamestate.current():addEntity(effectEntity)
+    end, true, 200, 60)
+  )
 
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.raylee:getWidth(), Images.heroes.raylee:getHeight())
