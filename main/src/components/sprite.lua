@@ -18,7 +18,7 @@ function Sprite:initialize(image, layer, effectType, effectStrength, after)
 
   self.effectType = effectType
   self.effectStrength = effectStrength or 10
-  self.afterEffectFn = afterEffectFn or function(self) end
+  self.afterEffectFn = after or function(self) end
 end
 
 function Sprite:setColor(mode, r, g, b, a)

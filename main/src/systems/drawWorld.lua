@@ -3,13 +3,13 @@ local System = require 'src.systems.system'
 local DrawWorld = System:subclass('DrawWorld')
 
 function DrawWorld:initialize()
-  System.initialize(self, 'Transform', 'Sprite', '?Animator')
+  System.initialize(self, 'Transform', 'Sprite', '?Animator', '?Enemy')
 end
 
-function DrawWorld:update(transform, sprite, animator, dt)
+function DrawWorld:update(transform, sprite, animator, enemy, dt)
   if sprite.effectType ~= nil then
     if sprite.effectType == 'fade' then
-      if sprite._alpha < 0 then
+      if sprite._alpha <= 0 then
         sprite.afterEffectFn(sprite)
       end
       sprite._alpha = sprite._alpha - dt * sprite.effectStrength
@@ -19,12 +19,18 @@ function DrawWorld:update(transform, sprite, animator, dt)
   if animator ~= nil then
     local animation = animator:getCurrentAnimation()
     if animation ~= nil then
-      animation:update(dt)
+      if enemy == nil then
+        animation:update(dt)
+      else
+        if not enemy:getAppliedEffect('stun') then
+          animation:update(dt)
+        end
+      end
     end
   end
 end
 
-function DrawWorld:worlddraw(transform, sprite, animator)
+function DrawWorld:worlddraw(transform, sprite, animator, enemy)
   local x, y = transform:getGlobalPosition()
 
   Deep.queue(sprite.layer, function()
