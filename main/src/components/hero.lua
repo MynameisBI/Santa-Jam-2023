@@ -140,7 +140,7 @@ function Hero.Skill:initialize(description, energy, cooldown, fn, hasSecondaryCa
 
   self.energy = energy or 60
 
-  self._baseCooldown = baseCooldown or 8
+  self._baseCooldown = cooldown or 8
   self.secondsUntilSkillReady = 0
 
   self._fn = fn or function() end
