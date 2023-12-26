@@ -30,6 +30,12 @@ function Resources:initialize(teamSlots, startingMoney, startingStyle)
   self._baseMaxHealth = 100
   self._energy = 200
   self._baseMaxEnergy = 200
+
+  self.secondsUntilArtifierRegen = 4
+  self.artificerRegenAmount = 0
+
+  self.secondsAuroraRegenLeft = 0
+  self.auroraRegenSpeed = 0
 end
 
 function Resources:modifyMoney(modifier)

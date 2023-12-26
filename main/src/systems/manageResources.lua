@@ -15,9 +15,6 @@ function ManageResources:initialize()
   self.resources = Resources()
 
   self.teamSynergy = TeamSynergy()
-  
-  self.secondsUntilArtifierRegen = 4
-  self.artificerRegenAmount = 0
 end
 
 function ManageResources:earlysystemupdate(dt)
@@ -25,12 +22,17 @@ function ManageResources:earlysystemupdate(dt)
     self.resources:modifyEnergy(self.resources:getMaxEnergy() * self.resources.ENERGY_PERCENT_REGEN_RATE * dt)
 
     if self.artificerRegening then
-      self.secondsUntilArtifierRegen = self.secondsUntilArtifierRegen - dt
-      if self.secondsUntilArtifierRegen <= 0 then
-        self.secondsUntilArtifierRegen = self.resources.SECONDS_PER_ARTIFICER_REGEN
-        self.resources:modifyEnergy(self.artificerRegenAmount)
+      self.resources.secondsUntilArtifierRegen = self.resources.secondsUntilArtifierRegen - dt
+      if self.resources.secondsUntilArtifierRegen <= 0 then
+        self.resources.secondsUntilArtifierRegen = self.resources.SECONDS_PER_ARTIFICER_REGEN
+        self.resources:modifyEnergy(self.resources.artificerRegenAmount)
       end
     end
+
+    if self.resources.secondsAuroraRegenLeft > 0 then
+      self.resources:modifyEnergy(self.resources.auroraRegenSpeed * dt)
+    end
+    self.resources.secondsAuroraRegenLeft = self.resources.secondsAuroraRegenLeft - dt
   end
 
   -- on phase changed
@@ -42,15 +44,17 @@ function ManageResources:earlysystemupdate(dt)
       if artificerSynergy then
         if artificerSynergy.nextThresholdIndex ~= 1 then
           self.artificerRegening = true
-          self.secondsUntilArtifierRegen = self.resources.SECONDS_PER_ARTIFICER_REGEN
-          self.artificerRegenAmount = self.teamSynergy.ARTIFICER_ENERGY_THRESHOLD[artificerSynergy.nextThresholdIndex-1]
+          self.resources.secondsUntilArtifierRegen = self.resources.SECONDS_PER_ARTIFICER_REGEN
+          self.resources.artificerRegenAmount = self.teamSynergy.ARTIFICER_ENERGY_THRESHOLD[artificerSynergy.nextThresholdIndex-1]
         end
       end
     
-    else
+    elseif self.phase:current() == 'planning' then
       self.artificerRegening = false
-      self.artificerRegenAmount = 0
+      self.resources.artificerRegenAmount = 0
     end
+
+    self.resources.secondsAuroraRegenLeft = 0
   end
 
   self.lastFramePhase = self.phase:current()

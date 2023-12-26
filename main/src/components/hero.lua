@@ -171,18 +171,17 @@ function Hero.Skill:getPercentTimeLeft()
 end
 
 function Hero.Skill:cast()
+  if not (self.chargeCount >= 1 or self.secondsUntilSkillReady <= 0) then return false end
+
+  if not Resources():modifyEnergy(-self.energy) then return false end
+
   if self.chargeCount >= 1 then
     self.chargeCount = self.chargeCount - 1
 
   elseif self.secondsUntilSkillReady <= 0 then
     local stats = self.hero:getStats()
     self.secondsUntilSkillReady = self:getCooldown()
-  
-  else
-    return false
   end
-
-  if not Resources():modifyEnergy(-self.energy) then return false end
 
   if not self.hasSecondaryCast then
     self._fn(self.hero)
@@ -190,6 +189,8 @@ function Hero.Skill:cast()
   else
     CurrentSkill().currentSkill = self
   end
+
+  return true
 end
 
 
