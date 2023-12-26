@@ -22,6 +22,7 @@ local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
 local Resources = require 'src.components.resources'
 local Phase = require 'src.components.phase'
 local Enemy = require 'src.components.enemy'
+local AudioManager = require 'src.components.audioManager'
 -- Entities
 local Entity = require 'src.entities.entity'
 local Slot = require 'src.entities.slot'
@@ -91,6 +92,7 @@ function Game:enter(from)
   self:addSystems()
   self:initializeModSlots()
   self:initializeEnemies()
+
 
   local slots = {}
   table.insert(slots, self:addEntity(Slot('bench', 145, 185)))

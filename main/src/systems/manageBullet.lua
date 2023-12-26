@@ -1,6 +1,7 @@
 local Entity = require 'src.entities.entity'
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
+local AudioManager = require 'src.components.audioManager'
 
 local System = require 'src.systems.system'
 
@@ -23,6 +24,7 @@ function ManageBullet:update(transform, bullet, dt)
     bullet.enemy:takeDamage(bullet.hero:getBasicAttackDamage(bullet.enemy:getEntity()), 'physical',
         stats.physicalArmorIgnoreRatio)
     Hump.Gamestate.current():removeEntity(transform:getEntity())
+    AudioManager:playSound('shoot', 0.4)
   else
     transform:setGlobalPosition(bx + distX, by + distY)
   end
@@ -30,7 +32,7 @@ function ManageBullet:update(transform, bullet, dt)
   transform.r = Lume.angle(bx, by, ex, ey)
 
   Hump.Gamestate.current():addEntity(Entity(
-    Transform(bx, by, transform.r, 2, 2), 
+    Transform(bx, by, transform.r, 2, 2),
     Sprite(Images.pets.alestraBullet, 14, 'fade', 7.5,
         function(sprite) Hump.Gamestate.current():removeEntity(sprite:getEntity()) end)
   ))

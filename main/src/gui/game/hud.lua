@@ -3,6 +3,7 @@ local CurrentInspectable = require 'src.components.currentInspectable'
 local DragAndDropInfo = require 'src.components.dragAndDropInfo'
 local Hero = require 'src.components.hero'
 local CurrentSkill = require 'src.components.skills.currentSkill'
+local AudioManager = require 'src.components.audioManager'
 
 -- This should have been a system but it will mess up the draw order with the modal windows,
 -- so it's a seperate class for now
@@ -182,6 +183,7 @@ function HUD:draw()
       self.suit.layout:padding(15)
       if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
           self.suit.layout:col(110, 51)).hit then
+            AudioManager:playSound('button')
         if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
           self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
         end
@@ -189,6 +191,7 @@ function HUD:draw()
 
       if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
       self.suit.layout:col(100, 51)).hit then
+        AudioManager:playSound('button')
         if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
           print('add slot')
           self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
@@ -196,6 +199,7 @@ function HUD:draw()
       end
 
       if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
+        AudioManager:playSound('button')
         if self.phase.rounds[1] then
           if self.phase.rounds[1].mainType == 'dealer' then
             self.phase:switchNextRound()

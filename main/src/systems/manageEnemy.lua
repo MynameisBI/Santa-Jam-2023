@@ -2,7 +2,6 @@ local Entity = require 'src.entities.entity'
 local System = require 'src.systems.system'
 local Phase = require 'src.components.phase'
 local Resources = require 'src.components.resources'
-
 -- Enemies
 -- mini enemies
 local Mino = require 'src.entities.enemies.mino'
@@ -12,7 +11,7 @@ local Amber = require 'src.entities.enemies.amber'
 local Rini = require 'src.entities.enemies.rini'
 local Spinel = require 'src.entities.enemies.spinel'
 local Elio =  require 'src.entities.enemies.elio'
--- gigantic enemiesTransform
+-- gigantic enemies
 local Arno = require 'src.entities.enemies.arno'
 local Quad = require 'src.entities.enemies.quad'
 local Granite = require 'src.entities.enemies.granite'
@@ -40,6 +39,7 @@ end
 function ManageEnemy:earlysystemupdate(dt)
     if self.lastFramePhase ~= self.phase:current() and self.phase:current() == 'battle' then
     local round = self.phase:getCurrentRound()
+    print(self.phase:current())
 
     if round.mainType == 'enemy' then
         self.spawnQueue = {
