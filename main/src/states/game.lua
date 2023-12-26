@@ -14,6 +14,7 @@ local UpdateAreaSkill = require 'src.systems.updateAreaSkill'
 local ManageCandy = require 'src.systems.manageCandy'
 local ManageDrone = require 'src.systems.manageDrone'
 local UpdateTimer = require 'src.systems.updateTimer'
+local DrawRectangle = require 'src.systems.drawRectangle'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
@@ -162,6 +163,7 @@ function Game:addSystems()
   self:addSystem(ManageCandy())
   self:addSystem(ManageDrone())
   self:addSystem(UpdateTimer())
+  self:addSystem(DrawRectangle())
 end
 
 function Game:initializeEnemies()

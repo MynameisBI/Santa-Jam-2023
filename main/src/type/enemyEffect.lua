@@ -3,7 +3,7 @@ local EnemyEffect = Class('EnemyEffect')
 function EnemyEffect:initialize(effectType, duration, ...)
   if effectType == 'slow' then
     self.effectType, self.duration, self.strength = effectType, duration or 1, ...
-    self.strength = Lume.clamp(strength, 0, 1)
+    self.strength = Lume.clamp(self.strength, 0, 1)
 
   elseif effectType == 'stun' then
     self.effectType, self.duration = effectType, duration or 1
