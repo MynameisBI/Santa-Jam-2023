@@ -12,6 +12,7 @@ local ManageCandy = Class('ManageCandy', System)
 
 ManageCandy.CANDY_DAMAGE_TYPE = 'reality'
 ManageCandy.CANDY_DAMAGE = 100
+ManageCandy.CANDY_ARMOR_IGNORE_RATIO = 0
 
 function ManageCandy:initialize()
   System.initialize(self, 'Transform', 'Candy')
@@ -79,7 +80,8 @@ function ManageCandy:update(transform, candy, dt)
       return Lume.distance(x, y, ex, ey) < candy.radius
     end)
     for _, enemyEntity in ipairs(enemyEntities) do
-      enemyEntity:getComponent('Enemy'):takeDamage(ManageCandy.CANDY_DAMAGE, ManageCandy.CANDY_DAMAGE_TYPE)
+      enemyEntity:getComponent('Enemy'):takeDamage(ManageCandy.CANDY_DAMAGE, ManageCandy.CANDY_DAMAGE_TYPE,
+          ManageCandy.CANDY_ARMOR_IGNORE_RATIO)
     end
 
     Hump.Gamestate.current():removeEntity(transform:getEntity())

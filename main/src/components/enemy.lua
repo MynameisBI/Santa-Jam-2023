@@ -48,15 +48,15 @@ function Enemy.Stats:getValues()
     }
 end
 
-function Enemy:takeDamage(damage, damageType, ignoreArmorRatio)
+function Enemy:takeDamage(damage, damageType, armorIgnoreRatio)
     assert(damageType == 'physical' or damageType == 'reality' or damageType == 'true', 'Invalid damage type')
 
-    local ignoreArmorRatio = ignoreArmorRatio or 0
+    local armorIgnoreRatio = armorIgnoreRatio or 0
 
     if damageType == 'physical' then
-        damage = damage * (1 - self:getArmor('physical') * (1 - ignoreArmorRatio))
+        damage = damage * (1 - self:getArmor('physical') * (1 - armorIgnoreRatio))
     elseif damageType == 'reality' then
-        damage = damage * (1 - self:getArmor('reality') * (1 - ignoreArmorRatio))
+        damage = damage * (1 - self:getArmor('reality') * (1 - armorIgnoreRatio))
     elseif damageType == 'true' then
         damage = damage
     end

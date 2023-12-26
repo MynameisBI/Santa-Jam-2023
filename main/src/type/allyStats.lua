@@ -1,6 +1,6 @@
 local AllyStats = Class('AllyStats', Component)
 
-function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, critChance, critDamage, cooldownReduction, energy)
+function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, critChance, critDamage, cooldownReduction, energy, physicalArmorIgnoreRatio, realityArmorIgnoreRatio)
   self.attackDamage = attackDamage or 33
   self.realityPower = realityPower or 0
   self.attackSpeed = attackSpeed or 1
@@ -9,6 +9,9 @@ function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, cr
   self.critDamage = 2
   self.cooldownReduction = cooldownReduction or 0
   self.energy = energy or 0
+  
+  self.physicalArmorIgnoreRatio = physicalArmorIgnoreRatio or 0
+  self.realityArmorIgnoreRatio = realityArmorIgnoreRatio or 0
 end
 
 function AllyStats:__add(otherStats)
@@ -20,7 +23,9 @@ function AllyStats:__add(otherStats)
     self.critChance + otherStats.critChance,
     self.critDamage + otherStats.critDamage,
     self.cooldownReduction + otherStats.cooldownReduction,
-    self.energy + otherStats.energy
+    self.energy + otherStats.energy,
+    self.physicalArmorIgnoreRatio + otherStats.physicalArmorIgnoreRatio,
+    self.realityArmorIgnoreRatio + otherStats.realityArmorIgnoreRatio
   )
 end
 
@@ -34,6 +39,8 @@ function AllyStats:getValues()
     critDamage = self.critDamage,
     cooldownReduction = self.cooldownReduction,
     energy = self.energy,
+    physicalArmorIgnoreRatio = self.physicalArmorIgnoreRatio,
+    realityArmorIgnoreRatio = self.realityArmorIgnoreRatio
   }
 end
 

@@ -71,7 +71,7 @@ function UpdateAreaSkill:damageEnemiesInArea(hero, damageInfo, areaX, areaY, are
   end)
   for _, enemyEntity in ipairs(enemyEntities) do
     local enemy = enemyEntity:getComponent('Enemy')
-    enemy:takeDamage(damage, damageInfo.damageType)
+    enemy:takeDamage(damage, damageInfo.damageType, damageInfo.armorIgnoreRatio)
     for _, effect in ipairs(damageInfo.effects) do
       enemy:applyEffect(Lume.clone(effect))
     end

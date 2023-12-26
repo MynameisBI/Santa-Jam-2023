@@ -35,7 +35,7 @@ function Kori:initialize(slot)
         for i, enemyEntity in ipairs(enemyEntities) do
           enemyEntity:getComponent('Enemy'):applyEffect(EnemyEffect('stun', 3))
           enemyEntity:getComponent('Enemy'):takeDamage(
-              stats.attackDamage * 2 + stats.realityPower * 2, 'reality')
+              stats.attackDamage * 2 + stats.realityPower * 2, 'reality', stats.realityArmorIgnoreRatio)
         end
       end)
 

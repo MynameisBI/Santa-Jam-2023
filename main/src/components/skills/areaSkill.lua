@@ -11,11 +11,12 @@ function AreaSkill:initialize(hero, targetInfo, w, h, damageInfo, secondsUntilDe
   self.targetInfo = targetInfo
   self.w, self.h = w or 200, h or 60
 
-  self.damageInfo = {}
+  self.damageInfo = damageInfo or {}
   self.damageInfo.damageType = damageInfo.damageType or 'reality'
   self.damageInfo.attackDamageRatio = damageInfo.attackDamageRatio or 0
   self.damageInfo.realityPowerRatio = damageInfo.realityPowerRatio or 0
   self.damageInfo.canCrit = damageInfo.canCrit or false
+  self.damageInfo.armorIgnoreRatio = damageInfo.armorIgnoreRatio or 0
   self.damageInfo.effects = damageInfo.effects or {}
 
   self.continuousInfo = {tickCount = 0, secondsPerTick = 1, secondsUnitlNextTick = 0}

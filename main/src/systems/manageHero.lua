@@ -30,6 +30,8 @@ end
 
 function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
   if phase == 'battle' and isInTeam then
+    hero:onUpdate(dt)
+
     hero.secondsUntilAttackReady = hero.secondsUntilAttackReady - dt
     if hero.secondsUntilAttackReady <= 0 then
       local stats = hero:getStats()
@@ -44,15 +46,17 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
         local ex, ey = nearestEnemyEntity:getComponent('Transform'):getGlobalPosition()
 
         if Lume.distance(x, y, ex, ey) <= stats.range then
-          if hero.bulletClass == nil then
-            nearestEnemyEntity:getComponent('Enemy'):takeDamage(
-                hero:getBasicAttackDamage(nearestEnemyEntity), 'physical')
-          else
-            Hump.Gamestate.current():addEntity(
-              hero.bulletClass(x, y, Images.pets.alestraBullet, hero, nearestEnemyEntity)
-            )
+          local attackAccepted = hero:onBasicAttack(nearestEnemyEntity)
+          if attackAccepted ~= false then
+            if hero.bulletClass == nil then
+                nearestEnemyEntity:getComponent('Enemy'):takeDamage(
+                  hero:getBasicAttackDamage(nearestEnemyEntity), 'physical', stats.physicalArmorIgnoreRatio)
+            else
+              Hump.Gamestate.current():addEntity(
+                hero.bulletClass(x, y, Images.pets.alestraBullet, hero, nearestEnemyEntity)
+              )
+            end
           end
-          
         end
       end
     end

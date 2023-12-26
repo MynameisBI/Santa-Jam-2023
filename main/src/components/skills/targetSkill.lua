@@ -13,6 +13,7 @@ function TargetSkill:initialize(hero, enemyEntity, damageInfo, secondsUntilDeton
   self.damageInfo.damageType = damageInfo.damageType or 'reality'
   self.damageInfo.attackDamageRatio = damageInfo.attackDamageRatio or 0
   self.damageInfo.realityPowerRatio = damageInfo.realityPowerRatio or 0
+  self.damageInfo.armorIgnoreRatio = damageInfo.armorIgnoreRatio or 0
   self.damageInfo.canCrit = damageInfo.canCrit or false
 
   self.continuousInfo = continuousInfo

@@ -53,11 +53,16 @@ function Hero:initialize(name, traits, baseStats, bulletClass, skill)
 
   self.modEntity = nil
 
-  -- Overridable functions:
+  -- Overridable functions for traits:
     -- getStats(hero), getBasicAttackDamage(hero, enemyEntity),
     -- getDamageFromRatio(hero, attackDamageRatio, realityDamageRatio, canCrit, enemyEntity)
     -- onSkillCast(skill), getMaxChargeCount(skill)
   self.overrides = {}
+
+  -- Overridable functions for skills:
+  self.onUpdate = function(self, dt) end
+  self.onBasicAttack = function(self, enemyEntity) return true end
+    -- return false to cancel the attack
 end
 
 function Hero:hasTrait(trait)
