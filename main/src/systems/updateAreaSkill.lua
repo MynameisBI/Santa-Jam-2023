@@ -114,9 +114,9 @@ function UpdateAreaSkill:earlysystemmousepressed(x, y, button)
     if button == 1 then
       local hero = currentSkill.hero
       currentSkill._fn(hero, x, y)
-      if hero.overrides.onSkillCast then return hero.overrides.onSkillCast(self) end
-
       self.currentSkillComponent.currentSkill = nil
+      if hero.overrides.onSkillCast then return hero.overrides.onSkillCast(self) end
+      
     elseif button == 2 then
       self.currentSkillComponent.currentSkill = nil
 

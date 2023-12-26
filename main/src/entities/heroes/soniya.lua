@@ -21,7 +21,7 @@ function Soniya:initialize(slot)
         [4] = Hero.Stats(135, 101, 1.0, 300, 0, 0)
     },
     nil,
-    Hero.Skill('Soniya', 0, 0, function(hero)
+    Hero.Skill('Soniya', 150, 12, function(hero)
       local stats = hero:getStats()
       local enemies = Hump.Gamestate.current():getComponents('Enemy')
       for _, enemy in ipairs(enemies) do
