@@ -61,7 +61,14 @@ function Crack:earlysystemupdate(dt)
           highestHealth = enemy.stats.HP
         end
       end
+
+      if highestHealthEnemy == nil then return end
+
       self:removeEnemyEntity(highestHealthEnemy)
+
+      if math.random() < 0.34 then -- Good luck
+        Resources():modifyMoney(1)
+      end
     end
   end
 end
