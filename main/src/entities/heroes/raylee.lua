@@ -5,6 +5,7 @@ local EnemyEffect = require 'src.type.enemyEffect'
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 local Animator = require 'src.components.animator'
+local Rectangle = require 'src.components.rectangle'
 
 local Entity = require 'src.entities.entity'
 
@@ -21,12 +22,12 @@ function Raylee:initialize(slot)
       [4] = Hero.Stats(135, 101, 1.0, 300, 0, 0)
     },
     nil,
-    Hero.Skill('Raylee', 50, 8, function(hero, x, y)
-      Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = x, y = y}, 200, 60,
+    Hero.Skill('Raylee', 50, 8, function(hero, mx, my)
+      Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = mx, y = my}, 200, 60,
           {damageType = 'reality', realityPowerRatio = 2.5, effects = {EnemyEffect('reduceRealityArmor', 3)}}, 0.42)) 
 
       local effectEntity = Entity()
-      effectEntity:addComponent(Transform(x - 100, y - 96, 0, 2, 2))
+      effectEntity:addComponent(Transform(mx - 100, my - 96, 0, 2, 2))
       effectEntity:addComponent(Sprite(Images.effects.rayleeSkill, 16))
       local animator = effectEntity:addComponent(Animator())
       animator:setGrid(100, 60, Images.effects.rayleeSkill:getDimensions())

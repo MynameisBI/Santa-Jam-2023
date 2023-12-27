@@ -34,9 +34,9 @@ function UpdateAreaSkill:update(transform, areaSkill, dt)
 
   local continuousInfo = areaSkill.continuousInfo
   if continuousInfo == nil then
-    local damageInfo = areaSkill.damageInfo
-    self:damageEnemiesInArea(areaSkill.hero, damageInfo,
-        areaSkill.targetInfo.x, areaSkill.targetInfo.y, areaSkill.w, areaSkil.h)
+    self:damageEnemiesInArea(areaSkill.hero,
+        areaSkill.targetInfo.x, areaSkill.targetInfo.y, areaSkill.w, areaSkill.h,
+        areaSkill.damageInfo)
 
     Hump.Gamestate.current():removeEntity(transform:getEntity())
 
@@ -45,9 +45,11 @@ function UpdateAreaSkill:update(transform, areaSkill, dt)
       continuousInfo.secondsUnitlNextTick = continuousInfo.secondsUnitlNextTick - dt
 
     else
-      local damageInfo = areaSkill.damageInfo
-      self:damageEnemiesInArea(areaSkill.hero, damageInfo,
-          areaSkill.targetInfo.x - areaSkill.w/2, areaSkill.targetInfo.y - areaSkill.h/2, areaSkill.w, areaSkill.h)
+      self:damageEnemiesInArea(areaSkill.hero,
+          areaSkill.targetInfo.x - areaSkill.w/2, areaSkill.targetInfo.y - areaSkill.h/2, areaSkill.w, areaSkill.h,
+          areaSkill.damageInfo,
+          areaSkill.centerW, areaSkill.centerH,
+          areaSkill.centerDamageInfo)
       
       continuousInfo.tickCount = continuousInfo.tickCount - 1
       if continuousInfo.tickCount <= 0 then 
@@ -59,21 +61,47 @@ function UpdateAreaSkill:update(transform, areaSkill, dt)
   end
 end
 
-function UpdateAreaSkill:damageEnemiesInArea(hero, damageInfo, areaX, areaY, areaW, areaH)
-  local damage = hero:getDamageFromRatio(damageInfo.attackDamageRatio,
-      damageInfo.realityPowerRatio, damageInfo.canCrit) 
-
+function UpdateAreaSkill:damageEnemiesInArea(hero, areaX, areaY, areaW, areaH, damageInfo, centerW, centerH,
+centerDamageInfo)
   local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
   enemyEntities = Lume.filter(enemyEntities, function(enemyEntity)
     local x, y = enemyEntity:getComponent('Transform'):getGlobalPosition()
     local w, h = enemyEntity:getComponent('Area'):getSize()
-    return x < areaX + areaW and x + w > areaX and y < areaY + h and y + h > areaY
+    return x < areaX + areaW and x + w > areaX and y < areaY + areaH and y + h > areaY
   end)
-  for _, enemyEntity in ipairs(enemyEntities) do
-    local enemy = enemyEntity:getComponent('Enemy')
-    enemy:takeDamage(damage, damageInfo.damageType, damageInfo.armorIgnoreRatio)
-    for _, effect in ipairs(damageInfo.effects) do
-      enemy:applyEffect(Lume.clone(effect))
+
+  if centerW == nil then
+    local damage = hero:getDamageFromRatio(damageInfo.attackDamageRatio,
+      damageInfo.realityPowerRatio, damageInfo.canCrit)
+    for _, enemyEntity in ipairs(enemyEntities) do
+      local enemy = enemyEntity:getComponent('Enemy')
+      enemy:takeDamage(damage, damageInfo.damageType, damageInfo.armorIgnoreRatio)
+      for _, effect in ipairs(damageInfo.effects) do
+        enemy:applyEffect(Lume.clone(effect))
+      end
+    end
+
+  else
+    local centerX = areaX + areaW/2 - centerW/2
+    local centerY = areaY + areaH/2 - centerH/2
+    for _, enemyEntity in ipairs(enemyEntities) do
+      local enemy = enemyEntity:getComponent('Enemy')
+      local chosenDamageInfo
+
+      local x, y = enemyEntity:getComponent('Transform'):getGlobalPosition()
+      local w, h = enemyEntity:getComponent('Area'):getSize()
+      if x < centerX + centerW and x + w > centerX and y < centerY + centerH and y + h > centerY then
+        chosenDamageInfo = centerDamageInfo
+      else
+        chosenDamageInfo = damageInfo  
+      end
+
+      local damage = hero:getDamageFromRatio(chosenDamageInfo.attackDamageRatio,
+      chosenDamageInfo.realityPowerRatio, chosenDamageInfo.canCrit)
+      enemy:takeDamage(damage, chosenDamageInfo.damageType, chosenDamageInfo.armorIgnoreRatio)
+      for _, effect in ipairs(chosenDamageInfo.effects) do
+        enemy:applyEffect(Lume.clone(effect))
+      end
     end
   end
 end
@@ -81,12 +109,15 @@ end
 function UpdateAreaSkill:earlysystemworlddraw()
   if self.currentSkillComponent.currentSkill then
     local w, h = self.currentSkillComponent.currentSkill.secondaryW, self.currentSkillComponent.currentSkill.secondaryH
-    Deep.queue(17, function()
-      local mx, my = love.mouse.getPosition()
+    local cw, ch = self.currentSkillComponent.currentSkill.secondaryCenterW, self.currentSkillComponent.currentSkill.secondaryCenterH
+    local mx, my = love.mouse.getPosition()
 
-      
+    Deep.queue(17, function()
       love.graphics.setColor(0.62, 0.6, 0.66, 0.15)
       love.graphics.rectangle('fill', mx - w/2 + 1, my - h/2 + 1, w, h, 2)
+
+      love.graphics.setColor(0.62, 0.6, 0.66, 0.15)
+      love.graphics.rectangle('fill', mx - cw/2 + 1, my - ch/2 + 1, cw, ch, 2)
 
       love.graphics.setColor(0.62, 0.6, 0.66, 0.9)
       local signses = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}}
@@ -99,8 +130,6 @@ function UpdateAreaSkill:earlysystemworlddraw()
         love.graphics.rectangle('fill', mx + (4 + w/2 + self.cornerOffset) * signses[i][1], my + (2 + h/2 + self.cornerOffset) * signses[i][2], 2, 2)
         love.graphics.rectangle('fill', mx + (2 + w/2 + self.cornerOffset) * signses[i][1], my + (4 + h/2 + self.cornerOffset) * signses[i][2], 2, 2)
       end
-
-      -- love.graphics.rectangle('line', mx - 6, my - 6, 12, 12)
 
       love.graphics.setLineWidth(1)
     end)

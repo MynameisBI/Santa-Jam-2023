@@ -140,7 +140,7 @@ end
 
 Hero.Skill = Class('Skill')
 
-function Hero.Skill:initialize(description, energy, cooldown, fn, hasSecondaryCast, secondaryW, secondaryH)
+function Hero.Skill:initialize(description, energy, cooldown, fn, hasSecondaryCast, secondaryW, secondaryH, secondaryCenterW, secondaryCenterH)
   self.description = description or ''
 
   self.energy = energy or 60
@@ -151,6 +151,7 @@ function Hero.Skill:initialize(description, energy, cooldown, fn, hasSecondaryCa
   self._fn = fn or function() end
   self.hasSecondaryCast = hasSecondaryCast or false
   self.secondaryW, self.secondaryH = secondaryW or 200, secondaryH or 60
+  self.secondaryCenterW, self.secondaryCenterH = secondaryCenterW or 0, secondaryCenterH or 0
 
   self.chargeCount = nil
 

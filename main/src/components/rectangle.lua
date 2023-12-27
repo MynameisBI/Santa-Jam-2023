@@ -2,7 +2,7 @@ local Component = require 'src.components.component'
 
 local Rectangle = Class('Rectangle', Component)
 
-function Rectangle:initialize(mode, color, lineWidth, layer)
+function Rectangle:initialize(mode, color, lineWidth, layer, rx, ry)
   Component.initialize(self)
 
   self.mode = mode or 'fill'
@@ -10,6 +10,9 @@ function Rectangle:initialize(mode, color, lineWidth, layer)
   self.lineWidth = lineWidth or 1
 
   self.layer = layer
+
+  self.rx = rx
+  self.ry = ry
 end
 
 return Rectangle

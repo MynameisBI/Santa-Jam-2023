@@ -72,6 +72,7 @@ end
 end
 
 function ManageEnemy:update(transform, area, enemy, dt)
+  dt = dt * 0.5
     transform:setGlobalPosition(transform.x - enemy:getSpeed() * dt, transform.y)
 
     for i = #enemy.effects, 1, -1 do
