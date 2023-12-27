@@ -72,8 +72,10 @@ end
 end
 
 function ManageEnemy:update(transform, area, enemy, dt)
-  dt = dt * 0.5
-    transform:setGlobalPosition(transform.x - enemy:getSpeed() * dt, transform.y)
+    enemy.timer:update(dt)
+    if not enemy.isBeingKnocked then
+      transform:setGlobalPosition(transform.x - enemy:getSpeed() * dt, transform.y)
+    end
 
     for i = #enemy.effects, 1, -1 do
         enemy.effects[i].duration = enemy.effects[i].duration - dt

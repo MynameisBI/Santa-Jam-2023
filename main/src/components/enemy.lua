@@ -13,6 +13,24 @@ function Enemy:initialize(name, stats)
     self.effects = {}
 
     self.isDestroyed = false
+
+    self.isBeingKnocked = false
+    self.timer = Hump.Timer()
+    self.knockHandle = nil
+end
+
+function Enemy:knockBack(dist)
+  local transform = self:getEntity():getComponent('Transform')
+  local x, y = transform:getGlobalPosition()
+
+  self.isBeingKnocked = true
+  if self.knockHandle then
+    self.timer:cancel(self.knockHandle)
+  end
+  self.knockHandle = self.timer:tween(0.25, transform, {x = math.min(x + dist, 880)}, 'out-cubic', function()
+    self.isBeingKnocked = false
+    self.knockHandle = nil
+  end)
 end
 
 

@@ -26,7 +26,7 @@ function Soniya:initialize(slot)
       local enemies = Hump.Gamestate.current():getComponents('Enemy')
       for _, enemy in ipairs(enemies) do
         enemy:takeDamage(stats.realityPower * 2.5, 'reality', stats.realityArmorIgnoreRatio)
-        enemy:applyEffect(EnemyEffect('slow', 2, 0.3))
+        enemy:applyEffect(EnemyEffect('slow', 1, 0.3))
       end
 
       local effect = Entity()

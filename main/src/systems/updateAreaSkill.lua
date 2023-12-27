@@ -111,6 +111,8 @@ function UpdateAreaSkill:earlysystemworlddraw()
     local w, h = self.currentSkillComponent.currentSkill.secondaryW, self.currentSkillComponent.currentSkill.secondaryH
     local cw, ch = self.currentSkillComponent.currentSkill.secondaryCenterW, self.currentSkillComponent.currentSkill.secondaryCenterH
     local mx, my = love.mouse.getPosition()
+    mx = Lume.clamp(mx, 310, 838)
+    my = Lume.clamp(my, 216, 370)
 
     Deep.queue(17, function()
       love.graphics.setColor(0.62, 0.6, 0.66, 0.15)
@@ -137,6 +139,9 @@ function UpdateAreaSkill:earlysystemworlddraw()
 end
 
 function UpdateAreaSkill:earlysystemmousepressed(x, y, button)
+  local x = Lume.clamp(x, 310, 838)
+  local y = Lume.clamp(y, 216, 370)
+
   local currentSkill = self.currentSkillComponent.currentSkill
   if currentSkill ~= nil then
     if button == 1 then
