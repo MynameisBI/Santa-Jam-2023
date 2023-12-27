@@ -39,7 +39,6 @@ end
 function ManageEnemy:earlysystemupdate(dt)
     if self.lastFramePhase ~= self.phase:current() and self.phase:current() == 'battle' then
     local round = self.phase:getCurrentRound()
-    print(self.phase:current())
 
     if round.mainType == 'enemy' then
         self.spawnQueue = {
@@ -93,10 +92,7 @@ function ManageEnemy:update(transform, area, enemy, dt)
     if isDead or hasReachedPlatform then
         Hump.Gamestate.current():removeEntity(transform:getEntity())
         enemy.isDestroyed = true
-        if #self.spawnQueue <= 0 and #Hump.Gamestate.current():getComponents('Enemy') <= 0 then
-            self.phase:switchNextRound()
-            self.phase:switch('planning')
-        end
+        self:onEnemyDie()
     end
 end
 
@@ -124,6 +120,13 @@ function ManageEnemy:removeEnemies(enemy)
         Hump.Gamestate.current():removeEntity(transform:getEntity())
     end
     print('enemy removed')
+end
+
+function ManageEnemy:onEnemyDie()
+  if #self.spawnQueue <= 0 and #Hump.Gamestate.current():getComponents('Enemy') <= 0 then
+    self.phase:switchNextRound()
+    self.phase:switch('planning')
+  end
 end
 
 return ManageEnemy

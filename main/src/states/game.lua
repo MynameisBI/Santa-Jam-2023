@@ -17,6 +17,7 @@ local UpdateTimer = require 'src.systems.updateTimer'
 local DrawRectangle = require 'src.systems.drawRectangle'
 local UpdateTrap = require 'src.systems.updateTrap'
 local ManageProjectile = require 'src.systems.manageProjectile'
+local Crack = require 'src.systems.crack'
 -- Components
 local TeamSynergy = require 'src.components.teamSynergy'
 local TeamUpdateObserver = require 'src.components.teamUpdateObserver'
@@ -159,7 +160,7 @@ function Game:addSystems()
   self:addSystem(ManageTeamSynergy())
   self:addSystem(ManageHero())
   self:addSystem(Inspect())
-  self:addSystem(ManageEnemy())
+  local manageEnemy = self:addSystem(ManageEnemy())
   self:addSystem(ManageResources())
   self:addSystem(ManageBullet())
   self:addSystem(UpdateTargetSkill())
@@ -170,6 +171,7 @@ function Game:addSystems()
   self:addSystem(DrawRectangle())
   self:addSystem(UpdateTrap())
   self:addSystem(ManageProjectile())
+  self:addSystem(Crack(manageEnemy))
 end
 
 function Game:initializeEnemies()
