@@ -14,6 +14,10 @@ function EnemyEffect:initialize(effectType, duration, ...)
   elseif effectType == 'reduceRealityArmor' then
     self.effectType, self.duration = effectType, duration or 1
 
+  elseif effectType == 'skottMark' then
+    self.effectType, self.duration = effectType, duration or 1
+    self.damage, self.damageType, self.armorIgnoreRatio, self.stunDuration, self.energy = ...
+
   else
     assert(false, 'Invalid enemy effect')
   end

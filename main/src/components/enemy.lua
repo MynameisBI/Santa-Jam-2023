@@ -1,5 +1,7 @@
 local Component = require 'src.components.component'
 local Input = require 'src.components.input'
+local EnemyEffect = require 'src.type.enemyEffect'
+local Resources = require 'src.components.resources'
 
 local Enemy = Class('Enemy', Component)
 
@@ -69,6 +71,19 @@ end
 function Enemy:takeDamage(damage, damageType, armorIgnoreRatio)
     assert(damageType == 'physical' or damageType == 'reality' or damageType == 'true', 'Invalid damage type')
 
+    local hasSkottMark, skottMark = self:getAppliedEffect('skottMark')
+    if hasSkottMark then
+      for i, effect in ipairs(self.effects) do
+        if effect == skottMark then
+          table.remove(self.effects, i)
+          break
+        end
+      end
+      self:takeDamage(skottMark.damage, skottMark.damageType, skottMark.armorIgnoreRatio)
+      self:applyEffect(EnemyEffect('stun', skottMark.stunDuration))
+      Resources():modifyEnergy(skottMark.energy)
+    end
+
     local armorIgnoreRatio = armorIgnoreRatio or 0
 
     if damageType == 'physical' then
@@ -108,7 +123,15 @@ function Enemy:getAppliedEffect(effectType)
     return false
   else
     if effectType ~= 'slow' then
-      return true
+      local shortestDuration = math.huge
+      local shortestEffect = nil
+      for _, effect in ipairs(effects) do
+        if effect.duration < shortestDuration then
+          shortestEffect = effect
+          shortestDuration = effect.duration
+        end
+      end
+      return true, shortestEffect
     else
       return true, math.max(unpack(
         Lume.map(effects, function(slowEffect) return slowEffect.strength end)))
