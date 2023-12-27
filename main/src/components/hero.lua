@@ -61,8 +61,9 @@ function Hero:initialize(name, traits, baseStats, bulletClass, skill)
 
   -- Overridable functions for skills:
   self.onUpdate = function(self, dt) end
-  self.onBasicAttack = function(self, enemyEntity) return true end
-    -- return false to cancel the attack
+  self.onBasicAttack = function(self, enemyEntity) return true end -- return false to cancel the attack
+  self.onBattleStart = function(self, isInTeam, teamHeroes) end
+  self.onBattleEnd = function(self, isInTeam, teamHeroes) end
 end
 
 function Hero:hasTrait(trait)

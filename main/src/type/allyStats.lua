@@ -1,12 +1,12 @@
 local AllyStats = Class('AllyStats', Component)
 
 function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, critChance, critDamage, cooldownReduction, energy, physicalArmorIgnoreRatio, realityArmorIgnoreRatio)
-  self.attackDamage = attackDamage or 33
+  self.attackDamage = attackDamage or (function() print('Warning: default stats attack damage is not 0'); return 33 end)()
   self.realityPower = realityPower or 0
-  self.attackSpeed = attackSpeed or 1
+  self.attackSpeed = attackSpeed or (function() print('Warning: default stats attack speed is not 0'); return 1 end)()
   self.range = range or 0
   self.critChance = critChance or 0
-  self.critDamage = 2
+  self.critDamage = critDamage or (function() print('Warning: default crit damage is not 0'); return 2 end)()
   self.cooldownReduction = cooldownReduction or 0
   self.energy = energy or 0
   

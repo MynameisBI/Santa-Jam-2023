@@ -6,6 +6,10 @@ function DrawRectangle:initialize()
   System.initialize(self, 'Transform', 'Rectangle')
 end
 
+function DrawRectangle:update(transform, rectangle, dt)
+  rectangle:update(dt)
+end
+
 function DrawRectangle:worlddraw(transform, rectangle)
   Deep.queue(rectangle.layer, function()
     love.graphics.push()

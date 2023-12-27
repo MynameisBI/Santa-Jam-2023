@@ -13,6 +13,8 @@ function Rectangle:initialize(mode, color, lineWidth, layer, rx, ry)
 
   self.rx = rx
   self.ry = ry
+
+  self.update = function(self, dt) end -- war crime
 end
 
 return Rectangle

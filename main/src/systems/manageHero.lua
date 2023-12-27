@@ -85,6 +85,10 @@ function ManageHero:onPhaseSwitch(phase, isInTeam, hero)
     if isInTeam then
       hero.skill.chargeCount = hero.skill:getMaxChargeCount()
     end
+    hero:onBattleStart(isInTeam, self.teamSynergy:getHeroComponentsInTeam())
+
+  elseif phase == 'planning' then
+    hero:onBattleEnd(isInTeam, self.teamSynergy:getHeroComponentsInTeam())
   end
 end
 

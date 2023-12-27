@@ -68,7 +68,7 @@ function ManageTeamSynergy:onTeamUpdated(teamSynergy)
           
         elseif synergy.trait == 'sentient' and synergy.nextThresholdIndex ~= 1 then
           hero:addModiferStats(
-              AllyStats(0, 0, teamSynergy.SENTIENT_AS_THRESHOLD[synergy.nextThresholdIndex-1], 0))
+              AllyStats(0, 0, teamSynergy.SENTIENT_AS_THRESHOLD[synergy.nextThresholdIndex-1], 0, 0, 0, 0, 0))
   
           hero.overrides.onSkillCast = function(skill)
             hero:addTemporaryModifierStats(
@@ -77,7 +77,7 @@ function ManageTeamSynergy:onTeamUpdated(teamSynergy)
   
         elseif synergy.trait == 'defect' and synergy.nextThresholdIndex ~= 1 then
           hero:addModiferStats(
-              AllyStats(0, teamSynergy.DEFECT_RP_THRESHOLD[synergy.nextThresholdIndex-1]))
+              AllyStats(0, teamSynergy.DEFECT_RP_THRESHOLD[synergy.nextThresholdIndex-1], 0, 0, 0, 0, 0, 0))
   
           hero.overrides.getStats = function(hero)
             local stats = hero.baseStats[hero.level]
