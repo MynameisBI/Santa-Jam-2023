@@ -22,7 +22,7 @@ function Rover:initialize(slot)
     },
     nil,
     Hero.Skill('Rover', 30, 10, function(hero)
-      hero.secondsUntilEndFrenzy = 5
+      hero.secondsUntilEndFrenzy = 4
 
       local frenzyStats = hero.class.Stats(0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0)
       frenzyStats.isFrenzy = true
