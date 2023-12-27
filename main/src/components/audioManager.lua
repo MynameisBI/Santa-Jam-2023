@@ -8,8 +8,7 @@ function AudioManager:initialize()
   self.songs = {}
   self.phase = Phase()
   self.currentSong = nil
-  self.currentGoalIndex = nil
-
+  self.currentSound = nil
   self.currentSongVolume = nil
   self.isMusicMuted = false
   self.isSoundMuted = false
@@ -19,13 +18,17 @@ function AudioManager:loadSound(id, path, soundType)
   self.sounds[id] = love.audio.newSource(path, soundType)
 end
 
-function AudioManager:playSound(id, volume, pitch)
+function AudioManager:playSound(id, volume)
   if self.sounds[id] and not self.isSoundMuted then
+    if self.currentSound then
+      self.currentSound:stop()
+    end
+
     self.sounds[id]:stop()
-    self.sounds[id]:setVolume(volume or 0.7)
-    self.sounds[id]:setPitch(pitch or 1)
+    self.sounds[id]:setVolume(volume or 0.4)
     self.sounds[id]:play()
-    return self.sounds[id]
+
+    return self.currentSound
   end
 end
 
@@ -53,7 +56,7 @@ function AudioManager:update(dt)
 end
 
 
-function AudioManager:playSong(id, volume, pitch)
+function AudioManager:playSong(id, volume)
   if self.currentSong ~= self.sounds[id] then
     if self.currentSong then
       self.currentSong:stop()
@@ -66,7 +69,6 @@ function AudioManager:playSong(id, volume, pitch)
     else self.currentSongVolume = volume or 0.4
     end
     self.currentSong:setVolume(self.currentSongVolume)
-    self.currentSong:setPitch(pitch or 1)
     self.currentSong:play()
   end
 

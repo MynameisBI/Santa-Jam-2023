@@ -64,6 +64,7 @@ local BionicColumn = require 'src.entities.mods.bionicColumn'
 local EnhancerFumes = require 'src.entities.mods.enhancerFumes'
 local DeathsPromise = require 'src.entities.mods.deathsPromise'
 -- UI
+local Menu = require 'src.gui.menu.menu'
 local HUD = require 'src.gui.game.hud'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
@@ -93,7 +94,6 @@ function Game:enter(from)
   self:addSystems()
   self:initializeModSlots()
   self:initializeEnemies()
-
 
   local slots = {}
   table.insert(slots, self:addEntity(Slot('bench', 145, 185)))
@@ -262,7 +262,7 @@ function Game:draw()
     self.guis[1]:draw()
   end
 
-  -- love.graphics.print(love.timer.getFPS())
+  love.graphics.print(love.timer.getFPS())
 end
 
 function Game:keypressed(key, scancode, isRepeat)

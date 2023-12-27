@@ -1,6 +1,7 @@
 local DragAndDropInfo = require 'src.components.dragAndDropInfo'
 local Phase = require 'src.components.phase'
 local System = require 'src.systems.system'
+local AudioManager = require 'src.components.audioManager'
 
 local DragAndDrop = Class('DragAndDrop', System)
 
@@ -49,6 +50,7 @@ function DragAndDrop:earlysystemmousereleased(x, y, button)
       if (slot:getComponent('DropSlot').slotType == 'team' or slot:getComponent('DropSlot').slotType == 'bench') and
           slot:getComponent('Area'):hasWorldPoint(x, y) then
         droppedSlot = slot
+        AudioManager:playSound('pickup', 0.2)
         break
       end
     end
@@ -78,6 +80,7 @@ function DragAndDrop:earlysystemmousereleased(x, y, button)
     for _, entity in ipairs(droppableEntities) do
       if entity:getComponent('Area'):hasWorldPoint(x, y) then
         droppedEntity = entity
+        AudioManager:playSound('pickup', 0.2)
       end
     end
     if droppedEntity then

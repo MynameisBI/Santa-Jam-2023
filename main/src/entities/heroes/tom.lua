@@ -6,6 +6,7 @@ local Transform = require 'src.components.transform'
 local Rectangle = require 'src.components.rectangle'
 local Timer = require 'src.components.timer'
 local Resources = require 'src.components.resources'
+local AudioManager = require 'src.components.audioManager'
 
 local Entity = require 'src.entities.entity'
 

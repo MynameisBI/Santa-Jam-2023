@@ -5,6 +5,7 @@ local Entity = require 'src.entities.entity'
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 local Candy = require 'src.components.candy'
+local AudioManager = require 'src.components.audioManager'
 
 local System = require 'src.systems.system'
 
@@ -52,7 +53,7 @@ function ManageCandy:earlysystemupdate(dt)
 
       local level3Heroes = Lume.filter(Hump.Gamestate.current():getComponents('Hero'), function(hero)
         return hero.level >= 3
-      end) 
+      end)
 
       for i = 1, 3 + #level3Heroes do
         local targetX, targetY = math.random(420, 740), math.random(220, 320)
@@ -84,6 +85,8 @@ function ManageCandy:update(transform, candy, dt)
           ManageCandy.CANDY_ARMOR_IGNORE_RATIO)
     end
 
+    AudioManager:playSound('fall-down', 0.2)
+    
     Hump.Gamestate.current():removeEntity(transform:getEntity())
   end
 end

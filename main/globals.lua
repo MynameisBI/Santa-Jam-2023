@@ -20,6 +20,7 @@ Bump = require 'libs.bump'
 Suit = require 'libs.suit'
 Clove = require 'libs.clove'
 Deep = require 'libs.deep'
+Hex2Color = require 'libs.hex2color'
 
 function Lume.nearest(ox, oy, points, getPointPosFn)
   local minDist = math.huge

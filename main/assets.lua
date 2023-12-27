@@ -67,5 +67,5 @@ Fonts = {
   medium = love.graphics.newFont('assets/04B_03__.TTF', 16),
   big = love.graphics.newFont('assets/04B_03__.TTF', 24),
   large = love.graphics.newFont('assets/04B_03__.TTF', 32),
-  huge = love.graphics.newFont('assets/04B_03__.TTF', 40),
+  huge = love.graphics.newFont('assets/04B_03__.TTF', 50),
 }
