@@ -2,11 +2,14 @@ local Component = require 'src.components.component'
 
 local Bullet = Class('Bullet', Component)
 
-function Bullet:initialize(hero, enemyEntity, speed)
+function Bullet:initialize(damageSource, enemyEntity, speed)
   Component.initialize(self)
 
-  assert(hero ~= nil, 'Hero cannot be nil')
-  self.hero = hero
+  assert(damageSource ~= nil, 'Damage source cannot be nil')
+  self.damageSource = damageSource
+
+  assert(type(damageSource.getStats) == 'function' and type(damageSource.getBasicAttackDamage) == 'function',
+      'Damage source missing <getStats> or <getBasicAttackDamage> function')
   
   assert(enemyEntity ~= nil, 'Enemy entity cannot be nil')
   self.enemyTransform = enemyEntity:getComponent('Transform')

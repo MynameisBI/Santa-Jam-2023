@@ -20,8 +20,8 @@ function ManageBullet:update(transform, bullet, dt)
   local sqrtDistToEnemy = Lume.distance(bx, by, ex, ey, true)
 
   if sqrtDistToEnemy < bullet.hitSqrtDist then
-    local stats = bullet.hero:getStats()
-    bullet.enemy:takeDamage(bullet.hero:getBasicAttackDamage(bullet.enemy:getEntity()), 'physical',
+    local stats = bullet.damageSource:getStats()
+    bullet.enemy:takeDamage(bullet.damageSource:getBasicAttackDamage(bullet.enemy:getEntity()), 'physical',
         stats.physicalArmorIgnoreRatio)
     Hump.Gamestate.current():removeEntity(transform:getEntity())
     AudioManager:playSound('shoot', 0.4)

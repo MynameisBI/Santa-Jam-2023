@@ -60,6 +60,10 @@ function Drone:entityadded()
       function() self.timer:after(0, self.pingpongY) end)
 end
 
+function Drone:getStats()
+  return self.stats
+end
+
 function Drone:getBasicAttackDamage()
   return self.stats.attackDamage
 end

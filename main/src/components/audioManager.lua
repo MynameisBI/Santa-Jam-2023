@@ -62,7 +62,9 @@ function AudioManager:playSong(id, volume, pitch)
 
   self.currentSong = self.sounds[id]
   if self.currentSong then
-    self.currentSongVolume = volume or 0.4
+    if not DEBUG.audioEnabled then self.currentSongVolume = 0
+    else self.currentSongVolume = volume or 0.4
+    end
     self.currentSong:setVolume(self.currentSongVolume)
     self.currentSong:setPitch(pitch or 1)
     self.currentSong:play()

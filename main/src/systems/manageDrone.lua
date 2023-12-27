@@ -66,6 +66,11 @@ function ManageDrone:earlysystemupdate(dt)
 end
 
 function ManageDrone:update(transform, drone, dt)
+  if self.phase:current() == 'planning' then
+    Hump.Gamestate.current():removeEntity(transform:getEntity())
+    return
+  end
+
   drone.timer:update(dt)
 
   transform:setGlobalPosition(drone.targetX, drone.targetY)
