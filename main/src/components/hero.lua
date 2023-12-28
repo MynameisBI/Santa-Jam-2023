@@ -136,6 +136,8 @@ function Hero:getBasicAttackDamage(enemyEntity)
 end
 
 function Hero:getDamageFromRatio(attackDamageRatio, realityPowerRatio, canCrit, enemyEntity)
+  local canCrit = (self.modEntity ~= nil and self.modEntity:getComponent('Mod').id == 'SPP') and true or canCrit
+
   if self.overrides.getDamageFromRatio then
     return self.overrides.getDamageFromRatio(self, attackDamageRatio, realityPowerRatio, canCrit, enemyEntity)
   end

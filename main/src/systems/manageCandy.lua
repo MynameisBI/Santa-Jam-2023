@@ -82,7 +82,7 @@ function ManageCandy:update(transform, candy, dt)
     end)
     for _, enemyEntity in ipairs(enemyEntities) do
       enemyEntity:getComponent('Enemy'):takeDamage(ManageCandy.CANDY_DAMAGE, ManageCandy.CANDY_DAMAGE_TYPE,
-          ManageCandy.CANDY_ARMOR_IGNORE_RATIO)
+          ManageCandy.CANDY_ARMOR_IGNORE_RATIO, 'candy')
     end
 
     AudioManager:playSound('fall-down', 0.2)

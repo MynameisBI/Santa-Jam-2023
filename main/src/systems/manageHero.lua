@@ -1,5 +1,6 @@
 local TeamSynergy = require 'src.components.teamSynergy'
 local Phase = require 'src.components.phase'
+local Resources = require 'src.components.resources'
 
 local System = require 'src.systems.system'
 
@@ -50,11 +51,18 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
           if attackAccepted ~= false then
             if hero.bulletClass == nil then
                 nearestEnemyEntity:getComponent('Enemy'):takeDamage(
-                  hero:getBasicAttackDamage(nearestEnemyEntity), 'physical', stats.physicalArmorIgnoreRatio)
+                  hero:getBasicAttackDamage(nearestEnemyEntity), 'physical', stats.physicalArmorIgnoreRatio, hero)
             else
               Hump.Gamestate.current():addEntity(
                 hero.bulletClass(x, y, hero, nearestEnemyEntity)
               )
+            end
+
+            if hero.modEntity then
+              local modEntity = hero.modEntity
+              if modEntity:getComponent('Mod').id == 'PBB' then
+                Resources():modifyEnergy(modEntity.class.ENERGY_PER_ATTACK)
+              end
             end
 
             hero:getEntity():getComponent('Animator'):setCurrentAnimationName('attack')

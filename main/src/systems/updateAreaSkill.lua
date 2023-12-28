@@ -75,7 +75,7 @@ centerDamageInfo)
       damageInfo.realityPowerRatio, damageInfo.canCrit)
     for _, enemyEntity in ipairs(enemyEntities) do
       local enemy = enemyEntity:getComponent('Enemy')
-      enemy:takeDamage(damage, damageInfo.damageType, damageInfo.armorIgnoreRatio)
+      enemy:takeDamage(damage, damageInfo.damageType, damageInfo.armorIgnoreRatio, hero)
       for _, effect in ipairs(damageInfo.effects) do
         enemy:applyEffect(Lume.clone(effect))
       end
@@ -98,7 +98,7 @@ centerDamageInfo)
 
       local damage = hero:getDamageFromRatio(chosenDamageInfo.attackDamageRatio,
       chosenDamageInfo.realityPowerRatio, chosenDamageInfo.canCrit)
-      enemy:takeDamage(damage, chosenDamageInfo.damageType, chosenDamageInfo.armorIgnoreRatio)
+      enemy:takeDamage(damage, chosenDamageInfo.damageType, chosenDamageInfo.armorIgnoreRatio, hero)
       for _, effect in ipairs(chosenDamageInfo.effects) do
         enemy:applyEffect(Lume.clone(effect))
       end
@@ -150,8 +150,8 @@ function UpdateAreaSkill:earlysystemmousepressed(x, y, button)
       self.currentSkillComponent.currentSkill = nil
       if hero.overrides.onSkillCast then return hero.overrides.onSkillCast(self) end
 
-    elseif button == 2 then
-      self.currentSkillComponent.currentSkill = nil
+    -- elseif button == 2 then
+    --   self.currentSkillComponent.currentSkill = nil
 
     end
   end

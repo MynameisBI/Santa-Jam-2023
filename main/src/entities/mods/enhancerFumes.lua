@@ -2,6 +2,8 @@ local ModEntity = require 'src.entities.mods.modEntity'
 
 local EnhancerFumes = Class('EnhancerFumes', ModEntity)
 
+EnhancerFumes.ENERGY_PER_ATTACK = 20
+
 function EnhancerFumes:initialize(slot)
   ModEntity.initialize(self, slot, Images.mods.enhancerFumes,
     'PBB',

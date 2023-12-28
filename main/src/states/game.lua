@@ -242,7 +242,7 @@ function Game:draw()
     self.guis[1]:draw()
   end
 
-  love.graphics.print(love.timer.getFPS())
+  -- love.graphics.print(love.timer.getFPS())
 end
 
 function Game:keypressed(key, scancode, isRepeat)

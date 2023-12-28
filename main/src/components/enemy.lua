@@ -68,8 +68,9 @@ function Enemy.Stats:getValues()
     }
 end
 
-function Enemy:takeDamage(damage, damageType, armorIgnoreRatio)
+function Enemy:takeDamage(damage, damageType, armorIgnoreRatio, hero)
     assert(damageType == 'physical' or damageType == 'reality' or damageType == 'true', 'Invalid damage type')
+    assert((hero.class ~= nil and hero.class.name == 'Hero') or hero == 'candy', 'Invalid hero: '..tostring(hero))
 
     local hasSkottMark, skottMark = self:getAppliedEffect('skottMark')
     if hasSkottMark then
@@ -79,13 +80,23 @@ function Enemy:takeDamage(damage, damageType, armorIgnoreRatio)
           break
         end
       end
-      self:takeDamage(skottMark.damage, skottMark.damageType, skottMark.armorIgnoreRatio)
+      self:takeDamage(skottMark.damage, skottMark.damageType, skottMark.armorIgnoreRatio, hero)
       self:applyEffect(EnemyEffect('stun', skottMark.stunDuration))
       Resources():modifyEnergy(skottMark.energy)
     end
 
+    if hero.modEntity then
+      local mod = hero.modEntity:getComponent('Mod')
+      if mod.id == 'SBB' then
+        self:applyEffect(EnemyEffect('reducePhysicalArmor', math.huge))
+      elseif mod.id == 'PPB' then
+        self:applyEffect(EnemyEffect('reduceRealityArmor', math.huge))
+      end
+    end
+
     local armorIgnoreRatio = armorIgnoreRatio or 0
 
+    -- `getArmor()` already calculate the reduced armor ratio from debuffs etc
     if damageType == 'physical' then
         damage = damage * (1 - self:getArmor('physical') * (1 - armorIgnoreRatio))
     elseif damageType == 'reality' then

@@ -17,10 +17,10 @@ function Raylee:initialize(slot)
 
   HeroEntity.initialize(self, slot, Images.heroes.raylee, 'Raylee', 2, {'bigEar', 'droneMaestro'},
     {
-      [1] = Hero.Stats(40, 30, 1.0, 500, 0, 0),
-      [2] = Hero.Stats(60, 45, 1.0, 500, 0, 0),
-      [3] = Hero.Stats(90, 68, 1.0, 500, 0, 0),
-      [4] = Hero.Stats(135, 101, 1.0, 460, 0, 0)
+      [1] = Hero.Stats(40, 30, 1.0, 500, 0, 2),
+      [2] = Hero.Stats(60, 45, 1.0, 500, 0, 2),
+      [3] = Hero.Stats(90, 68, 1.0, 500, 0, 2),
+      [4] = Hero.Stats(135, 101, 1.0, 460, 0, 2)
     },
     RayleeBullet,
     Hero.Skill('Raylee', 50, 8, function(hero, mx, my)

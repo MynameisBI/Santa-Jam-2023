@@ -16,10 +16,10 @@ function Cloud:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.cloud, 'Cloud', 1, {'candyhead', 'cracker'},
     {
-      [1] = Hero.Stats(40, 30, 1.0, 550, 0, 0),
-      [2] = Hero.Stats(60, 45, 1.0, 550, 0, 0),
-      [3] = Hero.Stats(90, 68, 1.0, 550, 0, 0),
-      [4] = Hero.Stats(135, 101, 1.0, 300, 0, 0)
+      [1] = Hero.Stats(40, 30, 1.0, 550, 0, 2),
+      [2] = Hero.Stats(60, 45, 1.0, 550, 0, 2),
+      [3] = Hero.Stats(90, 68, 1.0, 550, 0, 2),
+      [4] = Hero.Stats(135, 101, 1.0, 300, 0, 2)
     },
     CloudBullet,
     Hero.Skill('Cloud', 50, 5, function(hero, mx, my)

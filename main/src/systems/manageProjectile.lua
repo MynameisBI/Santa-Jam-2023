@@ -30,7 +30,7 @@ function ManageProjectile:update(transform, area, projectile, dt)
     local damage = projectile.hero:getDamageFromRatio(damageInfo.attackDamageRatio,
         damageInfo.realityPowerRatio, damageInfo.canCrit)
     local enemy = enemyEntity:getComponent('Enemy')
-    enemy:takeDamage(damage, damageInfo.damageType, damageInfo.armorIgnoreRatio)
+    enemy:takeDamage(damage, damageInfo.damageType, damageInfo.armorIgnoreRatio, projectile.hero)
     for _, effect in ipairs(damageInfo.effects) do
       enemy:applyEffect(Lume.clone(effect))
     end
