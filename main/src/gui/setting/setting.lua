@@ -36,7 +36,7 @@ function Setting:draw()
         AudioManager:playSound('button', 0.4)
     end
 
-    print(self.songVolume)
+    love.graphics.print('Song volume : '..tostring(self.songVolume))
 
     self.suit:draw()
 end

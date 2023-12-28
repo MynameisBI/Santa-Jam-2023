@@ -3,7 +3,7 @@ local ModEntity = require 'src.entities.mods.modEntity'
 local SubcellularSupervisor = Class('SubcellularSupervisor', ModEntity)
 
 function SubcellularSupervisor:initialize(slot)
-  ModEntity.initialize(self, slot, Images.mods.placeholder, 
+  ModEntity.initialize(self, slot, Images.mods.subcellularSupervisor, 
     'SBB',
     'Subcellular Supervisor',
     '+ 0.2 AS\n+ 15 CDR\n* Attacks and skills halve\nenemies\' physical armor',

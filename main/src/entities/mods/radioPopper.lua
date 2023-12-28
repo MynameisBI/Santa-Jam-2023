@@ -3,7 +3,7 @@ local ModEntity = require 'src.entities.mods.modEntity'
 local RadioPopper = Class('RadioPopper', ModEntity)
 
 function RadioPopper:initialize(slot)
-  ModEntity.initialize(self, slot, Images.mods.placeholder, 
+  ModEntity.initialize(self, slot, Images.mods.radioPopper,
     'SSB',
     'Radio Popper',
     '+ 0.7 AS\n- 20 CDR',

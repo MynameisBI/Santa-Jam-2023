@@ -3,7 +3,7 @@ local ModEntity = require 'src.entities.mods.modEntity'
 local AbovesSliver = Class('AbovesSliver', ModEntity)
 
 function AbovesSliver:initialize(slot)
-  ModEntity.initialize(self, slot, Images.mods.placeholder, 
+  ModEntity.initialize(self, slot, Images.mods.abovesSliver, 
     'SPB',
     'Above\'s Sliver',
     '+ 20 ATK\n+ 15 RPW\n+ 10 CDR\n+ 100 Energy',

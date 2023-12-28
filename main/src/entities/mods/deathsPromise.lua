@@ -3,7 +3,7 @@ local ModEntity = require 'src.entities.mods.modEntity'
 local DeathsPromise = Class('DeathsPromise', ModEntity)
 
 function DeathsPromise:initialize(slot)
-  ModEntity.initialize(self, slot, Images.mods.placeholder, 
+  ModEntity.initialize(self, slot, Images.mods.deathsPromise, 
     'BBB',
     'Death\'s Promise',
     '+ 35 CDR\n+ 100 Energy',

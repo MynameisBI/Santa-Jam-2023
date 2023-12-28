@@ -10,7 +10,7 @@ TeamSynergy.TRAIT_THRESHOLD = {
   coordinator = {1, 3},
   artificer = {2},
   trailblazer = {2, 3, 4},
-  droneMaestro = {1, 3, 5},
+  droneMaestro = {2, 4, 6},
   cracker = {2, 3}
 }
 
@@ -21,7 +21,7 @@ TeamSynergy.DEFECT_RP_THRESHOLD = {20, 35, 50, 65}
 TeamSynergy.COORDINATOR_CRIT_THRESHOLD = {0.3, 0.6}
 TeamSynergy.ARTIFICER_ENERGY_THRESHOLD = {50}
 TeamSynergy.TRAILBLAZER_DAMAGE_BONUS_THRESHOLD = {0.5, 0.75, 1}
-TeamSynergy.DRONE_MAESTRO_DRONE_DAMAGE_THRESHOLD = {10, 16, 24} 
+TeamSynergy.DRONE_MAESTRO_DRONE_DAMAGE_THRESHOLD = {24, 40, 60} 
 TeamSynergy.CRACKER_CRACK_INTERVAL_THRESHOLD = {4, 2}
 
 function TeamSynergy:initialize()
