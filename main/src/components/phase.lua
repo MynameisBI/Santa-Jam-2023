@@ -8,11 +8,11 @@ function Phase:initialize()
   self._currentPhase = 'planning'
 
   self.rounds = {
-    {mainType = 'enemy', subType = 'a'},
-    {mainType = 'dealer', subType = 'A'},
-    {mainType = 'enemy', subType = 'b'},
-    {mainType = 'elite', subType = 'A'},
-    {mainType = 'enemy', subType = 'B'},
+    {mainType = 'enemy', subType = '~1'},
+    {mainType = 'dealer', subType = 'A1'},
+    {mainType = 'enemy', subType = '~2'},
+    {mainType = 'elite', subType = 'A1'},
+    {mainType = 'enemy', subType = 'A6'},
   }
   self.currentRound = nil
 end

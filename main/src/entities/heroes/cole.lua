@@ -13,7 +13,7 @@ local Cole = Class('Cole', HeroEntity)
 function Cole:initialize(slot)
     Entity.initialize(self)
 
-    HeroEntity.initialize(self, slot, Images.heroes.cole, 'Cole', {'bigEar', 'coordinator'},
+    HeroEntity.initialize(self, slot, Images.heroes.cole, 'Cole', 1, {'bigEar', 'coordinator'},
         {
             [1] = Hero.Stats(40, 30, 1.0, 500, 0, 0),
             [2] = Hero.Stats(60, 45, 1.0, 500, 0, 0),

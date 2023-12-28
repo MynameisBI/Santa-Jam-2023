@@ -1,3 +1,31 @@
+local TeamSynergy = require 'src.components.teamSynergy'
+local Resources = require 'src.components.resources'
+-- uh
+local Tier1 = {
+  Cole = require 'src.entities.heroes.cole',
+  Raylee = require 'src.entities.heroes.raylee',
+  Brunnos = require 'src.entities.heroes.brunnos',
+  Keon = require 'src.entities.heroes.keon',
+  Cloud = require 'src.entities.heroes.cloud'
+}
+local Tier2 = {
+  Kori = require 'src.entities.heroes.kori',
+  Soniya = require 'src.entities.heroes.soniya',
+  Nathanael = require 'src.entities.heroes.nathanael',
+  Aurora = require 'src.entities.heroes.aurora'
+}
+local Tier3 = {
+  Brae = require 'src.entities.heroes.brae',
+  Rover = require 'src.entities.heroes.rover',
+  Sasami = require 'src.entities.heroes.sasami',
+  Hakiko = require 'src.entities.heroes.hakiko'
+}
+local Tier4 = {
+  Tom = require 'src.entities.heroes.tom',
+  Alestra = require 'src.entities.heroes.alestra',
+  Skott = require 'src.entities.heroes.skott',
+}
+
 local HeroRewardWindow = Class('HeroRewardWindow')
 
 function HeroRewardWindow:initialize()
@@ -8,7 +36,20 @@ function HeroRewardWindow:initialize()
   self.heroRewards = {}
 end
 
-function HeroRewardWindow:open()
+function HeroRewardWindow:open(value)
+  if value == 1 then
+
+  elseif value == 2 then
+
+  elseif value == 3 then
+
+  elseif value == 4 then
+
+  elseif value == 5 then
+
+  elseif value == 6 then
+
+  end
   self.heroRewards = {{}, {}, {}}
   self.isOpened = true
 end

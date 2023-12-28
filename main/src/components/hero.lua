@@ -27,10 +27,13 @@ local Hero = Class('Hero', Component)
     -- coordinator, artificer, trailblazer, droneMaestro, cracker
 -- `baseStats` is a table of objects of class Hero.Stats
 -- `skill` is an object of class Hero.Skill
-function Hero:initialize(name, traits, baseStats, bulletClass, skill)
+function Hero:initialize(name, tier, traits, baseStats, bulletClass, skill)
   Component.initialize(self)
 
   self.name = name
+
+  self.tier = tier
+
   self.traits = traits or {}
 
   self.level = 1
@@ -64,6 +67,10 @@ function Hero:initialize(name, traits, baseStats, bulletClass, skill)
   self.onBasicAttack = function(self, enemyEntity) return true end -- return false to cancel the attack
   self.onBattleStart = function(self, isInTeam, teamHeroes) end
   self.onBattleEnd = function(self, isInTeam, teamHeroes) end
+end
+
+function Hero:getSellPrice()
+  return self.tier * self.level
 end
 
 function Hero:hasTrait(trait)

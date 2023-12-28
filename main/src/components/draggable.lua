@@ -28,12 +28,12 @@ function Draggable:entityadded()
 end
 
 -- These functions probably don't belong here, they belong to the system
-function Draggable:setSlot(slot)
+function Draggable:setSlot(slotEntity)
   -- assert(slot, 'Draggable must have a Slot entity parent')
-  slot:getComponent('DropSlot').draggable = self
-  self.slot = slot
+  slotEntity:getComponent('DropSlot').draggable = self
+  self.slot = slotEntity
   -- Assuming the entity has been initialize, we can call this
-  self:setEntityPosToSlot(slot)
+  self:setEntityPosToSlot(slotEntity)
 end
 
 function Draggable:setEntityPosToSlot(slot)

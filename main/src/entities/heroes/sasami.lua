@@ -15,7 +15,7 @@ function Sasami:initialize(slot)
   Entity.initialize(self)
 
   HeroEntity.initialize(
-    self, slot, Images.heroes.sasami, 'Sasami', {'defect', 'coordinator'},
+    self, slot, Images.heroes.sasami, 'Sasami', 3, {'defect', 'coordinator'},
     {
       [1] = Hero.Stats(40, 30, 1.0, 300, 0, 0),
       [2] = Hero.Stats(60, 45, 1.0, 300, 0, 0),

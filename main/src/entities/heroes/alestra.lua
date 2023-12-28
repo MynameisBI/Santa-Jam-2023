@@ -11,7 +11,7 @@ function Alestra:initialize(slot)
   Entity.initialize(self)
 
   HeroEntity.initialize(
-    self, slot, Images.heroes.alestra, 'Alestra', {'sentient', 'coordinator'},
+    self, slot, Images.heroes.alestra, 'Alestra', 4, {'sentient', 'coordinator'},
     {
       [1] = Hero.Stats(40, 30, 1.0, 300, 0, 0),
       [2] = Hero.Stats(60, 45, 1.0, 300, 0, 0),

@@ -2,6 +2,7 @@ local DragAndDropInfo = require 'src.components.dragAndDropInfo'
 local Phase = require 'src.components.phase'
 local System = require 'src.systems.system'
 local AudioManager = require 'src.components.audioManager'
+local Resources = require 'src.components.resources'
 
 local DragAndDrop = Class('DragAndDrop', System)
 
@@ -67,6 +68,23 @@ function DragAndDrop:earlysystemmousereleased(x, y, button)
         local teamUpdateObservers = Hump.Gamestate.current():getComponents('TeamUpdateObserver')
         Lume.each(teamUpdateObservers, 'notify')
       end
+
+    elseif 50 < x and x < 810 and 465 < y then
+      local hero = currentDraggable:getEntity():getComponent('Hero')
+      if hero.modEntity then
+        local emptyModSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
+            function(dropSlot) return dropSlot.slotType == 'mod' and dropSlot.draggable == nil end)
+
+        if #emptyModSlots == 0 then
+          print('Uh oh no we\'re out of mod slots')
+        else
+          hero.modEntity:getComponent('Draggable'):setSlot(emptyModSlots[1]:getEntity())
+          Hump.Gamestate.current():addEntity(hero.modEntity)
+        end
+      end
+      Resources():modifyMoney(hero:getSellPrice())
+      Hump.Gamestate.current():removeEntity(currentDraggable:getEntity())
+
     else
       self.dragAndDropInfo.draggable:setSlot(self.dragAndDropInfo.oldSlot)
     end

@@ -77,15 +77,15 @@ function State:addEntity(entity)
 end
 
 function State:removeEntity(entity)
+  local transform = entity:getComponent('Transform')
+  if transform then
+    for _, childrenTransform in ipairs(transform.children) do
+      self:removeEntity(childrenTransform:getEntity())
+    end
+  end
+
   for i, e in ipairs(self.entities) do
     if e == entity then
-      local transform = e:getComponent('Transform')
-      if transform then
-        for i, childrenTransform in ipairs(transform.children) do
-          self:removeEntity(childrenTransform:getEntity())
-        end
-      end
-
       table.remove(self.entities, i)
 
       Lume.each(self.systems, 'earlysystementityremoved', entity)

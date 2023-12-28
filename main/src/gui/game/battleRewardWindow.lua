@@ -1,3 +1,5 @@
+local Resources = require 'src.components.resources'
+
 local BattleRewardWindow = Class('BattleRewardWindow')
 
 function BattleRewardWindow:initialize()
@@ -8,8 +10,58 @@ function BattleRewardWindow:initialize()
   self.battleRewards = {}
 end
 
-function BattleRewardWindow:open()
-  self.battleRewards = {{}, {}, {}, {}, {}}
+function BattleRewardWindow:open(round)
+  self.battleRewards = {}
+
+  if round.mainType == 'enemy' then
+    if round.subType == '~1' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(6, 10)},
+        {rewardType = 'hero', value = 1},
+        {rewardType = 'hero', value = 1},
+      }
+    elseif round.subType == '~2' then
+
+    elseif round.subType == 'A1' then
+      
+    elseif round.subType == 'A6' then
+      
+    elseif round.subType == 'A11' then
+
+    elseif round.subType == 'B1' then
+
+    elseif round.subType == 'B6' then
+
+    elseif round.subType == 'B11' then
+
+    elseif round.subType == 'C0' then
+
+    elseif round.subType == 'C5' then
+
+    elseif round.subType == 'C10' then
+
+    end
+
+  elseif round.mainType == 'elite' then
+    if round.subType == 'a' then
+      
+    elseif round.subType == 'b' then
+
+    elseif round.subType == 'A' then
+
+    elseif round.subType == 'B' then
+
+    elseif round.subType == 'C' then
+
+    elseif round.subType == 'D' then
+
+    elseif round.subType == 'E' then      
+
+    elseif round.subType == 'F' then
+
+    end
+
+  end
   self.isOpened = true
 end
 
@@ -40,7 +92,15 @@ function BattleRewardWindow:draw()
   for i = #self.battleRewards, 1, -1 do
     if self.suit:Button(self.battleRewards.text or '', {id = 'Reward '..tostring(i)},
         self.suit.layout:up(178, buttonH)).hit then
-      Hump.Gamestate.current().guis[3]:open()
+
+      if self.battleRewards[i].rewardType == 'money' then
+        Resources():modifyMoney(self.battleRewards[i].amount)
+      elseif self.battleRewards[i].rewardType == 'mod' then
+        
+      elseif self.battleRewards[i].rewardType == 'hero' then
+        Hump.Gamestate.current().guis[3]:open()
+      end
+      
       table.remove(self.battleRewards, i)
       if #self.battleRewards == 0 then
         self:close()

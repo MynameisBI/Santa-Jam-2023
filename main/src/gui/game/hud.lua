@@ -175,54 +175,91 @@ function HUD:draw()
 
 
   -- Lower buttons
-  if CurrentSkill().currentSkill == nil then
-    love.graphics.setFont(Fonts.medium)
-    local currentPhase = self.phase:current()
-    if currentPhase == 'planning' then
-      self.suit.layout:reset(250, 475)
-      self.suit.layout:padding(15)
-      if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
-          self.suit.layout:col(110, 51)).hit then
-            AudioManager:playSound('button')
-        if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
-          self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
-        end
-      end
-
-      if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
-      self.suit.layout:col(100, 51)).hit then
-        AudioManager:playSound('button')
-        if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
-          print('add slot')
-          self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
-        end
-      end
-
-      if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
-        AudioManager:playSound('button')
-        if self.phase.rounds[1] then
-          if self.phase.rounds[1].mainType == 'dealer' then
-            self.phase:switchNextRound()
+  if self.dragAndDropInfo.draggable == nil then
+    if CurrentSkill().currentSkill == nil then
+      love.graphics.setFont(Fonts.medium)
+      local currentPhase = self.phase:current()
+      if currentPhase == 'planning' then
+        self.suit.layout:reset(250, 475)
+        self.suit.layout:padding(15)
+        if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
+            self.suit.layout:col(110, 51)).hit then
+              AudioManager:playSound('button')
+          if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
+            self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
           end
         end
-        self.phase:switch('battle')
-        self.phase:startCurrentRound()
-      end
-
-    elseif currentPhase == 'battle' then
-      local heroComponents = self.teamSynergy:getHeroComponentsInTeam()
-
-      local skillW, skillH = 110, 51
-      local paddingX = 15
-      self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 475)
-      self.suit.layout:padding(paddingX)
-      for i = 1, #heroComponents do
-        if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
-            self.suit.layout:col(skillW, skillH)).hit then
-          heroComponents[i].skill:cast()
+  
+        if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
+        self.suit.layout:col(100, 51)).hit then
+          AudioManager:playSound('button')
+          if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
+            print('add slot')
+            self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
+          end
+        end
+  
+        if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
+          AudioManager:playSound('button')
+          if self.phase.rounds[1] then
+            if self.phase.rounds[1].mainType == 'dealer' then
+              self.phase:switchNextRound()
+            end
+          end
+          self.phase:switch('battle')
+          self.phase:startCurrentRound()
+        end
+  
+      elseif currentPhase == 'battle' then
+        local heroComponents = self.teamSynergy:getHeroComponentsInTeam()
+  
+        local skillW, skillH = 110, 51
+        local paddingX = 15
+        self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 475)
+        self.suit.layout:padding(paddingX)
+        for i = 1, #heroComponents do
+          if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
+              self.suit.layout:col(skillW, skillH)).hit then
+            heroComponents[i].skill:cast()
+          end
         end
       end
     end
+    
+  else
+    local draggable = self.dragAndDropInfo.draggable
+
+    Deep.queue(8, function()
+      local x, y, w, h = 50, 465, 760, 65
+      local mx, my = love.mouse.getPosition()
+
+      if x < mx and mx < x + w and y < my then
+        love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+        love.graphics.rectangle('fill', x, y, w, h)
+
+        love.graphics.setColor(0.8, 0.8, 0.8, 1)
+        love.graphics.setFont(Fonts.big)
+        if draggable.draggableType == 'hero' then
+          local hero = draggable:getEntity():getComponent('Hero')
+          love.graphics.printf('Sell for '..tostring(hero:getSellPrice()), 130, 490, 600, 'center')
+
+          love.graphics.setColor(0.9, 0.9, 0.9)
+          love.graphics.draw(Images.icons.moneyIcon, 500, 485, 0, 3, 3)
+
+        elseif draggable.draggableType == 'mod' then
+          love.graphics.printf('Sell for ', 150, 490, 600, 'center')
+        end
+
+      else
+        love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+        love.graphics.rectangle('fill', x, y, w, h)
+
+        love.graphics.setColor(0.8, 0.8, 0.8, 1)
+        love.graphics.setFont(Fonts.big)
+        love.graphics.printf('Drag here to sell', 150, 490, 600, 'center')
+      end
+    end)
+
   end
 
 

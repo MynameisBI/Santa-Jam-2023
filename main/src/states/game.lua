@@ -94,7 +94,6 @@ function Game:enter(from)
 
   self:addSystems()
   self:initializeModSlots()
-  self:initializeEnemies()
 
   local slots = {}
   table.insert(slots, self:addEntity(Slot('bench', 145, 185)))
@@ -172,21 +171,6 @@ function Game:addSystems()
   self:addSystem(UpdateTrap())
   self:addSystem(ManageProjectile())
   self:addSystem(Crack(manageEnemy))
-end
-
-function Game:initializeEnemies()
-  -- self:addEntity(Mino())
-  -- self:addEntity(Peach())
-  -- self:addEntity(Amber())
-  -- self:addEntity(Rini())
-  -- self:addEntity(Spinel())
-  -- self:addEntity(Elio())
-  -- self:addEntity(Arno())
-  -- self:addEntity(Quad())
-  -- self:addEntity(Granite())
-  -- self:addEntity(Pepero())
-  -- self:addEntity(Sev())
-  -- self:addEntity(Leo())
 end
 
 function Game:initializeModSlots()
