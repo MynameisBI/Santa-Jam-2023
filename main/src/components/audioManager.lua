@@ -10,7 +10,7 @@ function AudioManager:initialize()
   self.currentSong = nil
   self.currentSound = nil
   self.currentSongVolume = nil
-  self.isMusicMuted = false
+
   self.isSoundMuted = false
 end
 
@@ -89,6 +89,14 @@ function AudioManager:switch()
   else
     self:playSong('song2', 0.4)
   end
+end
+
+function AudioManager:getCurrentSongVolume()
+  return self.currentSongVolume
+end
+
+function AudioManager:getCurrentSoundVolume()
+  return self.currentSoundVolume
 end
 
 return AudioManager
