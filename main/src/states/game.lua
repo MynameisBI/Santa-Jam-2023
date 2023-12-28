@@ -69,6 +69,7 @@ local Menu = require 'src.gui.menu.menu'
 local HUD = require 'src.gui.game.hud'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
+local Setting = require 'src.gui.setting.setting'
 -- Enemies
 -- mini enemies
 local Mino = require 'src.entities.enemies.mino'
@@ -225,9 +226,7 @@ function Game:draw()
 
   love.graphics.draw(Images.environment.platform, 0, 0, 0, 2, 2)
 
-
   State.draw(self)
-
 
   if self.guis[3].isOpened then
     self.guis[1].suit:updateMouse(math.huge, math.huge, false)
