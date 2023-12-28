@@ -2,7 +2,7 @@ local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
 local EnemyEffect = require 'src.type.enemyEffect'
 
-local Skott = Class('Skott', HeroEntity)
+local Skott = Class('S\'kott', HeroEntity)
 
 function Skott:initialize(slot)
   HeroEntity.initialize(

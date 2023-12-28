@@ -120,22 +120,22 @@ function Game:enter(from)
   table.insert(slots, self:addEntity(Slot('team', 234, 310)))
   table.insert(slots, self:addEntity(Slot('team', 280, 326)))
 
-  self:addEntity(Soniya(slots[1]))
+  -- self:addEntity(Soniya(slots[1]))
   self:addEntity(Cole(slots[2]))
-  self:addEntity(Tom(slots[3]))
-  self:addEntity(Sasami(slots[4]))
-  self:addEntity(Skott(slots[5]))
-  self:addEntity(Rover(slots[6]))
-  self:addEntity(Raylee(slots[7]))
-  self:addEntity(Nathanael(slots[8]))
-  self:addEntity(Kori(slots[9]))
-  self:addEntity(Keon(slots[10]))
-  self:addEntity(Hakiko(slots[11]))
-  self:addEntity(Cloud(slots[12]))
-  self:addEntity(Brunnos(slots[13]))
-  self:addEntity(Brae(slots[14]))
-  self:addEntity(Aurora(slots[15]))
-  self:addEntity(Alestra(slots[16]))
+  -- self:addEntity(Tom(slots[3]))
+  -- self:addEntity(Sasami(slots[4]))
+  -- self:addEntity(Skott(slots[5]))
+  -- self:addEntity(Rover(slots[6]))
+  -- self:addEntity(Raylee(slots[7]))
+  -- self:addEntity(Nathanael(slots[8]))
+  -- self:addEntity(Kori(slots[9]))
+  -- self:addEntity(Keon(slots[10]))
+  -- self:addEntity(Hakiko(slots[11]))
+  -- self:addEntity(Cloud(slots[12]))
+  -- self:addEntity(Brunnos(slots[13]))
+  -- self:addEntity(Brae(slots[14]))
+  -- self:addEntity(Aurora(slots[15]))
+  -- self:addEntity(Alestra(slots[16]))
 
 
   local teamSynergy = TeamSynergy()
@@ -252,10 +252,6 @@ function Game:draw()
 end
 
 function Game:keypressed(key, scancode, isRepeat)
-  if love.keyboard.isDown('lctrl') and scancode == 'b' then
-    self.guis[2]:open()
-  end
-
   if not self.guis[2].isOpened and not self.guis[3].isOpened then
     State.keypressed(self, key, scancode, isRepeat)
   end

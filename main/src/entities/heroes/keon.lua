@@ -8,7 +8,7 @@ local Animator = require 'src.components.animator'
 
 local Entity = require 'src.entities.entity'
 
-local Keon = Class('Keon', HeroEntity)
+local Keon = Class('K\'eon', HeroEntity)
 
 function Keon:initialize(slot)
   Entity.initialize(self)

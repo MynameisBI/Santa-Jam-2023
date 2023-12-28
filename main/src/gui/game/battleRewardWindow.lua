@@ -15,11 +15,17 @@ function BattleRewardWindow:open(round)
 
   if round.mainType == 'enemy' then
     if round.subType == '~1' then
-      self.battleRewards = {
-        {rewardType = 'money', amount = math.random(6, 10)},
-        {rewardType = 'hero', value = 1},
-        {rewardType = 'hero', value = 1},
-      }
+      local reward1 = {rewardType = 'money', amount = math.random(6, 10)}
+      reward1.text = tostring(reward1.amount)..' money'
+
+      local reward2 = {rewardType = 'hero', value = 1}
+      reward2.text = 'Choose a hero reward'
+      
+      local reward3 = {rewardType = 'hero', value = 1}
+      reward3.text = 'Choose a hero reward'
+
+      self.battleRewards = {reward1, reward2, reward3}
+
     elseif round.subType == '~2' then
 
     elseif round.subType == 'A1' then
@@ -90,7 +96,7 @@ function BattleRewardWindow:draw()
   self.suit.layout:reset(341, 154 + (#self.battleRewards-1) * (padding + buttonH))
   self.suit.layout:padding(padding)
   for i = #self.battleRewards, 1, -1 do
-    if self.suit:Button(self.battleRewards.text or '', {id = 'Reward '..tostring(i)},
+    if self.suit:Button(self.battleRewards[i].text, {id = 'Reward '..tostring(i)},
         self.suit.layout:up(178, buttonH)).hit then
 
       if self.battleRewards[i].rewardType == 'money' then
@@ -98,7 +104,7 @@ function BattleRewardWindow:draw()
       elseif self.battleRewards[i].rewardType == 'mod' then
         
       elseif self.battleRewards[i].rewardType == 'hero' then
-        Hump.Gamestate.current().guis[3]:open()
+        Hump.Gamestate.current().guis[3]:open(self.battleRewards[i].value)
       end
       
       table.remove(self.battleRewards, i)
