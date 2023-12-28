@@ -1,6 +1,6 @@
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
-local BulletEntity = require 'src.entities.bullets.bulletEntity'
+local ColeBullet = require 'src.entities.bullets.coleBullet'
 local TargetSkillEntity = require 'src.entities.skills.targetSkillEntity'
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
@@ -20,7 +20,7 @@ function Cole:initialize(slot)
             [3] = Hero.Stats(90, 68, 1.0, 600, 0, 2),
             [4] = Hero.Stats(135, 101, 1.0, 600, 0, 2)
         },
-        BulletEntity,
+        ColeBullet,
         Hero.Skill('Cole',
             40, 8,
             function(hero, mx, my)
@@ -51,7 +51,9 @@ function Cole:initialize(slot)
         local animator = self:getComponent('Animator')
         animator:setGrid(18, 18, Images.heroes.cole:getWidth(), Images.heroes.cole:getHeight())
         animator:addAnimation('idle', {'1-4', 1}, {1.4, 0.075, 0.075, 1}, true)
-        animator:addAnimation('attack', {'7-8', 1}, 0.2, true)
+        animator:addAnimation('attack', {'8-7', 1}, {0.2, 0.8}, true, function()
+          animator:setCurrentAnimationName('idle') 
+        end)
         animator:setCurrentAnimationName('idle')
 end
 

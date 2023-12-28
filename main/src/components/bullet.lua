@@ -2,7 +2,7 @@ local Component = require 'src.components.component'
 
 local Bullet = Class('Bullet', Component)
 
-function Bullet:initialize(damageSource, enemyEntity, speed)
+function Bullet:initialize(damageSource, enemyEntity, speed, fadeSpeed)
   Component.initialize(self)
 
   assert(damageSource ~= nil, 'Damage source cannot be nil')
@@ -19,7 +19,7 @@ function Bullet:initialize(damageSource, enemyEntity, speed)
   self.speed = speed or 800
   self.hitSqrtDist = ((self.speed / 40) * (60 / love.timer.getFPS())) ^ 2
 
-  -- self.angle = math.atan2(self.target.y - self.y, self.target.x - self.x)
+  self.fadeSpeed = fadeSpeed
 end
 
 return Bullet

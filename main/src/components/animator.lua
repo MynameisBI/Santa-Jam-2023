@@ -47,6 +47,7 @@ end
 
 function Animator:setCurrentAnimationName(name)
   self.currentAnimationName = name
+  self:getCurrentAnimation():gotoFrame(1)
 end
 
 function Animator:getCurrentAnimation()

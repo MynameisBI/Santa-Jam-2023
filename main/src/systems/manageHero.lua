@@ -53,9 +53,11 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
                   hero:getBasicAttackDamage(nearestEnemyEntity), 'physical', stats.physicalArmorIgnoreRatio)
             else
               Hump.Gamestate.current():addEntity(
-                hero.bulletClass(x, y, Images.pets.alestraBullet, hero, nearestEnemyEntity)
+                hero.bulletClass(x, y, hero, nearestEnemyEntity)
               )
             end
+
+            hero:getEntity():getComponent('Animator'):setCurrentAnimationName('attack')
           end
         end
       end

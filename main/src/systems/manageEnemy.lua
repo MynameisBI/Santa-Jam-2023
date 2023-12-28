@@ -47,9 +47,9 @@ function ManageEnemy:earlysystemupdate(dt)
       }
     elseif round.subType == '~2' then
       self.spawnQueue = {
-        Mino, 0, Mino, 1.5, Mino, 3, Mino, 4.5,
-        Mino, 6, Mino, 7.5, Mino, 9, Mino, 10.5,
-        Mino, 12, Mino, 13.5, Mino, 15, Mino, 16.5,
+        Mino, 0, Mino, 1, Mino, 2, Mino, 3,
+        Mino, 4, Mino, 5, Mino, 6, Mino, 7,
+        Mino, 8, Mino, 9, Mino, 10, Mino, 11,
       }
 
     elseif round.subType == 'A1' then

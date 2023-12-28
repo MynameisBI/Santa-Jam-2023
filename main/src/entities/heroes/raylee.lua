@@ -6,6 +6,7 @@ local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 local Animator = require 'src.components.animator'
 local Rectangle = require 'src.components.rectangle'
+local RayleeBullet = require 'src.entities.bullets.rayleeBullet'
 
 local Entity = require 'src.entities.entity'
 
@@ -16,12 +17,12 @@ function Raylee:initialize(slot)
 
   HeroEntity.initialize(self, slot, Images.heroes.raylee, 'Raylee', 2, {'bigEar', 'droneMaestro'},
     {
-      [1] = Hero.Stats(40, 30, 1.0, 300, 0, 0),
-      [2] = Hero.Stats(60, 45, 1.0, 300, 0, 0),
-      [3] = Hero.Stats(90, 68, 1.0, 300, 0, 0),
-      [4] = Hero.Stats(135, 101, 1.0, 300, 0, 0)
+      [1] = Hero.Stats(40, 30, 1.0, 500, 0, 0),
+      [2] = Hero.Stats(60, 45, 1.0, 500, 0, 0),
+      [3] = Hero.Stats(90, 68, 1.0, 500, 0, 0),
+      [4] = Hero.Stats(135, 101, 1.0, 460, 0, 0)
     },
-    nil,
+    RayleeBullet,
     Hero.Skill('Raylee', 50, 8, function(hero, mx, my)
       Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = mx, y = my}, 200, 60,
           {damageType = 'reality', realityPowerRatio = 2.5, effects = {EnemyEffect('reduceRealityArmor', 3)}}, 0.42)) 
@@ -41,7 +42,9 @@ function Raylee:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.raylee:getWidth(), Images.heroes.raylee:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.5, true)
-  animator:addAnimation('attack', {'3-6', 1}, {1, 0.075, 0.075, 1}, true)
+  animator:addAnimation('attack', {'5-6', 1}, {0.2, 0.8}, true, function()
+    animator:setCurrentAnimationName('idle') 
+  end)
   animator:setCurrentAnimationName('idle')
 end
 

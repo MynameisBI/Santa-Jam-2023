@@ -8,10 +8,10 @@ local System = require 'src.systems.system'
 local ManageBullet = Class('ManageBullet', System)
 
 function ManageBullet:initialize()
-  System.initialize(self, 'Transform', 'Bullet')
+  System.initialize(self, 'Transform', 'Sprite', 'Bullet')
 end
 
-function ManageBullet:update(transform, bullet, dt)
+function ManageBullet:update(transform, sprite, bullet, dt)
   local bx, by = transform:getGlobalPosition()
   local ex, ey = bullet.enemyTransform:getGlobalPosition()
   ex, ey = ex + 6, ey + 18
@@ -31,11 +31,13 @@ function ManageBullet:update(transform, bullet, dt)
 
   transform.r = Lume.angle(bx, by, ex, ey)
 
-  Hump.Gamestate.current():addEntity(Entity(
+  if bullet.fadeSpeed then
+    Hump.Gamestate.current():addEntity(Entity(
     Transform(bx, by, transform.r, 2, 2),
-    Sprite(Images.pets.alestraBullet, 14, 'fade', 7.5,
+    Sprite(sprite.image, 14, 'fade', bullet.fadeSpeed,
         function(sprite) Hump.Gamestate.current():removeEntity(sprite:getEntity()) end)
   ))
+  end
 end
 
 return ManageBullet

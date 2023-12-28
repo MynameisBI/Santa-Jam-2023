@@ -45,26 +45,6 @@ function State:enter(from)
   self:addSystem(DrawScreen())
   self:addSystem(ManageInput())
   self:addSystem(ManageBumpWorld())
-
-  -- local animator = Animator()
-  -- animator:setGrid(48, 48, 192, 192)
-  -- animator:addAnimation('idle down', {'1-2', 1}, 0.2, true)
-  -- animator:addAnimation('walk down', {'3-4', 1}, 0.2, true)
-  -- animator:addAnimation('idle up', {'1-2', 2}, 0.2, true)
-  -- animator:addAnimation('walk up', {'3-4', 2}, 0.2, true)
-  -- animator:addAnimation('idle right', {'1-2', 3}, 0.2, true)
-  -- animator:addAnimation('walk right', {'3-4', 3}, 0.2, true)
-  -- animator:addAnimation('idle left', {'1-2', 4}, 0.2, true)
-  -- animator:addAnimation('walk left', {'3-4', 4}, 0.2, true)
-  -- animator:setCurrentAnimationName('idle down')
-
-  -- Add the hero
-  -- self:addEntity(Entity(
-  --   Transform(200, 300, 0, 2, 2),
-  --   Sprite(Images.diamond, 10),
-  --   -- animator,
-  --   Area(96, 96)
-  -- ))
 end
 
 function State:addEntity(entity)
