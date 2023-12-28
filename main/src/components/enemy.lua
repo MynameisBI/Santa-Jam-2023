@@ -85,7 +85,7 @@ function Enemy:takeDamage(damage, damageType, armorIgnoreRatio, hero)
       Resources():modifyEnergy(skottMark.energy)
     end
 
-    if hero.modEntity then
+    if type(hero) == 'table' and hero.modEntity then
       local mod = hero.modEntity:getComponent('Mod')
       if mod.id == 'SBB' then
         self:applyEffect(EnemyEffect('reducePhysicalArmor', math.huge))
