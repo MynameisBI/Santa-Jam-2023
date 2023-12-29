@@ -56,8 +56,8 @@ function Brunnos:initialize(slot)
         animator:setCurrentAnimationName('default')
         Hump.Gamestate.current():addEntity(effectEntity)
       end, 6 + Lume.round(stats.realityPower * 0.02))
-    end
-    )
+    end),
+    3, 0
   )
 
   local animator = self:getComponent('Animator')

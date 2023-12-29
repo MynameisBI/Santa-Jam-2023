@@ -36,12 +36,13 @@ function Raylee:initialize(slot)
           function() Hump.Gamestate.current():removeEntity(effectEntity) end)
       animator:setCurrentAnimationName('default')
       Hump.Gamestate.current():addEntity(effectEntity)
-    end, true, 200, 60)
+    end, true, 200, 60),
+    3, 0
   )
 
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.raylee:getWidth(), Images.heroes.raylee:getHeight())
-  animator:addAnimation('idle', {'1-2', 1}, 0.5, true)
+  animator:addAnimation('idle', {'1-2', 1}, 0.4, true)
   animator:addAnimation('attack', {'5-6', 1}, {0.2, 0.8}, true, function()
     animator:setCurrentAnimationName('idle') 
   end)

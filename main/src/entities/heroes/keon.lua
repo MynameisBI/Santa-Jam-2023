@@ -54,14 +54,15 @@ function Keon:initialize(slot)
         hero.skill.castCount = 0
         hero:getEntity():getComponent('Timer').timer:every(0.7, spawnColumn, 2)
       end
-    end)
+    end),
+    2, 0
   )
 
   self:addComponent(Timer())
 
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes["k'eon"]:getWidth(), Images.heroes["k'eon"]:getHeight())
-  animator:addAnimation('idle', {'1-2', 1}, {0.5, 0.5}, true)
+  animator:addAnimation('idle', {'1-2', 1}, 0.6, true)
   animator:addAnimation('attack', {'6-7', 1, 5, 1}, {0.05, 0.5, 0.45}, true, function()
     animator:setCurrentAnimationName('idle') 
   end)

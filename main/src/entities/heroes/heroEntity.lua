@@ -10,7 +10,7 @@ local Entity = require 'src.entities.entity'
 
 local HeroEntity = Class('HeroEntity', Entity)
 
-function HeroEntity:initialize(slot, image, name, tier, traits, baseStats, bulletClass, skill)
+function HeroEntity:initialize(slot, image, name, tier, traits, baseStats, bulletClass, skill, inspectableX, inspectableY)
     Entity.initialize(self)
 
     self:addComponent(Transform(0, 0, 0, 2, 2))
@@ -23,7 +23,7 @@ function HeroEntity:initialize(slot, image, name, tier, traits, baseStats, bulle
 
     local hero = self:addComponent(Hero(name, tier, traits, baseStats, bulletClass, skill))
 
-    self:addComponent(Inspectable(nil, 3, 1, 'hero', hero))
+    self:addComponent(Inspectable(nil, inspectableX or 3, inspectableY or 1, 'hero', hero))
 
     self:addComponent(Draggable(slot, 'hero'))
 

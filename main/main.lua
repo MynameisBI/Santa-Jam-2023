@@ -10,7 +10,7 @@ function love.load(args)
   math.randomseed(os.time())
 
   Hump.Gamestate.registerEvents()
-  Hump.Gamestate.switch(Menu)
+  Hump.Gamestate.switch(Game)
 
   AudioManager:initialize()
   AudioManager:loadSound('song1', 'assets/sfx/song1.mp3', 'stream')

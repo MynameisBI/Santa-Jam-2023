@@ -35,8 +35,10 @@ function Cloud:initialize(slot)
           function() Hump.Gamestate.current():removeEntity(effectEntity) end)
       animator:setCurrentAnimationName('default')
       Hump.Gamestate.current():addEntity(effectEntity)
-    end, true, 150, 40)
+    end, true, 150, 40),
+    3, 0
   )
+
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.cloud:getWidth(), Images.heroes.cloud:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.5, true)

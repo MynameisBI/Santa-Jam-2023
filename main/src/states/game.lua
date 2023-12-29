@@ -127,8 +127,8 @@ function Game:enter(from)
   -- self:addEntity(Kori(slots[9]))
   self:addEntity(Keon(slots[10]))
   -- self:addEntity(Hakiko(slots[11]))
-  self:addEntity(Cloud(slots[12]))
-  self:addEntity(Brunnos(slots[13]))
+  -- self:addEntity(Cloud(slots[12]))
+  -- self:addEntity(Brunnos(slots[13]))
   -- self:addEntity(Brae(slots[14]))
   -- self:addEntity(Aurora(slots[15]))
   -- self:addEntity(Alestra(slots[16]))
@@ -224,13 +224,20 @@ function Game:draw()
   State.draw(self)
 
   if self.guis[3].isOpened then
-    self.guis[1].suit:updateMouse(math.huge, math.huge, false)
-    self.guis[1]:draw()
+    if self.guis[3].isOn then
+      self.guis[1].suit:updateMouse(math.huge, math.huge, false)
+      self.guis[1]:draw()
 
-    self.guis[2].suit:updateMouse(math.huge, math.huge, false)
-    self.guis[2]:draw()
+      self.guis[2].suit:updateMouse(math.huge, math.huge, false)
+      self.guis[2]:draw()
 
-    self.guis[3]:draw()
+      self.guis[3]:draw()
+    else
+      self.guis[1].suit:updateMouse(math.huge, math.huge, false)
+      self.guis[1]:draw()
+
+      self.guis[3]:draw()
+    end
 
   elseif self.guis[2].isOpened then
     self.guis[1].suit:updateMouse(math.huge, math.huge, false)
@@ -246,6 +253,10 @@ function Game:draw()
 end
 
 function Game:keypressed(key, scancode, isRepeat)
+  if love.keyboard.isDown('lctrl') and scancode == 'd' then
+    self.guis[2]:open({mainType = 'enemy', subType = '~1'})
+  end
+
   if not self.guis[2].isOpened and not self.guis[3].isOpened then
     State.keypressed(self, key, scancode, isRepeat)
   end

@@ -77,7 +77,7 @@ end
 function BattleRewardWindow:draw()
   if not self.isOpened then return end
 
-  love.graphics.setColor(0, 0, 0, 0.4)
+  love.graphics.setColor(0, 0, 0, 0.5)
   love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 
   love.graphics.setColor(78/255, 84/255, 88/255)
@@ -85,6 +85,10 @@ function BattleRewardWindow:draw()
 
   love.graphics.setColor(96/255, 102/255, 107/255)
   love.graphics.rectangle('fill', 274, 85, 313, 50)
+
+  love.graphics.setColor(0.9, 0.915, 0.93)
+  love.graphics.setFont(Fonts.big)
+  love.graphics.printf('Battle rewards', 274, 112 - Fonts.big:getHeight() / 2, 313, 'center', 0)
 
   local padding, buttonH = 14, 41
   self.suit.layout:reset(326, 154 + (#self.battleRewards-1) * (padding + buttonH))
@@ -111,10 +115,6 @@ function BattleRewardWindow:draw()
   end
 
   self.suit:draw()
-
-  love.graphics.setColor(0.9, 0.915, 0.93)
-  love.graphics.setFont(Fonts.big)
-  love.graphics.printf('Battle rewards', 274, 112 - Fonts.big:getHeight() / 2, 313, 'center', 0)
 end
 
 function BattleRewardWindow.drawBattleReward(rewardType, opt, x, y, w, h)
@@ -137,7 +137,7 @@ function BattleRewardWindow.drawBattleReward(rewardType, opt, x, y, w, h)
 
     love.graphics.setColor(opt.state == 'normal' and {0.85, 0.85, 0.85} or {1, 1, 1})
     love.graphics.setFont(Fonts.medium)
-    love.graphics.print(tostring(opt.amount)..' Money', x + 46, y + math.floor(h/2) + 1, 0, 1, 1,
+    love.graphics.print(tostring(opt.amount)..' Money', x + 48, y + math.floor(h/2) + 1, 0, 1, 1,
         0, Fonts.medium:getHeight() / 2)
 
   elseif rewardType == 'mod' then
@@ -148,7 +148,7 @@ function BattleRewardWindow.drawBattleReward(rewardType, opt, x, y, w, h)
 
     love.graphics.setColor(opt.state == 'normal' and {0.85, 0.85, 0.85} or {1, 1, 1})
     love.graphics.setFont(Fonts.medium)
-    love.graphics.print('Choose a Hero', x + 46, y + math.floor(h/2) + 1, 0, 1, 1,
+    love.graphics.print('Choose a Hero', x + 48, y + math.floor(h/2) + 1, 0, 1, 1,
         0, Fonts.medium:getHeight() / 2)
 
   end
