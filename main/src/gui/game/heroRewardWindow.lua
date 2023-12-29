@@ -69,7 +69,7 @@ function HeroRewardWindow:open(value)
         xpAmount = xpAmount
       })
     end
-    self.heroRewards[3].heroObject = Tier2[3]()
+    -- self.heroRewards[3].heroObject = Tier2[3]()
 
   elseif value == 2 then
 
