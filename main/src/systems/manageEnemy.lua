@@ -60,9 +60,9 @@ function ManageEnemy:earlysystemupdate(dt)
       }
       
     elseif round.subType == 'A6' then
-      
+    
     elseif round.subType == 'A11' then
-
+    
     elseif round.subType == 'B1' then
 
     elseif round.subType == 'B6' then

@@ -35,7 +35,6 @@ function Brunnos:initialize(slot)
       if highestHealthEnemy == nil then return end
 
       local stats = hero:getStats()
-      print(6 + Lume.round(stats.realityPower * 0.02))
       self:getComponent('Timer').timer:every(0.25, function()
         if highestHealthEnemy.stats.HP <= 0 then return end
 

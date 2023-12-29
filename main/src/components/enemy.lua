@@ -70,7 +70,7 @@ end
 
 function Enemy:takeDamage(damage, damageType, armorIgnoreRatio, hero)
     assert(damageType == 'physical' or damageType == 'reality' or damageType == 'true', 'Invalid damage type')
-    assert((hero.class ~= nil and hero.class.name == 'Hero') or hero == 'candy', 'Invalid hero: '..tostring(hero))
+    assert((hero.class ~= nil and (hero.class.name == 'Hero' or hero.class.name == 'Drone')) or hero == 'candy', 'Invalid hero: '..tostring(hero))
 
     local hasSkottMark, skottMark = self:getAppliedEffect('skottMark')
     if hasSkottMark then

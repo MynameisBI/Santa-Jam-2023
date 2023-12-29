@@ -16,14 +16,8 @@ function BattleRewardWindow:open(round)
   if round.mainType == 'enemy' then
     if round.subType == '~1' then
       local reward1 = {rewardType = 'money', amount = math.random(6, 10)}
-      reward1.text = tostring(reward1.amount)..' money'
-
       local reward2 = {rewardType = 'hero', value = 1}
-      reward2.text = 'Choose a hero reward'
-      
       local reward3 = {rewardType = 'hero', value = 1}
-      reward3.text = 'Choose a hero reward'
-
       self.battleRewards = {reward1, reward2, reward3}
 
     elseif round.subType == '~2' then
@@ -87,24 +81,26 @@ function BattleRewardWindow:draw()
   love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 
   love.graphics.setColor(78/255, 84/255, 88/255)
-  love.graphics.rectangle('fill', 327, 120, 206, 264)
+  love.graphics.rectangle('fill', 307, 120, 246, 314)
 
-  love.graphics.setColor(106/255, 112/255, 117/255)
-  love.graphics.rectangle('fill', 294, 91, 273, 44)
+  love.graphics.setColor(96/255, 102/255, 107/255)
+  love.graphics.rectangle('fill', 274, 85, 313, 50)
 
-  local padding, buttonH = 9, 36
-  self.suit.layout:reset(341, 154 + (#self.battleRewards-1) * (padding + buttonH))
+  local padding, buttonH = 14, 41
+  self.suit.layout:reset(326, 154 + (#self.battleRewards-1) * (padding + buttonH))
   self.suit.layout:padding(padding)
   for i = #self.battleRewards, 1, -1 do
-    if self.suit:Button(self.battleRewards[i].text, {id = 'Reward '..tostring(i)},
-        self.suit.layout:up(178, buttonH)).hit then
+    local reward = self.battleRewards[i]
+    if self.suit:Button(reward.rewardType,
+        {id = 'Reward '..tostring(i), draw = self.drawBattleReward, amount = reward.amount},
+        self.suit.layout:up(208, buttonH)).hit then
 
-      if self.battleRewards[i].rewardType == 'money' then
-        Resources():modifyMoney(self.battleRewards[i].amount)
-      elseif self.battleRewards[i].rewardType == 'mod' then
+      if reward.rewardType == 'money' then
+        Resources():modifyMoney(reward.amount)
+      elseif reward.rewardType == 'mod' then
         
-      elseif self.battleRewards[i].rewardType == 'hero' then
-        Hump.Gamestate.current().guis[3]:open(self.battleRewards[i].value)
+      elseif reward.rewardType == 'hero' then
+        Hump.Gamestate.current().guis[3]:open(reward.value)
       end
       
       table.remove(self.battleRewards, i)
@@ -115,6 +111,47 @@ function BattleRewardWindow:draw()
   end
 
   self.suit:draw()
+
+  love.graphics.setColor(0.9, 0.915, 0.93)
+  love.graphics.setFont(Fonts.big)
+  love.graphics.printf('Battle rewards', 274, 112 - Fonts.big:getHeight() / 2, 313, 'center', 0)
+end
+
+function BattleRewardWindow.drawBattleReward(rewardType, opt, x, y, w, h)
+  -- self.suit:Button(Images.icons[self.teamSynergy.synergies[i].trait..'Icon'],
+  -- {id = id, hud = self, synergy = self.teamSynergy.synergies[i], synergyIndex = i,
+  --     draw = self.drawSynergy, topX = topX, topY = topY},
+
+  if opt.state == 'normal' then
+    love.graphics.setColor(0.25, 0.25, 0.25)
+  elseif opt.state == 'hovered' then
+    love.graphics.setColor(0.19, 0.6, 0.73)
+  elseif opt.state == 'active' then
+    love.graphics.setColor(1, 0.6, 0)
+  end
+  love.graphics.rectangle('fill', x, y, w, h, 6, 6)
+
+  if rewardType == 'money' then
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(Images.icons.moneyIcon, x + 26, y + math.floor(h/2), 0, 2, 2, 5, 5)
+
+    love.graphics.setColor(opt.state == 'normal' and {0.85, 0.85, 0.85} or {1, 1, 1})
+    love.graphics.setFont(Fonts.medium)
+    love.graphics.print(tostring(opt.amount)..' Money', x + 46, y + math.floor(h/2) + 1, 0, 1, 1,
+        0, Fonts.medium:getHeight() / 2)
+
+  elseif rewardType == 'mod' then
+
+  elseif rewardType == 'hero' then
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(Images.icons.heroIcon, x + 26, y + math.floor(h/2), 0, 2, 2, 5, 5)
+
+    love.graphics.setColor(opt.state == 'normal' and {0.85, 0.85, 0.85} or {1, 1, 1})
+    love.graphics.setFont(Fonts.medium)
+    love.graphics.print('Choose a Hero', x + 46, y + math.floor(h/2) + 1, 0, 1, 1,
+        0, Fonts.medium:getHeight() / 2)
+
+  end
 end
 
 return BattleRewardWindow
