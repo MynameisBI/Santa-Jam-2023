@@ -9,7 +9,7 @@ local AudioManager = require 'src.components.audioManager'
 -- so it's a seperate class for now
 local HUD = Class('HUD')
 
-local TRAIT_DESCRIPTIONS = {
+HUD.TRAIT_DESCRIPTIONS = {
   bigEar = {
     title = 'Big Ear',
     body = 'Increase skill cooldown reduction. Skill have 1 more charge.',
@@ -300,7 +300,7 @@ function HUD:draw()
 
         love.graphics.setColor(0.8, 0.8, 0.8)
         love.graphics.setFont(Fonts.medium)
-        love.graphics.print(TRAIT_DESCRIPTIONS[hero.traits[i]].title, x + 85, y + 40 + (i-1) * 18)
+        love.graphics.print(HUD.TRAIT_DESCRIPTIONS[hero.traits[i]].title, x + 85, y + 40 + (i-1) * 18)
       end
 
       -- Mod
@@ -456,7 +456,7 @@ function HUD.drawSynergy(image, opt, x, y, w, h)
     if opt.synergyIndex >= 6 then y = y - 128 end
     love.graphics.rectangle('fill', x + 88, y, 550, 160)
 
-    local description = TRAIT_DESCRIPTIONS[synergy.trait]
+    local description = HUD.TRAIT_DESCRIPTIONS[synergy.trait]
     if description then
       if isActive then love.graphics.setColor(0.84, 0.84, 0.84)
       else love.graphics.setColor(0.6, 0.6, 0.6)

@@ -150,7 +150,6 @@ function BattleRewardWindow.drawBattleReward(rewardType, opt, x, y, w, h)
     love.graphics.setFont(Fonts.medium)
     love.graphics.print('Choose a Hero', x + 48, y + math.floor(h/2) + 1, 0, 1, 1,
         0, Fonts.medium:getHeight() / 2)
-
   end
 end
 

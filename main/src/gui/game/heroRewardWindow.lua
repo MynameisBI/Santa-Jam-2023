@@ -1,5 +1,7 @@
 local TeamSynergy = require 'src.components.teamSynergy'
 local Resources = require 'src.components.resources'
+local HUD = require 'src.gui.game.hud'
+
 -- uh
 local Tier1 = {
   require 'src.entities.heroes.cole',
@@ -67,6 +69,7 @@ function HeroRewardWindow:open(value)
         xpAmount = xpAmount
       })
     end
+    self.heroRewards[3].heroObject = Tier2[3]()
 
   elseif value == 2 then
 
@@ -192,6 +195,26 @@ function HeroRewardWindow.drawHeroReward(reward, opt, x, y, w, h)
     love.graphics.print('+ '..tostring(reward.xpAmount)..' XP', x + 74, y + 43, 0, 1, 1,
         0, Fonts.medium:getHeight() / 2)
 
+  end
+
+
+  if opt.state == 'hovered' then
+    local hero = heroObject:getComponent('Hero')
+
+    love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+    love.graphics.rectangle('fill', x + w + 10, y + h/2 - 8 - #hero.traits * 18 / 2,
+        165, 16 + #hero.traits * 18)
+    
+    for i = 1, #hero.traits do
+      local y = y + h/2 - 18 * #hero.traits / 2 + 2
+
+      love.graphics.setColor(1, 1, 1)
+      love.graphics.draw(Images.icons[hero.traits[i]..'Icon'], x + w + 20, y + 1 + (i-1) * 18)
+
+      love.graphics.setColor(0.8, 0.8, 0.8)
+      love.graphics.setFont(Fonts.medium)
+      love.graphics.print(HUD.TRAIT_DESCRIPTIONS[hero.traits[i]].title, x + w + 38, y + (i-1) * 18)
+    end
   end
 end
 
