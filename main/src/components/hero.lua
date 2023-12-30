@@ -193,6 +193,10 @@ function Hero.Skill:cast()
 
   if self.chargeCount >= 1 then
     self.chargeCount = self.chargeCount - 1
+    if self.secondsUntilSkillReady <= 0 then
+      self.chargeCount = self.chargeCount + 1
+      self.secondsUntilSkillReady = self.secondsUntilSkillReady + self:getCooldown()
+    end
 
   elseif self.secondsUntilSkillReady <= 0 then
     local stats = self.hero:getStats()

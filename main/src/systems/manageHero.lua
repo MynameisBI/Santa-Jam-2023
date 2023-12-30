@@ -72,9 +72,8 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
     end
 
     local skill = hero.skill
-    if skill.secondsUntilSkillReady > 0 then
-      skill.secondsUntilSkillReady = skill.secondsUntilSkillReady - dt
-    else
+    skill.secondsUntilSkillReady = skill.secondsUntilSkillReady - dt
+    if skill.secondsUntilSkillReady < 0 then
       if skill.chargeCount < skill:getMaxChargeCount() then
         skill.chargeCount = skill.chargeCount + 1
         skill.secondsUntilSkillReady = skill.secondsUntilSkillReady + skill:getCooldown()

@@ -37,7 +37,7 @@ function Raylee:initialize(slot)
       animator:setCurrentAnimationName('default')
       Hump.Gamestate.current():addEntity(effectEntity)
     end, true, 200, 60),
-    3, 0
+    2, -1
   )
 
   local animator = self:getComponent('Animator')

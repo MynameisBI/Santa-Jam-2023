@@ -222,12 +222,12 @@ function HUD:draw()
       elseif currentPhase == 'battle' then
         local heroComponents = self.teamSynergy:getHeroComponentsInTeam()
   
-        local skillW, skillH = 110, 51
-        local paddingX = 15
-        self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 475)
+        local skillW, skillH = 68, 68
+        local paddingX = 12
+        self.suit.layout:reset(love.graphics.getWidth() / 2 - skillW * #heroComponents / 2 - paddingX * (#heroComponents - 1) / 2, 458)
         self.suit.layout:padding(paddingX)
         for i = 1, #heroComponents do
-          if self.suit:Button('f'..tostring(i), {id = ('skill %d'):format(i)},
+          if self.suit:Button(heroComponents[i], {draw = self.drawSkillIcon},
               self.suit.layout:col(skillW, skillH)).hit then
             heroComponents[i].skill:cast()
           end
@@ -505,6 +505,80 @@ function HUD.drawSynergy(image, opt, x, y, w, h)
     love.graphics.setColor(0.2, 0.2, 0.2, 0.7)
     love.graphics.rectangle('fill', x, y, 78, 32)
   end
+end
+
+function HUD.drawSkillIcon(hero, opt, x, y, w, h)
+  love.graphics.setColor(0.1, 0.15, 0.22, 0.2)
+  love.graphics.rectangle('fill', x, y, w, h)
+  
+  local inspectable = hero:getEntity():getComponent('Inspectable')
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.draw(inspectable.image, inspectable.quad, x + 8, y + 8, 0, 4, 4)
+
+  local skill = hero.skill
+  love.graphics.stencil(function() 
+    love.graphics.rectangle('fill', x, y, w, h)
+  end, 'replace', 1)
+  love.graphics.setStencilTest('greater', 0)
+    if skill:getMaxChargeCount() > 0 then
+      if skill.chargeCount > 0 then
+        if skill.secondsUntilSkillReady <= 0 then
+          love.graphics.setColor(0.85, 0.85, 0.85)
+          love.graphics.setFont(Fonts.medium)
+          love.graphics.printf(skill.chargeCount+1, x, y + 51, w - 3, 'right')
+        else
+          love.graphics.setColor(0.85, 0.85, 0.85)
+          love.graphics.setFont(Fonts.medium)
+          love.graphics.printf(1, x, y + 51, w - 3, 'right')
+        end
+
+        if opt.state == 'hovered' then
+          love.graphics.setColor(1, 1, 1, 0.1)
+          love.graphics.rectangle('fill', x, y, w, h)
+        end
+
+      else
+        love.graphics.setColor(0.25, 0.25, 0.25, 0.6)
+        love.graphics.rectangle('fill', x, y, w, h)
+
+        love.graphics.setColor(0.22, 0.28, 0.35, 0.8)
+        love.graphics.arc('fill', x + w/2, y + h/2, Lume.distance(x, y, x + w/2 + 4, y + h/2 + 4),
+            -math.pi/2 - math.pi * 2 * skill.secondsUntilSkillReady / skill:getCooldown(), -math.pi/2)
+
+        love.graphics.setColor(0.85, 0.85, 0.85)
+        love.graphics.setFont(Fonts.big)
+        love.graphics.printf(math.floor(skill.secondsUntilSkillReady),
+            x, y + h/2 - Fonts.big:getHeight()/2, w, 'center')
+      end
+
+      
+    else
+      if skill.secondsUntilSkillReady > 0 then
+        love.graphics.setColor(0.25, 0.25, 0.25, 0.6)
+        love.graphics.rectangle('fill', x, y, w, h)
+
+        love.graphics.setColor(0.22, 0.28, 0.35, 0.8)
+        love.graphics.arc('fill', x + w/2, y + h/2, Lume.distance(x, y, x + w/2 + 4, y + h/2 + 4),
+            -math.pi/2 - math.pi * 2 * skill.secondsUntilSkillReady / skill:getCooldown(), -math.pi/2)
+
+        love.graphics.setColor(0.85, 0.85, 0.85)
+        love.graphics.setFont(Fonts.big)
+        love.graphics.printf(math.floor(skill.secondsUntilSkillReady),
+            x, y + h/2 - Fonts.big:getHeight()/2, w, 'center')
+
+      else
+        if opt.state == 'hovered' then
+          love.graphics.setColor(1, 1, 1, 0.1)
+          love.graphics.rectangle('fill', x, y, w, h)
+        end
+      end
+    end
+  love.graphics.setStencilTest()
+
+  love.graphics.setColor(0.1, 0.15, 0.22)
+  love.graphics.setLineWidth(4)
+  love.graphics.rectangle('line', x, y, w, h)
+  love.graphics.setLineWidth(1)
 end
 
 function HUD:drawModTooltip(mod, x, y, align)
