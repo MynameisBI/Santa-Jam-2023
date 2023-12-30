@@ -96,36 +96,23 @@ function Game:enter(from)
   self:addSystems()
   self:initializeModSlots()
 
-  local slots = {}
+  local benchSlots = {}
   for x = 145, 190, 45 do
     for y = 200, 360, 40 do
-      table.insert(slots, self:addEntity(Slot('bench', x, y)))
+      table.insert(benchSlots, self:addEntity(Slot('bench', x, y)))
     end
   end
-  -- table.insert(slots, self:addEntity(Slot('bench', 100, 185)))
-  -- table.insert(slots, self:addEntity(Slot('bench', 100, 225)))
-  -- table.insert(slots, self:addEntity(Slot('bench', 100, 265)))
-  -- table.insert(slots, self:addEntity(Slot('bench', 100, 305)))
-  -- table.insert(slots, self:addEntity(Slot('bench', 100, 345)))
-  -- table.insert(slots, self:addEntity(Slot('bench', 60, 265)))
-
-  table.insert(slots, self:addEntity(Slot('team', 234, 204)))
-  table.insert(slots, self:addEntity(Slot('team', 280, 226)))
-  table.insert(slots, self:addEntity(Slot('team', 234, 262)))
-  table.insert(slots, self:addEntity(Slot('team', 280, 284)))
-  table.insert(slots, self:addEntity(Slot('team', 234, 320)))
-  table.insert(slots, self:addEntity(Slot('team', 280, 342)))
 
   -- self:addEntity(Soniya(slots[1]))
-  self:addEntity(Cole(slots[2]))
+  self:addEntity(Cole(benchSlots[2]))
   -- self:addEntity(Tom(slots[3]))
   -- self:addEntity(Sasami(slots[4]))
   -- self:addEntity(Skott(slots[5]))
   -- self:addEntity(Rover(slots[6]))
-  self:addEntity(Raylee(slots[7]))
+  self:addEntity(Raylee(benchSlots[6]))
   -- self:addEntity(Nathanael(slots[8]))
   -- self:addEntity(Kori(slots[9]))
-  self:addEntity(Keon(slots[10]))
+  self:addEntity(Keon(benchSlots[4]))
   -- self:addEntity(Hakiko(slots[11]))
   -- self:addEntity(Cloud(slots[12]))
   -- self:addEntity(Brunnos(slots[13]))
@@ -133,9 +120,16 @@ function Game:enter(from)
   -- self:addEntity(Aurora(slots[15]))
   -- self:addEntity(Alestra(slots[16]))
 
-
+  local teamSlots = {}
+  table.insert(teamSlots, Slot('team', 234, 262))
+  table.insert(teamSlots, Slot('team', 280, 284))
+  table.insert(teamSlots, Slot('team', 280, 226))
+  table.insert(teamSlots, Slot('team', 234, 320))
+  table.insert(teamSlots, Slot('team', 234, 204))
+  table.insert(teamSlots, Slot('team', 280, 342))
+  
   local teamSynergy = TeamSynergy()
-  teamSynergy:setTeamSlots(Lume.filter(slots, function(slot) return slot:getComponent('DropSlot').slotType == 'team' end))
+  teamSynergy:setTeamSlots(teamSlots)
   self:addEntity(Entity(teamSynergy, TeamUpdateObserver()))
 
   local resources = Resources()
@@ -143,7 +137,7 @@ function Game:enter(from)
   self:addEntity(Entity(resources), Phase())
 
   self.guis = {
-    HUD(resources, teamSynergy),
+    HUD(teamSlots, teamSynergy),
     BattleRewardWindow(),
     HeroRewardWindow()
   }

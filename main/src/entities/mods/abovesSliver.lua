@@ -6,8 +6,8 @@ function AbovesSliver:initialize(slot)
   ModEntity.initialize(self, slot, Images.mods.abovesSliver, 
     'SPB',
     'Above\'s Sliver',
-    '+ 20 ATK\n+ 15 RPW\n+ 10 CDR\n+ 100 Energy',
-    20, 15, 0, 0, 0, 0, 0.1, 100
+    '+ 15 ATK\n+ 15 RPW\n+ 15 CDR\n+ 150 Energy',
+    15, 15, 0, 0, 0, 0, 0.15, 150
   )
 end
 

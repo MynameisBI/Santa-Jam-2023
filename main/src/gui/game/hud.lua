@@ -1,4 +1,5 @@
 local Phase = require 'src.components.phase'
+local Resources = require 'src.components.resources'
 local CurrentInspectable = require 'src.components.currentInspectable'
 local DragAndDropInfo = require 'src.components.dragAndDropInfo'
 local Hero = require 'src.components.hero'
@@ -78,10 +79,13 @@ local ENEMY_STAT_DISPLAY_NAMES = {
 
 local PROGRESSION_BAR_MOVE_TIME = 1
 
-function HUD:initialize(resources, teamSynergy)
+function HUD:initialize(teamSlots, teamSynergy)
   self.suit = Suit.new()
 
-  self.resources = resources
+  self.resources = Resources()
+  self.teamSlots = teamSlots
+  Hump.Gamestate.current():addEntity(teamSlots[1])
+  self.teamSlotCount = 2
 
   self.phase = Phase()
 
@@ -194,7 +198,9 @@ function HUD:draw()
         self.suit.layout:col(100, 51)).hit then
           AudioManager:playSound('button')
           if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
-            print('add slot')
+            Hump.Gamestate.current():addEntity(self.teamSlots[self.teamSlotCount])
+            self.teamSlotCount = self.teamSlotCount + 1
+
             self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
           end
         end

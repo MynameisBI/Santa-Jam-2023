@@ -5,6 +5,9 @@ local SingletonComponent = require 'src.components.singletonComponent'
 
 local Resources = Class('Resources', SingletonComponent)
 
+Resources.STARTING_MONEY = 0
+Resources.STARTING_STYLE = 0
+
 Resources.UPGRADE_MONEY_THRESHOLD = {10, 20, 30, 40}
 Resources.UPGRADE_ENERGY_GAIN = 100
 
@@ -15,13 +18,11 @@ Resources.ENERGY_PERCENT_REGEN_RATE = 0.01
 
 Resources.SECONDS_PER_ARTIFICER_REGEN = 4
 
-function Resources:initialize(teamSlots, startingMoney, startingStyle)
+function Resources:initialize(startingMoney, startingStyle)
   SingletonComponent.initialize(self)
 
-  self.teamSlots = teamSlots
-
-  self._money = startingMoney or 10
-  self._style = startingStyle or 0
+  self._money = startingMoney or Resources.STARTING_MONEY
+  self._style = startingStyle or Resources.STARTING_STYLE
 
   self.upgradeMoneyThresholdIndex = 1
   self.performMoneyThresholdIndex = 1
