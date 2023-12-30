@@ -15,7 +15,7 @@ local Raylee = Class('Raylee', HeroEntity)
 function Raylee:initialize(slot)
   Entity.initialize(self)
 
-  HeroEntity.initialize(self, slot, Images.heroes.raylee, 'Raylee', 2, {'bigEar', 'droneMaestro'},
+  HeroEntity.initialize(self, slot, Images.heroes.raylee, 'Raylee', 1, {'bigEar', 'droneMaestro'},
     {
       [1] = Hero.Stats(40, 30, 1.0, 500, 0, 2),
       [2] = Hero.Stats(60, 45, 1.0, 500, 0, 2),

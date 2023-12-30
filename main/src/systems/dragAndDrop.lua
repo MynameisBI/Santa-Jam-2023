@@ -131,4 +131,33 @@ function DragAndDrop:earlysystemmousereleased(x, y, button)
   self.dragAndDropInfo.draggable = nil
 end
 
+function DragAndDrop:earlysystemworlddraw()
+  local currentDraggable = self.dragAndDropInfo.draggable
+
+  if currentDraggable == nil then return end
+  if currentDraggable.draggableType ~= 'hero' then return end
+
+  local heroEntity = currentDraggable:getEntity()
+  local x, y = heroEntity:getComponent('Transform'):getGlobalPosition()
+  local hero = heroEntity:getComponent('Hero')
+  local stats = hero:getStats()
+
+  Deep.queue(8, function()
+    love.graphics.stencil(self.getCombatAreaStencil, 'replace', 1)
+    love.graphics.setStencilTest('greater', 0)
+      love.graphics.setColor(0.32, 0.75, 0.79, 0.1)
+      love.graphics.rectangle('fill', x, y - 540, stats.range + 2, 1080)
+
+      love.graphics.setColor(0.32, 0.75, 0.79, 0.075)
+      love.graphics.setLineWidth(4)
+      love.graphics.line(x + stats.range, y - 540, x + stats.range, y + 540)
+      love.graphics.setLineWidth(1)
+    love.graphics.setStencilTest()
+  end)
+end
+
+function DragAndDrop.getCombatAreaStencil()
+  love.graphics.rectangle('fill', 320, 200, 540 ,180)
+end
+
 return DragAndDrop

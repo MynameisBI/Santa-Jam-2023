@@ -186,18 +186,21 @@ function HUD:draw()
       if currentPhase == 'planning' then
         self.suit.layout:reset(250, 475)
         self.suit.layout:padding(15)
-        if self.suit:Button('Perform\nCost: '..tostring(self.resources:getUpgradeMoney()),
+        if self.suit:Button('Perform\nCost: '..tostring(self.resources:getPerformMoney()),
             self.suit.layout:col(110, 51)).hit then
               AudioManager:playSound('button')
-          if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
+          if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
+            self.resources.performMoneyThresholdIndex = self.resources.performMoneyThresholdIndex + 1
             self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
           end
         end
   
-        if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getPerformMoney()),
-        self.suit.layout:col(100, 51)).hit then
+        if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getUpgradeMoney()),
+            self.suit.layout:col(100, 51)).hit then
           AudioManager:playSound('button')
-          if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
+          if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
+            self.resources.upgradeMoneyThresholdIndex = self.resources.upgradeMoneyThresholdIndex + 1
+
             Hump.Gamestate.current():addEntity(self.teamSlots[self.teamSlotCount])
             self.teamSlotCount = self.teamSlotCount + 1
 
@@ -291,39 +294,46 @@ function HUD:draw()
       love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
       love.graphics.rectangle('fill', x, y, w, h)
 
+      -- Icon
       love.graphics.setColor(1, 1, 1)
-      love.graphics.draw(inspectable.image, inspectable.quad, x + 15, y + 10, 0, 3, 3)
+      love.graphics.draw(inspectable.image, inspectable.quad, x + 15, y + 16, 0, 3, 3)
 
       local hero = inspectable.object
-
-      -- Name and traits
+      -- Name, level, cost and traits
       love.graphics.setColor(0.8, 0.8, 0.8)
       love.graphics.setFont(Fonts.big)
       love.graphics.print(string.upper(hero.name), x + 67, y + 13)
+
+      love.graphics.setFont(Fonts.medium)
+      love.graphics.print('Lv. '..tostring(hero.level), x + 67, y + 37)
+      
+      love.graphics.setColor(0.8, 0.8, 0.8)
+      love.graphics.print('Cost: '..tostring(hero:getSellPrice()), x + 143, y + 37)
+
       for i = 1, #hero.traits do
         love.graphics.setColor(1, 1, 1)
-        love.graphics.draw(Images.icons[hero.traits[i]..'Icon'], x + 67, y + 41 + (i-1) * 18)
+        love.graphics.draw(Images.icons[hero.traits[i]..'Icon'], x + 67, y + 61 + (i-1) * 18)
 
         love.graphics.setColor(0.8, 0.8, 0.8)
         love.graphics.setFont(Fonts.medium)
-        love.graphics.print(HUD.TRAIT_DESCRIPTIONS[hero.traits[i]].title, x + 85, y + 40 + (i-1) * 18)
+        love.graphics.print(HUD.TRAIT_DESCRIPTIONS[hero.traits[i]].title, x + 85, y + 60 + (i-1) * 18)
       end
 
       -- Mod
       love.graphics.setColor(0.1, 0.1, 0.1, 0.8)
       love.graphics.setLineWidth(2)
-      love.graphics.rectangle('line', x + 12, y + 62, 42, 42)
+      love.graphics.rectangle('line', x + 12, y + 68, 42, 42)
       love.graphics.setLineWidth(1)
       love.graphics.setColor(0.4, 0.4, 0.4, 0.4)
-      love.graphics.rectangle('fill', x + 12, y + 62, 42, 42)
+      love.graphics.rectangle('fill', x + 12, y + 68, 42, 42)
       local modEntity = hero.modEntity
       if modEntity then
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(modEntity:getComponent('Sprite').image,
-            x + 15, y + 65, 0, 3, 3)
+            x + 15, y + 71, 0, 3, 3)
 
         local mx, my = love.mouse.getPosition()
-        if x + 12 < mx and mx < x + 54 and y + 62 < my and my < y + 104 then
+        if x + 12 < mx and mx < x + 54 and y + 68 < my and my < y + 104 then
           self:drawModTooltip(modEntity:getComponent('Mod'), mx, my, 'right')
         end
       end
@@ -334,7 +344,7 @@ function HUD:draw()
           'cooldownReduction', 'energy'}
       love.graphics.setColor(0.8, 0.8, 0.8)
       love.graphics.setFont(Fonts.medium)
-      local statY = y + 120
+      local statY = y + 126
       for i = 1, #stats do
         love.graphics.print(ALLY_STAT_DISPLAY_NAMES[stats[i]], x + 12, statY)
         love.graphics.print(tostring(statValues[stats[i]]),
