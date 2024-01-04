@@ -1,6 +1,7 @@
 local TeamSynergy = require 'src.components.teamSynergy'
 local Resources = require 'src.components.resources'
 local HUD = require 'src.gui.game.hud'
+local Hero = require 'src.components.hero'
 
 -- uh
 local Tier1 = {
@@ -69,9 +70,12 @@ function HeroRewardWindow:open(value)
         xpAmount = xpAmount
       })
     end
-    self.heroRewards[3].heroObject = Tier2[3]()
+    self.heroRewards[1].heroObject = Tier2[3]()
+    self.heroRewards[2].heroObject = Tier3[3]()
+    self.heroRewards[3].heroObject = Tier4[3]()
 
   elseif value == 2 then
+
 
   elseif value == 3 then
 
@@ -87,6 +91,10 @@ function HeroRewardWindow:open(value)
 
   self.isOpened = true
   self.isOn = true
+end
+
+function HeroRewardWindow:getAdditionalWeights(style)
+  local weights = {}
 end
 
 function HeroRewardWindow:close()
@@ -182,7 +190,10 @@ function HeroRewardWindow.drawHeroReward(reward, opt, x, y, w, h)
   love.graphics.setColor(1, 1, 1)
   love.graphics.draw(inspectable.image, inspectable.quad, x + 16, y + 11, 0, 3, 3)
     
-  love.graphics.setColor(opt.state == 'normal' and {0.85, 0.85, 0.85} or {1, 1, 1})
+  -- love.graphics.setColor(opt.state == 'normal' and {0.85, 0.85, 0.85} or {1, 1, 1})
+  local color = Lume.clone(Hero.TIER_COLORS[heroObject:getComponent('Hero').tier])
+  love.graphics.setColor(opt.state == 'normal' and color or
+      {color[1] + 0.1, color[2] + 0.1, color[3] + 0.1})
   love.graphics.setFont(Fonts.medium)
   love.graphics.print(heroObject:getComponent('Hero').name, x + 74, y + 22, 0, 1, 1,
       0, Fonts.medium:getHeight() / 2)

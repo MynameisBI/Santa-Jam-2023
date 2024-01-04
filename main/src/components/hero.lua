@@ -21,6 +21,13 @@ local Component = require 'src.components.component'
 
 local Hero = Class('Hero', Component)
 
+Hero.TIER_COLORS = {
+  {0.85, 0.85, 0.85},
+  {136/255, 192/255, 220/255},
+  {227/255, 150/255, 191/255},
+  {220/255, 209/255, 125/255},
+}
+
 -- `traits` is a table of `trait`
   -- `trait` can be
     -- bigEar, sentient, defect, candyhead

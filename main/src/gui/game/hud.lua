@@ -300,10 +300,11 @@ function HUD:draw()
 
       local hero = inspectable.object
       -- Name, level, cost and traits
-      love.graphics.setColor(0.8, 0.8, 0.8)
+      love.graphics.setColor(hero.class.TIER_COLORS[hero.tier])
       love.graphics.setFont(Fonts.big)
       love.graphics.print(string.upper(hero.name), x + 67, y + 13)
 
+      love.graphics.setColor(0.8, 0.8, 0.8)
       love.graphics.setFont(Fonts.medium)
       love.graphics.print('Lv. '..tostring(hero.level), x + 67, y + 37)
       

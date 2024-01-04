@@ -103,13 +103,13 @@ function Game:enter(from)
     end
   end
 
-  -- self:addEntity(Soniya(slots[1]))
+  self:addEntity(Soniya(benchSlots[1]))
   self:addEntity(Cole(benchSlots[2]))
-  -- self:addEntity(Tom(slots[3]))
+  self:addEntity(Tom(benchSlots[3]))
   -- self:addEntity(Sasami(slots[4]))
   -- self:addEntity(Skott(slots[5]))
-  -- self:addEntity(Rover(slots[6]))
-  self:addEntity(Raylee(benchSlots[6]))
+  self:addEntity(Rover(benchSlots[6]))
+  self:addEntity(Raylee(benchSlots[8]))
   -- self:addEntity(Nathanael(slots[8]))
   -- self:addEntity(Kori(slots[9]))
   self:addEntity(Keon(benchSlots[4]))
