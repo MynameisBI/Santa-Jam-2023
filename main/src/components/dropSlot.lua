@@ -8,6 +8,10 @@ function DropSlot:initialize(slotType)
 
   self.slotType = slotType or 'bench'
   self.draggable = nil
+
+  self.speed = -0.5
+  self.limit = 1
+  self.oy = 1
 end
 
 return DropSlot

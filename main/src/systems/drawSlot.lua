@@ -8,6 +8,16 @@ function DrawSlot:initialize()
   self.dragAndDropInfo = DragAndDropInfo()
 end
 
+function DrawSlot:update(transform, area, dropSlot, dt)
+  if dropSlot.slotType == 'mod' then
+    dropSlot.oy = dropSlot.oy + dropSlot.speed * dt
+
+    if math.abs(dropSlot.oy) > dropSlot.limit then
+      dropSlot.speed = -dropSlot.speed
+    end
+  end
+end
+
 function DrawSlot:worlddraw(transform, area, dropSlot)
   if dropSlot.draggable then
     local hero = dropSlot.draggable:getEntity():getComponent('Hero')
@@ -75,6 +85,7 @@ function DrawSlot:worlddraw(transform, area, dropSlot)
   -- Draw mod holders
   if dropSlot.slotType == 'mod' then
     local x, y = transform:getGlobalPosition()
+    y = y + dropSlot.oy
     Deep.queue(0, function()
       love.graphics.setColor(1, 1, 1)
       love.graphics.draw(Images.mods.modHolder, x - 4, y + 1, 0, 2, 2)
