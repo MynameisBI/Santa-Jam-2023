@@ -224,7 +224,6 @@ function HeroRewardWindow.drawHeroReward(reward, opt, x, y, w, h)
   love.graphics.rectangle('fill', x, y, w, h, 6, 6)
 
 
-
   local heroObject = reward.heroObject
   
   local inspectable = heroObject:getComponent('Inspectable')
