@@ -134,7 +134,7 @@ function Tom:initialize(slot)
     transform.r = transform.r + dt * rectangle.spinSpeed
   end
   timer = aura:addComponent(Timer())
-  Hump.Gamestate.current():addEntity(aura)
+  -- Hump.Gamestate.current():addEntity(aura)
 
 
   local animator = self:getComponent('Animator')

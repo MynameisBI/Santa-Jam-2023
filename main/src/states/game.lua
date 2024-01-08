@@ -69,6 +69,7 @@ local Menu = require 'src.gui.menu.menu'
 local HUD = require 'src.gui.game.hud'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
+local DealerWindow = require 'src.gui.game.dealerWindow'
 local Setting = require 'src.gui.setting.setting'
 -- Enemies
 -- mini enemies
@@ -139,7 +140,8 @@ function Game:enter(from)
   self.guis = {
     HUD(teamSlots, teamSynergy),
     BattleRewardWindow(),
-    HeroRewardWindow()
+    HeroRewardWindow(),
+    DealerWindow(),
   }
 end
 
@@ -239,6 +241,16 @@ function Game:draw()
 
     self.guis[2]:draw()
 
+  elseif self.guis[4].isOpened then
+    if self.guis[4].isOn then
+      self.guis[1].suit:updateMouse(math.huge, math.huge, false)
+      self.guis[1]:draw()
+      
+      self.guis[4]:draw()
+    else
+      self.guis[1]:draw()
+    end
+
   else
     self.guis[1]:draw()
   end
@@ -247,8 +259,12 @@ function Game:draw()
 end
 
 function Game:keypressed(key, scancode, isRepeat)
-  if love.keyboard.isDown('lctrl') and scancode == 'd' then
-    self.guis[2]:open({mainType = 'enemy', subType = '~1'})
+  if love.keyboard.isDown('lctrl') then
+    if scancode == 'd' then
+      self.guis[2]:open({mainType = 'enemy', subType = '~1'})
+    elseif scancode == 'f' then
+      self.guis[4]:open(1)
+    end
   end
 
   if not self.guis[2].isOpened and not self.guis[3].isOpened then

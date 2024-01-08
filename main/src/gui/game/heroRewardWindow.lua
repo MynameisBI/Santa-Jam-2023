@@ -2,34 +2,55 @@ local TeamSynergy = require 'src.components.teamSynergy'
 local Resources = require 'src.components.resources'
 local HUD = require 'src.gui.game.hud'
 local Hero = require 'src.components.hero'
-
 -- uh
-local Tier1 = {
-  require 'src.entities.heroes.cole',
-  require 'src.entities.heroes.raylee',
-  require 'src.entities.heroes.brunnos',
-  require 'src.entities.heroes.keon',
-  require 'src.entities.heroes.cloud'
-}
-local Tier2 = {
-  require 'src.entities.heroes.kori',
-  require 'src.entities.heroes.soniya',
-  require 'src.entities.heroes.nathanael',
-  require 'src.entities.heroes.aurora'
-}
-local Tier3 = {
-  require 'src.entities.heroes.brae',
-  require 'src.entities.heroes.rover',
-  require 'src.entities.heroes.sasami',
-  require 'src.entities.heroes.hakiko'
-}
-local Tier4 = {
-  require 'src.entities.heroes.tom',
-  require 'src.entities.heroes.alestra',
-  require 'src.entities.heroes.skott',
+local TieredHeroes = {
+  {
+    require 'src.entities.heroes.cole',
+    require 'src.entities.heroes.raylee',
+    require 'src.entities.heroes.brunnos',
+    require 'src.entities.heroes.keon',
+    require 'src.entities.heroes.cloud'
+  },
+  {
+    require 'src.entities.heroes.kori',
+    require 'src.entities.heroes.soniya',
+    require 'src.entities.heroes.nathanael',
+    require 'src.entities.heroes.aurora'
+  },
+  {
+    require 'src.entities.heroes.brae',
+    require 'src.entities.heroes.rover',
+    require 'src.entities.heroes.sasami',
+    require 'src.entities.heroes.hakiko'
+  },
+  {
+    require 'src.entities.heroes.tom',
+    require 'src.entities.heroes.alestra',
+    require 'src.entities.heroes.skott',
+  }
 }
 
 local HeroRewardWindow = Class('HeroRewardWindow')
+
+local STANDARD_WEIGHTS = {
+  {10, 0, 0, 0},
+  {6, 4, 0, 0},
+  {5, 2.5, 2.5, 0},
+  {4, 3, 1, 2},
+  {3, 2, 3, 2},
+  {2, 3, 3, 2},
+}
+
+local STANDARD_ADDITIONAL_WEIGHTS = {
+  {8, 0, -1, -1},
+  {5, 2, 0, -1},
+  {3, 3, 0, 0},
+  {0, 4, 2, 0},
+  {0, 2, 3, 1},
+  {0, 1, 3, 2},
+  {-1, 0, 4, 3},
+  {-2, -1, 5, 4},
+}
 
 function HeroRewardWindow:initialize()
   self.isOpened = false
@@ -43,50 +64,45 @@ end
 function HeroRewardWindow:open(value)
   local heroes = Hump.Gamestate.current():getComponents('Hero')
 
-  if value == 1 then
-    -- choose 3 hero
-    -- for each hero, check if they're on the map or not
-    -- if not on then add unlock hero reward
-    -- if on then add xp hero reward
-    self.heroRewards = {}
+  local value = 3
 
-    local heroClasses = Lume.clone(Tier1)
-    for i = 1, 3 do
-      local heroClass = Lume.randomchoice(heroClasses)
-      for i, v in ipairs(heroClasses) do
-        if v == heroClass then table.remove(heroClasses, i) end
-      end
+  -- choose 3 hero
+  -- for each hero, check if they're on the map or not
+  -- if not on then add unlock hero reward
+  -- if on then add xp hero reward
+  self.heroRewards = {}
 
-      local rewardType = 'unlock'
-      local xpAmount = 0
-      if Lume.find(Lume.map(Hump.Gamestate.current():getEntitiesWithComponent('Hero'), 'class'), heroClass) then
-        rewardType = 'xp'
-        xpAmount = 1
-      end
+  local weights = STANDARD_WEIGHTS[value]
+  local additionalWeights = self:getAdditionalWeights(Resources():getStyle())
+  local totalWeights = {}
+  for i = 1, 4 do
+    totalWeights[i] = math.max(weights[i] + additionalWeights[i], 0)
+  end
+  -- print(('W: %d %d %d %d\t'):format(unpack(weights)))
+  -- print(('A: %d %d %d %d\t'):format(unpack(additionalWeights)))
+  -- print(('T: %d %d %d %d\t'):format(unpack(totalWeights)))
+  -- print()
+  local rewardTier = Lume.weightedchoice(totalWeights)
 
-      table.insert(self.heroRewards, {
-        heroObject = heroClass(),
-        rewardType = rewardType,
-        xpAmount = xpAmount
-      })
+  local heroClasses = Lume.clone(TieredHeroes[rewardTier])  
+  for i = 1, 3 do
+    local heroClass = Lume.randomchoice(heroClasses)
+    for i, v in ipairs(heroClasses) do
+      if v == heroClass then table.remove(heroClasses, i) end
     end
-    self.heroRewards[1].heroObject = Tier2[3]()
-    self.heroRewards[2].heroObject = Tier3[3]()
-    self.heroRewards[3].heroObject = Tier4[3]()
 
-  elseif value == 2 then
+    local rewardType = 'unlock'
+    local xpAmount = 0
+    if Lume.find(Lume.map(Hump.Gamestate.current():getEntitiesWithComponent('Hero'), 'class'), heroClass) then
+      rewardType = 'xp'
+      xpAmount = math.max(Lume.round(value / rewardTier), 1)
+    end
 
-
-  elseif value == 3 then
-
-  elseif value == 4 then
-
-  elseif value == 5 then
-
-  elseif value == 6 then
-
-  else
-    assert(false, 'Invalid hero reward value')
+    table.insert(self.heroRewards, {
+      heroObject = heroClass(),
+      rewardType = rewardType,
+      xpAmount = xpAmount
+    })
   end
 
   self.isOpened = true
@@ -95,6 +111,32 @@ end
 
 function HeroRewardWindow:getAdditionalWeights(style)
   local weights = {}
+
+  local styleLerpAmount = style
+  local styleMark = 1
+  while styleLerpAmount > 100 and styleMark < #STANDARD_ADDITIONAL_WEIGHTS do
+    styleLerpAmount = styleLerpAmount - 100
+    styleMark = styleMark + 1
+  end
+  
+  if styleMark < #STANDARD_ADDITIONAL_WEIGHTS then
+    local additionalWeights = {}
+    for tier = 1, 4 do
+      additionalWeights[tier] = Lume.lerp(
+        STANDARD_ADDITIONAL_WEIGHTS[styleMark][tier],
+        STANDARD_ADDITIONAL_WEIGHTS[styleMark+1][tier],
+        styleLerpAmount / 100
+      )
+    end
+    return additionalWeights
+  else
+    return {
+      STANDARD_ADDITIONAL_WEIGHTS[#STANDARD_ADDITIONAL_WEIGHTS][1],
+      STANDARD_ADDITIONAL_WEIGHTS[#STANDARD_ADDITIONAL_WEIGHTS][2],
+      STANDARD_ADDITIONAL_WEIGHTS[#STANDARD_ADDITIONAL_WEIGHTS][3],
+      STANDARD_ADDITIONAL_WEIGHTS[#STANDARD_ADDITIONAL_WEIGHTS][4],
+    }
+  end
 end
 
 function HeroRewardWindow:close()

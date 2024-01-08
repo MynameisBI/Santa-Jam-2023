@@ -53,7 +53,27 @@ function State:addEntity(entity)
   Lume.each(self.systems, 'earlysystementityadded', entity)
   Lume.each(self.systems, self.systemManagers.entityadded, entity)
   Lume.each(self.systems, 'latesystementityadded', entity)
+
+  local transform = entity:getComponent('Transform')
+  if transform then
+    for _, childrenTransform in ipairs(transform.children) do
+      local childrenEntity = childrenTransform:getEntity()
+      if not self:isEntityAdded(childrenEntity) then
+        self:addEntity(childrenEntity)
+      end
+    end
+  end
+
   return entity
+end
+
+function State:isEntityAdded(entity)
+  for i, entity_ in ipairs(self.entities) do
+    if entity == entity_ then
+      return true
+    end
+  end
+  return false
 end
 
 function State:removeEntity(entity)
