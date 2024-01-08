@@ -29,6 +29,33 @@ local TieredHeroes = {
     require 'src.entities.heroes.skott',
   }
 }
+local TieredMods = {
+  {
+    require 'src.entities.mods.scrapPack',
+    require 'src.entities.mods.psychePack',
+    require 'src.entities.mods.bioPack',
+  },
+  {
+    require 'src.entities.mods.harmonizerUnit',
+    require 'src.entities.mods.quantumToken',
+    require 'src.entities.mods.hullTransformer',
+    require 'src.entities.mods.brainImplant',
+    require 'src.entities.mods.syntheticCore',
+    require 'src.entities.mods.noradInhaler',  
+  },
+  {
+    require 'src.entities.mods.theConductor',
+    require 'src.entities.mods.skaterayEqualizer',
+    require 'src.entities.mods.radioPopper',
+    require 'src.entities.mods.asymframeVisionary',
+    require 'src.entities.mods.abovesSliver',
+    require 'src.entities.mods.subcellularSupervisor',
+    require 'src.entities.mods.neuralProcessor',
+    require 'src.entities.mods.bionicColumn',
+    require 'src.entities.mods.enhancerFumes',
+    require 'src.entities.mods.deathsPromise',
+  }
+}
 
 local DealerWindow = Class('DealerWindow')
 
@@ -52,6 +79,7 @@ function DealerWindow:open(value)
     self.items = {
       tier1s[1], tier1s[2], tier1s[3], tier3s[1],
       tier2s[1], tier2s[2],
+      self:getModItem(1), self:getModItem(1)
     }
 
     
@@ -62,6 +90,7 @@ function DealerWindow:open(value)
     self.items = {
       tier1s[1], tier1s[2], tier1s[3], tier3s[1],
       tier2s[1], tier2s[2],
+      self:getModItem(1), self:getModItem(1)
     }
 
   elseif value == 3 then
@@ -71,6 +100,7 @@ function DealerWindow:open(value)
     self.items = {
       tier1s[1], tier1s[2], tier1s[3], tier3s[1],
       tier2s[1], tier2s[2],
+      self:getModItem(1), self:getModItem(1)
     }
 
   end
@@ -106,6 +136,13 @@ function DealerWindow:getHeroItems(tier, xpAmount, count)
   return heroItems
 end
 
+function DealerWindow:getModItem(tier)
+  return {
+    modEntity = Lume.randomchoice(TieredMods[tier])(),
+    price = 4 * tier - tier + 1,
+  }
+end
+
 function DealerWindow:close()
   self.isOpened = false
   self.isOn = false
@@ -119,34 +156,37 @@ end
 function DealerWindow:draw()
   if not self.isOpened then return end
 
-  love.graphics.setColor(0.2, 0.2, 0.2, 0.5)
+  love.graphics.setColor(0.28, 0.28, 0.28, 0.5)
   love.graphics.rectangle('fill', 75, 60, love.graphics.getWidth() - 150, love.graphics.getHeight() - 120)
   
   if self.items[1] ~= 0 and self.suit:Button(self.items[1], {draw = self.drawHeroItem}, 100, 74, 286, 64).hit then
     self:buyHeroItem(self.items[1])
   end
-
   if self.items[2] ~= 0 and self.suit:Button(self.items[2], {draw = self.drawHeroItem}, 100, 176, 286, 64).hit then
     self:buyHeroItem(self.items[2])
   end
-
   if self.items[3] ~= 0 and self.suit:Button(self.items[3], {draw = self.drawHeroItem}, 100, 278, 286, 64).hit then
     self:buyHeroItem(self.items[3])
   end
-
   if self.items[4] ~= 0 and self.suit:Button(self.items[4], {draw = self.drawHeroItem}, 100, 380, 286, 64).hit then
     self:buyHeroItem(self.items[4])
   end
-
   if self.items[5] ~= 0 and self.suit:Button(self.items[5], {draw = self.drawHeroItem}, 425, 74, 286, 64).hit then
     self:buyHeroItem(self.items[5])
   end
-
   if self.items[6] ~= 0 and self.suit:Button(self.items[6], {draw = self.drawHeroItem}, 425, 176, 286, 64).hit then
     self:buyHeroItem(self.items[6])
   end
 
-  if self.suit:Button('Close', 660, 424, 100, 40).hit then
+  if self.items[7] ~= 0 and self.suit:Button(self.items[7], {draw = self.drawModItem}, 425, 288, 208, 41).hit then
+    self:buyModItem(self.items[7])
+  end
+  if self.items[8] ~= 0 and self.suit:Button(self.items[8], {draw = self.drawModItem}, 425, 378, 208, 41).hit then
+    self:buyModItem(self.items[8])
+  end
+  
+
+  if self.suit:Button('Close', 670, 424, 90, 36).hit then
     self:close()
   end
 
@@ -154,12 +194,9 @@ function DealerWindow:draw()
 end
 
 function DealerWindow.drawHeroItem(heroItem, opt, x, y, w, h)
-  if opt.state == 'normal' then
-    love.graphics.setColor(0.25, 0.25, 0.25)
-  elseif opt.state == 'hovered' then
-    love.graphics.setColor(0.19, 0.6, 0.73)
-  elseif opt.state == 'active' then
-    love.graphics.setColor(1, 0.6, 0)
+  if opt.state == 'normal' then love.graphics.setColor(0.2, 0.2, 0.2)
+  elseif opt.state == 'hovered' then love.graphics.setColor(0.19, 0.6, 0.73)
+  elseif opt.state == 'active' then love.graphics.setColor(1, 0.6, 0)
   end
   love.graphics.rectangle('fill', x, y, w, h, 6, 6)
 
@@ -217,35 +254,83 @@ function DealerWindow.drawHeroItem(heroItem, opt, x, y, w, h)
 end
 
 function DealerWindow:buyHeroItem(heroItem)
-  if Resources():modifyMoney(-heroItem.price) then
-    if heroItem.rewardType == 'unlock' then
-      local emptyHeroSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
-          function(dropSlot) return dropSlot.slotType == 'bench' and dropSlot.draggable == nil end)
+  if not Resources():modifyMoney(-heroItem.price) then return end
 
-      if #emptyHeroSlots == 0 then
-        emptyHeroSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
-            function(dropSlot) return dropSlot.slotType == 'team' and dropSlot.draggable == nil end)
-      end
+  if heroItem.rewardType == 'unlock' then
+    local emptyHeroSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
+        function(dropSlot) return dropSlot.slotType == 'bench' and dropSlot.draggable == nil end)
 
-      local hero = heroItem.heroObject.class(emptyHeroSlots[1]:getEntity())
-      hero:getComponent('Hero'):addExp(heroItem.xpAmount)
-
-      Hump.Gamestate.current():addEntity(hero)
-
-    elseif heroItem.rewardType == 'xp' then
-      local heroes = Hump.Gamestate.current():getEntitiesWithComponent('Hero')
-      for _, hero in ipairs(heroes) do
-        if hero.class == heroItem.heroObject.class then
-          hero:getComponent('Hero'):addExp(heroItem.xpAmount)
-        end
-      end
+    if #emptyHeroSlots == 0 then
+      emptyHeroSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
+          function(dropSlot) return dropSlot.slotType == 'team' and dropSlot.draggable == nil end)
     end
 
-    for i = 1, 6 do
-      if self.items[i] == heroItem then
-        self.items[i] = 0
-        break
+    local hero = heroItem.heroObject.class(emptyHeroSlots[1]:getEntity())
+    hero:getComponent('Hero'):addExp(heroItem.xpAmount)
+
+    Hump.Gamestate.current():addEntity(hero)
+
+  elseif heroItem.rewardType == 'xp' then
+    local heroes = Hump.Gamestate.current():getEntitiesWithComponent('Hero')
+    for _, hero in ipairs(heroes) do
+      if hero.class == heroItem.heroObject.class then
+        hero:getComponent('Hero'):addExp(heroItem.xpAmount)
       end
+    end
+  end
+
+  for i = 1, 6 do
+    if self.items[i] == heroItem then
+      self.items[i] = 0
+      break
+    end
+  end
+end
+
+function DealerWindow.drawModItem(modItem, opt, x, y, w, h)
+  if opt.state == 'normal' then love.graphics.setColor(0.2, 0.2, 0.2)
+  elseif opt.state == 'hovered' then love.graphics.setColor(0.19, 0.6, 0.73)
+  elseif opt.state == 'active' then love.graphics.setColor(1, 0.6, 0)
+  end
+  love.graphics.rectangle('fill', x, y, w, h, 6, 6)
+
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.draw(modItem.modEntity:getComponent('Sprite').image, x + 24, y + math.floor(h/2), 0, 2, 2, 6, 6)
+  love.graphics.setColor(opt.state == 'normal' and {0.85, 0.85, 0.85} or {1, 1, 1})
+
+  love.graphics.setFont(Fonts.medium)
+  local name = modItem.modEntity:getComponent('Mod').name
+  name = Fonts.medium:getWidth(name) < w - 50 and name or (function()
+    return name:sub(1, 16)..'.'
+  end)()
+  love.graphics.print(name, x + 48, y + math.floor(h/2) + 1, 0, 1, 1,
+      0, Fonts.medium:getHeight() / 2)
+
+  -- Price
+  love.graphics.setColor(Resources():getMoney() >= modItem.price and {0.85, 0.85, 0.85} or {0.81, 0.34, 0.34})
+  love.graphics.setFont(Fonts.medium)
+  love.graphics.print(modItem.price, x + w/2 - 10, y + h + 8, 0, 1, 1, Fonts.medium:getWidth(tostring(modItem.price)))
+  love.graphics.setColor(Resources():getMoney() >= modItem.price and {1, 1, 1} or {0.95, 0.4, 0.4})
+  love.graphics.draw(Images.icons.moneyIcon, x + w/2 - 6, y + h + 5, 0, 2, 2)
+end
+
+function DealerWindow:buyModItem(modItem)
+  if not Resources():modifyMoney(-modItem.price) then return end
+
+  local emptyModSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
+      function(dropSlot) return dropSlot.slotType == 'mod' and dropSlot.draggable == nil end)
+
+  if #emptyModSlots == 0 then
+    print('Uh oh no we\'re out of mod slots (It\'s definitely a planned feature and not a bug)')
+  else
+    modItem.modEntity:getComponent('Draggable'):setSlot(emptyModSlots[1]:getEntity())
+    Hump.Gamestate.current():addEntity(modItem.modEntity)
+  end
+
+  for i = 7, 8 do
+    if self.items[i] == modItem then
+      self.items[i] = 0
+      break
     end
   end
 end
