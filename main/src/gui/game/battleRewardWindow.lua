@@ -1,4 +1,33 @@
 local Resources = require 'src.components.resources'
+-- mods
+local ModSlot = require 'src.entities.modSlot'
+local TieredMods = {
+  {
+    require 'src.entities.mods.scrapPack',
+    require 'src.entities.mods.psychePack',
+    require 'src.entities.mods.bioPack',
+  },
+  {
+    require 'src.entities.mods.harmonizerUnit',
+    require 'src.entities.mods.quantumToken',
+    require 'src.entities.mods.hullTransformer',
+    require 'src.entities.mods.brainImplant',
+    require 'src.entities.mods.syntheticCore',
+    require 'src.entities.mods.noradInhaler',  
+  },
+  {
+    require 'src.entities.mods.theConductor',
+    require 'src.entities.mods.skaterayEqualizer',
+    require 'src.entities.mods.radioPopper',
+    require 'src.entities.mods.asymframeVisionary',
+    require 'src.entities.mods.abovesSliver',
+    require 'src.entities.mods.subcellularSupervisor',
+    require 'src.entities.mods.neuralProcessor',
+    require 'src.entities.mods.bionicColumn',
+    require 'src.entities.mods.enhancerFumes',
+    require 'src.entities.mods.deathsPromise',
+  }
+}
 
 local BattleRewardWindow = Class('BattleRewardWindow')
 
@@ -11,12 +40,10 @@ function BattleRewardWindow:initialize()
 end
 
 function BattleRewardWindow:open(round)
-  self.battleRewards = {}
-
   if round.mainType == 'enemy' then
     if round.subType == '~1' then
       local reward1 = {rewardType = 'money', amount = math.random(6, 10)}
-      local reward2 = {rewardType = 'hero', value = 1}
+      local reward2 = {rewardType = 'mod', modEntity = Lume.randomchoice(TieredMods[3])()}
       local reward3 = {rewardType = 'hero', value = 1}
       self.battleRewards = {reward1, reward2, reward3}
 
@@ -96,13 +123,23 @@ function BattleRewardWindow:draw()
   for i = #self.battleRewards, 1, -1 do
     local reward = self.battleRewards[i]
     if self.suit:Button(reward.rewardType,
-        {id = 'Reward '..tostring(i), draw = self.drawBattleReward, amount = reward.amount},
+        {id = 'Reward '..tostring(i), draw = self.drawBattleReward, amount = reward.amount, modEntity = reward.modEntity},
         self.suit.layout:up(208, buttonH)).hit then
 
       if reward.rewardType == 'money' then
         Resources():modifyMoney(reward.amount)
+
       elseif reward.rewardType == 'mod' then
-        
+        local emptyModSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
+            function(dropSlot) return dropSlot.slotType == 'mod' and dropSlot.draggable == nil end)
+
+        if #emptyModSlots == 0 then
+          print('Uh oh no we\'re out of mod slots (It\'s definitely a planned feature and not a bug)')
+        else
+          reward.modEntity:getComponent('Draggable'):setSlot(emptyModSlots[1]:getEntity())
+          Hump.Gamestate.current():addEntity(reward.modEntity)
+        end
+
       elseif reward.rewardType == 'hero' then
         Hump.Gamestate.current().guis[3]:open(reward.value)
       end
@@ -141,6 +178,17 @@ function BattleRewardWindow.drawBattleReward(rewardType, opt, x, y, w, h)
         0, Fonts.medium:getHeight() / 2)
 
   elseif rewardType == 'mod' then
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(opt.modEntity:getComponent('Sprite').image, x + 24, y + math.floor(h/2), 0, 2, 2, 6, 6)
+    love.graphics.setColor(opt.state == 'normal' and {0.85, 0.85, 0.85} or {1, 1, 1})
+
+    love.graphics.setFont(Fonts.medium)
+    local name = opt.modEntity:getComponent('Mod').name
+    name = Fonts.medium:getWidth(name) < w - 50 and name or (function()
+      return name:sub(1, 16)..'.'
+    end)()
+    love.graphics.print(name, x + 48, y + math.floor(h/2) + 1, 0, 1, 1,
+        0, Fonts.medium:getHeight() / 2)
 
   elseif rewardType == 'hero' then
     love.graphics.setColor(1, 1, 1)

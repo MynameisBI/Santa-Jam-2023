@@ -69,6 +69,7 @@ function DragAndDrop:earlysystemmousereleased(x, y, button)
         Lume.each(teamUpdateObservers, 'notify')
       end
 
+    -- Selling hero code
     elseif 50 < x and x < 810 and 465 < y then
       local hero = currentDraggable:getEntity():getComponent('Hero')
       if hero.modEntity then
@@ -76,7 +77,7 @@ function DragAndDrop:earlysystemmousereleased(x, y, button)
             function(dropSlot) return dropSlot.slotType == 'mod' and dropSlot.draggable == nil end)
 
         if #emptyModSlots == 0 then
-          print('Uh oh no we\'re out of mod slots')
+          print('Uh oh no we\'re out of mod slots (It\'s definitely a planned feature and not a bug)')
         else
           hero.modEntity:getComponent('Draggable'):setSlot(emptyModSlots[1]:getEntity())
           Hump.Gamestate.current():addEntity(hero.modEntity)
