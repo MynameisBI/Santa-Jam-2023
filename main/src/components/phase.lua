@@ -9,7 +9,7 @@ function Phase:initialize()
 
   self.rounds = {
     {mainType = 'enemy', subType = '~1'},
-    {mainType = 'dealer', subType = 'A1'},
+    {mainType = 'dealer', value = 1},
     {mainType = 'enemy', subType = '~2'},
     {mainType = 'elite', subType = 'A1'},
     {mainType = 'enemy', subType = 'A6'},
@@ -61,6 +61,7 @@ function Phase:switchNextRound()
 
   if self.rounds[1].mainType == 'dealer' then
     self:startCurrentRound()
+    Hump.Gamestate.current().guis[4]:open(self.rounds[1].value)
   end
 end
 
