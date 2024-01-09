@@ -287,7 +287,7 @@ function HUD:draw()
 
 
   -- Inspector
-  local x, y, w, h = 630, 80, 215, 360
+  local x, y, w, h = 630, 125, 215, 275
   local inspectable = self.currentInspectable.inspectable
   if inspectable then
     if inspectable.objectType == 'hero' then
