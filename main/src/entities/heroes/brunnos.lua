@@ -10,6 +10,8 @@ local Entity = require 'src.entities.entity'
 
 local Brunnos = Class('Brunnos', HeroEntity)
 
+Brunnos.SKILL_DESCRIPTION = "Basic attack the enemy with highest health 6 + 0.02 RP times"
+
 function Brunnos:initialize(slot)
   Entity.initialize(self)
 

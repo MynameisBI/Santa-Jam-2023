@@ -10,6 +10,8 @@ local Entity = require 'src.entities.entity'
 
 local Kori = Class('Kori', HeroEntity)
 
+Kori.SKILL_DESCRIPTION = "Call a rain of claws dealing 2.0 AD + 2.0 RP physical damage and stun enemies for 3s"
+
 function Kori:initialize(slot)
   Entity.initialize(self)
 

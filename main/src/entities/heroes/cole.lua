@@ -10,6 +10,8 @@ local Entity = require 'src.entities.entity'
 
 local Cole = Class('Cole', HeroEntity)
 
+Cole.SKILL_DESCRIPTION = "Aim at 6 + 0.02 RP targets then shoot them dealing 1.0 AD true damage that can critically strike"
+
 function Cole:initialize(slot)
     Entity.initialize(self)
 

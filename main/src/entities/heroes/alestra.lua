@@ -7,6 +7,8 @@ local HeroEntity = require 'src.entities.heroes.heroEntity'
 
 local Alestra = Class('Alestra', HeroEntity)
 
+Alestra.SKILL_DESCRIPTION = "Summon 6 waves of bullets each dealing 0.75 AD + 0.2 RP physical damage"
+
 function Alestra:initialize(slot)
   Entity.initialize(self)
 

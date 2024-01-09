@@ -4,6 +4,8 @@ local EnemyEffect = require 'src.type.enemyEffect'
 
 local Skott = Class('S\'kott', HeroEntity)
 
+Skott.SKILL_DESCRIPTION = "Mark all enemies for 3s. Ally attacks and abilities detonate the mark dealing 3.0 RP damage, stun them for 0.25s and regenerate 10 + 0.05 RP energy"
+
 function Skott:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes["s'kott"], 'S\'kott', 4, {'defect', 'artificer', 'cracker'},

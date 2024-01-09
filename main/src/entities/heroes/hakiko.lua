@@ -6,6 +6,8 @@ local Entity = require 'src.entities.entity'
 
 local Hakiko = Class('Hakiko', HeroEntity)
 
+Hakiko.SKILL_DESCRIPTION = "Deal 2.4 RP reality damage and knock all enemies back"
+
 function Hakiko:initialize(slot)
   Entity.initialize(self)
 

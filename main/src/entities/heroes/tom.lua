@@ -12,6 +12,8 @@ local Entity = require 'src.entities.entity'
 
 local Tom = Class('Tom', HeroEntity)
 
+Tom.SKILL_DESCRIPTION = "Tom switch his music to the next phase\nPink phase: Tom gives his team 0.035 RP bonus attack speed\nPurple phase: Tom gives his team 0.5 RP bonus reality power\nBlue phase: Upon reaching this phase, your team gains 15 style"
+
 local COLORS = {
   pink = {241/255, 135/255, 204/255, 0.65},
   purple = {193/255, 150/255, 250/255, 0.65},

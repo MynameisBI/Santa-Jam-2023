@@ -11,6 +11,8 @@ local Entity = require 'src.entities.entity'
 
 local Keon = Class('K\'eon', HeroEntity)
 
+Keon.SKILL_DESCRIPTION = "Blast 4 random enemies dealing 2.5 RP reality damage. Every third cast blast 2 more times"
+
 function Keon:initialize(slot)
   Entity.initialize(self)
 

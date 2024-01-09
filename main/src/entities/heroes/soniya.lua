@@ -9,6 +9,8 @@ local Entity = require 'src.entities.entity'
 
 local Soniya = Class('Soniya', HeroEntity)
 
+Soniya.SKILL_DESCRIPTION = "Deal 2.5 RP damage and slow all enemies by 30% for 1s"
+
 function Soniya:initialize(slot)
   Entity.initialize(self)
 

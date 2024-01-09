@@ -12,6 +12,8 @@ local Entity = require 'src.entities.entity'
 
 local Raylee = Class('Raylee', HeroEntity)
 
+Raylee.SKILL_DESCRIPTION = "Drop a note dealing 2.5 RP damage and reduce their reality armor by 50% for 3s"
+
 function Raylee:initialize(slot)
   Entity.initialize(self)
 

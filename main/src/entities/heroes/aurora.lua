@@ -10,6 +10,8 @@ local Entity = require 'src.entities.entity'
 
 local Aurora = Class('Aurora', HeroEntity)
 
+Aurora.SKILL_DESCRIPTION = "Regenerate 140 + 0.6 RP energy over 4s"
+
 function Aurora:initialize(slot)
   Entity.initialize(self)
 

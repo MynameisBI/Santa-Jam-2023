@@ -10,6 +10,8 @@ local Entity = require 'src.entities.entity'
 
 local Cloud = Class('Cloud', HeroEntity)
 
+Cloud.SKILL_DESCRIPTION = "Create an explosion dealing 5.0 RP reality damage"
+
 function Cloud:initialize(slot)
   Entity.initialize(self)
 

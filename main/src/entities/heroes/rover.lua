@@ -9,6 +9,8 @@ local Entity = require 'src.entities.entity'
 
 local Rover = Class('Rover', HeroEntity)
 
+Rover.SKILL_DESCRIPTION = "Enter a frenzy for 6s\nFrenzy: Basic attacks ignore 50% physical armor. Every third basic attack deal bonus 0.25 RP physical damage and slash in an arc"
+
 function Rover:initialize(slot)
   Entity.initialize(self)
 
@@ -21,8 +23,8 @@ function Rover:initialize(slot)
       [4] = Hero.Stats(135, 101, 3.0, 300, 0, 2)
     },
     nil,
-    Hero.Skill('Rover', 30, 10, function(hero)
-      hero.secondsUntilEndFrenzy = 4
+    Hero.Skill('Rover', 30, 15, function(hero)
+      hero.secondsUntilEndFrenzy = 6
 
       local frenzyStats = hero.class.Stats(0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0)
       frenzyStats.isFrenzy = true
@@ -33,7 +35,8 @@ function Rover:initialize(slot)
       end
       hero:addTemporaryModifierStats(frenzyStats, 5)
     end
-    )
+    ),
+    2, 0
   )
 
   local hero = self:getComponent('Hero')

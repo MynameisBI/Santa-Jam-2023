@@ -6,6 +6,8 @@ local Entity = require 'src.entities.entity'
 
 local Nathanael = Class('Nathanael', HeroEntity)
 
+Nathanael.SKILL_DESCRIPTION = "Increase 0.2 AD + 0.05 RP attack damage for 4s"
+
 function Nathanael:initialize(slot)
   Entity.initialize(self)
 

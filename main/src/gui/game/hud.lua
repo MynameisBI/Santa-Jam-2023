@@ -294,11 +294,32 @@ function HUD:draw()
       love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
       love.graphics.rectangle('fill', x, y, w, h)
 
+      local hero = inspectable.object
+
       -- Icon
       love.graphics.setColor(1, 1, 1)
       love.graphics.draw(inspectable.image, inspectable.quad, x + 15, y + 16, 0, 3, 3)
 
-      local hero = inspectable.object
+      -- Skill
+      local mx, my = love.mouse.getPosition()
+      if x + 15 < mx and mx < x + 51 and y + 16 < my and my < y + 55 then
+        local skillW, skillH = 360, 44
+        local skillX, skillY =  x - skillW - 10, y + 16
+        local paddingX, paddingY = 12, 12
+
+        local _, wrappedtext = Fonts.medium:getWrap(hero:getEntity().SKILL_DESCRIPTION, skillW - paddingX * 2)
+        skillH = skillH + Fonts.medium:getHeight() * #wrappedtext
+
+        love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+        love.graphics.rectangle('fill', skillX, skillY, skillW, skillH)
+
+        love.graphics.setColor(0.8, 0.8, 0.8)
+        love.graphics.setFont(Fonts.medium)
+        love.graphics.printf('Cost: '..hero.skill.energy, skillX + paddingX, skillY + paddingY, skillW - paddingX * 2, 'left')
+        love.graphics.printf('Cooldown: '..hero.skill:getCooldown(), skillX + paddingX, skillY + paddingY, skillW - paddingX * 2, 'right')
+        love.graphics.printf(hero:getEntity().SKILL_DESCRIPTION, skillX + paddingX, skillY + paddingY + 20, skillW - paddingX * 2, 'left')
+      end
+
       -- Name, level, cost and traits
       love.graphics.setColor(hero.class.TIER_COLORS[hero.tier])
       love.graphics.setFont(Fonts.big)

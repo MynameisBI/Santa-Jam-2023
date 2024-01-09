@@ -11,6 +11,8 @@ local Entity = require 'src.entities.entity'
 
 local Sasami = Class('Sasami', HeroEntity)
 
+Sasami.SKILL_DESCRIPTION = "After a delay, obliterate an area dealing 8.0 RP reality damage. Enemies caught in the epicenter can be critically strike"
+
 function Sasami:initialize(slot)
   Entity.initialize(self)
 

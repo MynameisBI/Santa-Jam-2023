@@ -13,6 +13,8 @@ local Entity = require 'src.entities.entity'
 
 local Brae = Class('Brae', HeroEntity)
 
+Brae.SKILL_DESCRIPTION = "Create 5 ice pillars that detonate upon impact dealing 1.5 RP reality damage and freeze for 1s"
+
 function Brae:initialize(slot)
   Entity.initialize(self)
 
