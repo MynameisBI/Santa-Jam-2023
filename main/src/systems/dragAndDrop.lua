@@ -3,6 +3,7 @@ local Phase = require 'src.components.phase'
 local System = require 'src.systems.system'
 local AudioManager = require 'src.components.audioManager'
 local Resources = require 'src.components.resources'
+local DrawSlot = require 'src.systems.drawSlot'
 
 local DragAndDrop = Class('DragAndDrop', System)
 
@@ -73,15 +74,9 @@ function DragAndDrop:earlysystemmousereleased(x, y, button)
     elseif 50 < x and x < 810 and 465 < y then
       local hero = currentDraggable:getEntity():getComponent('Hero')
       if hero.modEntity then
-        local emptyModSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
-            function(dropSlot) return dropSlot.slotType == 'mod' and dropSlot.draggable == nil end)
-
-        if #emptyModSlots == 0 then
-          print('Uh oh no we\'re out of mod slots (It\'s definitely a planned feature and not a bug)')
-        else
-          hero.modEntity:getComponent('Draggable'):setSlot(emptyModSlots[1]:getEntity())
-          Hump.Gamestate.current():addEntity(hero.modEntity)
-        end
+        local emptyModSlotEntity = DrawSlot.getEmptyModSlotEntity()
+        hero.modEntity:getComponent('Draggable'):setSlot(emptyModSlotEntity)
+        Hump.Gamestate.current():addEntity(hero.modEntity)
       end
       Resources():modifyMoney(hero:getSellPrice())
       Hump.Gamestate.current():removeEntity(currentDraggable:getEntity())

@@ -1,5 +1,6 @@
 local DragAndDropInfo = require 'src.components.dragAndDropInfo'
 local System = require 'src.systems.system'
+local ModSlot = require 'src.entities.modSlot'
 
 local DrawSlot = Class('DrawSlot', System)
 
@@ -91,6 +92,25 @@ function DrawSlot:worlddraw(transform, area, dropSlot)
       love.graphics.draw(Images.mods.modHolder, x - 4, y + 1, 0, 2, 2)
     end)
   end
+end
+
+function DrawSlot.getEmptyModSlotEntity()
+  local emptyModSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
+      function(dropSlot) return dropSlot.slotType == 'mod' and dropSlot.draggable == nil end)
+
+  local emptyModSlotEntity
+  if #emptyModSlots == 0 then
+    local modSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
+        function(dropSlot) return dropSlot.slotType == 'mod' end)
+    local x = math.ceil((#modSlots+1) / 2)
+    local y = #modSlots % 2 + 1
+    emptyModSlotEntity = Hump.Gamestate.current():addEntity(ModSlot(120 + 40 * x, 45 + 35 * y))
+    print(x, y)
+  else
+    emptyModSlotEntity = emptyModSlots[1]:getEntity()
+  end
+
+  return emptyModSlotEntity
 end
 
 return DrawSlot

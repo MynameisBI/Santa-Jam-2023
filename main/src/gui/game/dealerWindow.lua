@@ -2,6 +2,7 @@ local TeamSynergy = require 'src.components.teamSynergy'
 local Resources = require 'src.components.resources'
 local HUD = require 'src.gui.game.hud'
 local Hero = require 'src.components.hero'
+local DrawSlot = require 'src.systems.drawSlot'
 -- uh
 local TieredHeroes = {
   {
@@ -317,15 +318,9 @@ end
 function DealerWindow:buyModItem(modItem)
   if not Resources():modifyMoney(-modItem.price) then return end
 
-  local emptyModSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
-      function(dropSlot) return dropSlot.slotType == 'mod' and dropSlot.draggable == nil end)
-
-  if #emptyModSlots == 0 then
-    print('Uh oh no we\'re out of mod slots (It\'s definitely a planned feature and not a bug)')
-  else
-    modItem.modEntity:getComponent('Draggable'):setSlot(emptyModSlots[1]:getEntity())
-    Hump.Gamestate.current():addEntity(modItem.modEntity)
-  end
+  local emptyModSlotEntity = DrawSlot.getEmptyModSlotEntity()
+  modItem.modEntity:getComponent('Draggable'):setSlot(emptyModSlotEntity)
+  Hump.Gamestate.current():addEntity(modItem.modEntity)
 
   for i = 7, 8 do
     if self.items[i] == modItem then

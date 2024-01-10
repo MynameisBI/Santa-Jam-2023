@@ -150,9 +150,9 @@ end
 
 function Game:initializeModSlots()
   local modSlots = {}
-  for x = 1, 10 do
+  for x = 1, 2 do
     for y = 1, 2 do
-      table.insert(modSlots, self:addEntity(ModSlot(160 + 40 * (x-1), 80 + 35 * (y-1))))
+      table.insert(modSlots, self:addEntity(ModSlot(120 + 40 * x, 45 + 35 * y)))
     end
   end
 end

@@ -1,4 +1,5 @@
 local Resources = require 'src.components.resources'
+local DrawSlot = require 'src.systems.drawSlot'
 -- mods
 local ModSlot = require 'src.entities.modSlot'
 local TieredMods = {
@@ -130,15 +131,9 @@ function BattleRewardWindow:draw()
         Resources():modifyMoney(reward.amount)
 
       elseif reward.rewardType == 'mod' then
-        local emptyModSlots = Lume.filter(Hump.Gamestate.current():getComponents('DropSlot'),
-            function(dropSlot) return dropSlot.slotType == 'mod' and dropSlot.draggable == nil end)
-
-        if #emptyModSlots == 0 then
-          print('Uh oh no we\'re out of mod slots (It\'s definitely a planned feature and not a bug)')
-        else
-          reward.modEntity:getComponent('Draggable'):setSlot(emptyModSlots[1]:getEntity())
-          Hump.Gamestate.current():addEntity(reward.modEntity)
-        end
+        local emptyModSlotEntity = DrawSlot.getEmptyModSlotEntity()
+        reward.modEntity:getComponent('Draggable'):setSlot(emptyModSlotEntity)
+        Hump.Gamestate.current():addEntity(reward.modEntity)
 
       elseif reward.rewardType == 'hero' then
         Hump.Gamestate.current().guis[3]:open(reward.value)
