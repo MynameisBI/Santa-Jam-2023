@@ -615,6 +615,16 @@ function HUD:drawModTooltip(mod, x, y, align)
     x = x - w
   end
 
+  local currentDraggable = DragAndDropInfo().draggable
+  if currentDraggable and currentDraggable.draggableType == 'mod' then
+    local draggableMod = currentDraggable:getEntity():getComponent('Mod')
+    if #draggableMod.id + #mod.id <= 3 then
+      mod = Hero.getModEntityFromModCombination(draggableMod, mod):getComponent('Mod')
+    else
+      return
+    end
+  end
+
   if #mod.id >= 2 then h = h + 40 end
 
   love.graphics.setColor(0.15, 0.15, 0.15, 0.6)

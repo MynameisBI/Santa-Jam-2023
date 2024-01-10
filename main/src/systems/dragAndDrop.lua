@@ -30,7 +30,6 @@ function DragAndDrop:mousepressed(draggable, transform, area, hero, mod, x, y, b
   if button ~= 1 or (Phase():current() == 'battle' and draggable.draggableType ~= 'mod') then return end
   
   if area:hasWorldPoint(x, y) then
-    
     self.dragAndDropInfo.draggable = draggable
 
     self.dragAndDropInfo.oldSlot = draggable.slot
