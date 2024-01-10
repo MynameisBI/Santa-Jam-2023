@@ -19,7 +19,7 @@ function AllyStats:__add(otherStats)
     self.attackDamage + otherStats.attackDamage,
     self.realityPower + otherStats.realityPower,
     self.attackSpeed + otherStats.attackSpeed,
-    self.range,
+    self.range + otherStats.range,
     self.critChance + otherStats.critChance,
     self.critDamage + otherStats.critDamage,
     self.cooldownReduction + otherStats.cooldownReduction,

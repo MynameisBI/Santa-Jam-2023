@@ -30,7 +30,9 @@ function Skott:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes["s'kott"]:getWidth(), Images.heroes["s'kott"]:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, {0.5, 0.5}, true)
-  animator:addAnimation('attack', {'3-6', 1}, {0.075, 0.075, 0.075, 0.075}, true)
+  animator:addAnimation('attack', {'3-6', 1}, {0.075, 0.075, 0.075, 0.075}, true, function()
+    animator:setCurrentAnimationName('idle')
+  end)
   animator:setCurrentAnimationName('idle')
 end
 
