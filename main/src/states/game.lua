@@ -28,6 +28,7 @@ local AudioManager = require 'src.components.audioManager'
 -- Entities
 local Entity = require 'src.entities.entity'
 local Slot = require 'src.entities.slot'
+-- Heroes entities
 local Cole = require 'src.entities.heroes.cole'
 local Tom = require 'src.entities.heroes.tom'
 local Soniya = require 'src.entities.heroes.soniya'
@@ -44,6 +45,7 @@ local Brunnos = require 'src.entities.heroes.brunnos'
 local Brae = require 'src.entities.heroes.brae'
 local Aurora = require 'src.entities.heroes.aurora'
 local Alestra = require 'src.entities.heroes.alestra'
+-- Mod entity
 local ModSlot = require 'src.entities.modSlot'
 -- UI
 local Menu = require 'src.gui.menu.menu'
@@ -52,7 +54,7 @@ local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
 local DealerWindow = require 'src.gui.game.dealerWindow'
 local Setting = require 'src.gui.setting.setting'
--- Enemies
+-- Enemies entities
 -- mini enemies
 local Mino = require 'src.entities.enemies.mino'
 local Peach = require 'src.entities.enemies.peach'
@@ -85,19 +87,19 @@ function Game:enter(from)
     end
   end
 
-  self:addEntity(Soniya(benchSlots[1]))
+  -- self:addEntity(Soniya(benchSlots[1]))
   self:addEntity(Cole(benchSlots[2]))
-  self:addEntity(Tom(benchSlots[3]))
+  -- self:addEntity(Tom(benchSlots[3]))
   -- self:addEntity(Sasami(slots[4]))
   -- self:addEntity(Skott(slots[5]))
-  self:addEntity(Rover(benchSlots[6]))
+  -- self:addEntity(Rover(benchSlots[6]))
   self:addEntity(Raylee(benchSlots[8]))
   -- self:addEntity(Nathanael(slots[8]))
   -- self:addEntity(Kori(slots[9]))
   self:addEntity(Keon(benchSlots[4]))
   -- self:addEntity(Hakiko(slots[11]))
-  -- self:addEntity(Cloud(slots[12]))
-  -- self:addEntity(Brunnos(slots[13]))
+  self:addEntity(Cloud(benchSlots[3]))
+  self:addEntity(Brunnos(benchSlots[6]))
   -- self:addEntity(Brae(slots[14]))
   -- self:addEntity(Aurora(slots[15]))
   -- self:addEntity(Alestra(slots[16]))

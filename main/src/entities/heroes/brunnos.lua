@@ -18,11 +18,12 @@ function Brunnos:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.brunnos, 'Brunnos', 1, {'sentient', 'trailblazer'},
     {
-        [1] = Hero.Stats(40, 30, 1.5, 300, 0, 2),
-        [2] = Hero.Stats(60, 45, 1.5, 300, 0, 2),
-        [3] = Hero.Stats(90, 68, 1.5, 300, 0, 2),
-        [4] = Hero.Stats(135, 101, 1.5, 300, 0, 2)
+        [1] = Hero.Stats(80, 18, 0.625, 375, 0.5, 1.75, 0, 0, 0, 0),
+        [2] = Hero.Stats(59, 20, 0.625, 600, 0.5, 1.75, 0, 0, 0, 0),
+        [3] = Hero.Stats(59, 20, 0.625, 600, 0.5, 1.75, 0, 0, 0, 0),
+        [4] = Hero.Stats(59, 20, 0.625, 600, 0.5, 1.75, 0, 0, 0, 0),
     },
+
     nil,
     Hero.Skill('Brunnos', 40, 8, function(hero, mx, my)
       local enemies = Hump.Gamestate.current():getComponents('Enemy')

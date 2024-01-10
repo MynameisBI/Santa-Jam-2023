@@ -36,7 +36,7 @@ function ManageHero:updateHero(phase, isInTeam, transform, hero, dt)
     hero.secondsUntilAttackReady = hero.secondsUntilAttackReady - dt
     if hero.secondsUntilAttackReady <= 0 then
       local stats = hero:getStats()
-      hero.secondsUntilAttackReady = 1 / stats.attackSpeed 
+      hero.secondsUntilAttackReady = 1 / stats.attackSpeed
       
       local x, y = transform:getGlobalPosition()
       local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
@@ -101,30 +101,6 @@ function ManageHero:onPhaseSwitch(phase, isInTeam, hero)
   end
 end
 
--- function ManageHero:attack()
---   -- add bullet
---   local bullet = Entity(
---       Transform(self.x, self.y, 0, 0.5, 0.5),
---       Sprite(Images.diamond, 2),
---       Bullet(self, self.target, 200)
---   )
---   self.bullets[#self.bullets + 1] = bullet
-
---   Hump.Gamestate.current():addEntity(bullet)
--- end
-
--- function Hero:setTarget()
---     local temp = math.sqrt(self.x - enemies[1].x)^2 + (self.y - enemies[1].y)^2
---     self.target = enemies[1]
-
---     for i = 1, #enemies do
---         local distance = math.sqrt(self.x - enemies[i].x)^2 + (self.y - enemies[i].y)^2
---         if distance < temp then
---             temp = distance
---             self.target = enemies[i]
---         end
---     end
--- end
 
 
 return ManageHero

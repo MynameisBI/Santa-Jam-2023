@@ -19,15 +19,15 @@ function Raylee:initialize(slot)
 
   HeroEntity.initialize(self, slot, Images.heroes.raylee, 'Raylee', 1, {'bigEar', 'droneMaestro'},
     {
-      [1] = Hero.Stats(40, 30, 1.0, 500, 0, 2),
-      [2] = Hero.Stats(60, 45, 1.0, 500, 0, 2),
-      [3] = Hero.Stats(90, 68, 1.0, 500, 0, 2),
-      [4] = Hero.Stats(135, 101, 1.0, 460, 0, 2)
+      [1] = Hero.Stats(50, 36, 0.625, 600, 0.5, 1.75, 0, 0, 0, 0),
+      [2] = Hero.Stats(59, 20, 0.625, 600, 0.5, 1.75, 0, 0, 0, 0),
+      [3] = Hero.Stats(59, 20, 0.625, 600, 0.5, 1.75, 0, 0, 0, 0),
+      [4] = Hero.Stats(59, 20, 0.625, 600, 0.5, 1.75, 0, 0, 0, 0),
     },
     RayleeBullet,
     Hero.Skill('Raylee', 50, 8, function(hero, mx, my)
       Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = mx, y = my}, 200, 60,
-          {damageType = 'reality', realityPowerRatio = 2.5, effects = {EnemyEffect('reduceRealityArmor', 3)}}, 0.42)) 
+          {damageType = 'reality', realityPowerRatio = 2.5, effects = {EnemyEffect('reduceRealityArmor', 3)}}, 0.42))
 
       local effectEntity = Entity()
       effectEntity:addComponent(Transform(mx - 100, my - 96, 0, 2, 2))
@@ -46,7 +46,7 @@ function Raylee:initialize(slot)
   animator:setGrid(18, 18, Images.heroes.raylee:getWidth(), Images.heroes.raylee:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.4, true)
   animator:addAnimation('attack', {'5-6', 1}, {0.2, 0.8}, true, function()
-    animator:setCurrentAnimationName('idle') 
+  animator:setCurrentAnimationName('idle')
   end)
   animator:setCurrentAnimationName('idle')
 end
