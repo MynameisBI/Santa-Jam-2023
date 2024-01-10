@@ -105,7 +105,6 @@ function DrawSlot.getEmptyModSlotEntity()
     local x = math.ceil((#modSlots+1) / 2)
     local y = #modSlots % 2 + 1
     emptyModSlotEntity = Hump.Gamestate.current():addEntity(ModSlot(120 + 40 * x, 45 + 35 * y))
-    print(x, y)
   else
     emptyModSlotEntity = emptyModSlots[1]:getEntity()
   end

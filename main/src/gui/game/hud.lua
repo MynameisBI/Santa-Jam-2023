@@ -542,6 +542,10 @@ function HUD.drawSkillIcon(hero, opt, x, y, w, h)
     love.graphics.rectangle('fill', x, y, w, h)
   end, 'replace', 1)
   love.graphics.setStencilTest('greater', 0)
+    love.graphics.setColor(0.85, 0.85, 0.85)
+    love.graphics.setFont(Fonts.medium)
+    love.graphics.printf(skill.energy, x, y + 3, w - 3, 'right')
+
     if skill:getMaxChargeCount() > 0 then
       if skill.chargeCount > 0 then
         if skill.secondsUntilSkillReady <= 0 then
