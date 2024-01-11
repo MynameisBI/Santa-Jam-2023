@@ -30,16 +30,20 @@ function DrawSlot:worlddraw(transform, area, dropSlot)
       -- Draw XP bar
       Deep.queue(20, function()
         love.graphics.setColor(0.8, 0.8, 0.8)
-        love.graphics.setFont(Fonts.medium)
-        love.graphics.print('lv.'..tostring(hero.level), x, y - 25, 0, 0.75, 0.75)
+        love.graphics.print('lv.'..tostring(hero.level), Fonts.medium, x, y - 23, 0, 0.75, 0.75)
 
-        local threshold = hero.class.EXPERIENCE_THRESHOLD[hero.level]
-        for i = 1, threshold do
-          local bx, by = x + w / threshold * (i-1), y - 13
-          if i <= hero.exp then love.graphics.setColor(0.8, 0.8, 0.8)
-          else love.graphics.setColor(0.15, 0.15, 0.15)
+        if not hero:isMaxLevel() then
+          local threshold = hero.class.EXPERIENCE_THRESHOLD[hero.level]
+          for i = 1, threshold do
+            local bx, by = x + w / threshold * (i-1), y - 11
+            if i <= hero.exp then love.graphics.setColor(0.8, 0.8, 0.8)
+            else love.graphics.setColor(0.15, 0.15, 0.15)
+            end
+            love.graphics.rectangle('fill', bx, by, w / threshold - 1, 5, 2, 2)
           end
-          love.graphics.rectangle('fill', bx, by, w / threshold - 1, 5, 2, 2)
+        else
+          love.graphics.setColor(0.8, 0.8, 0.8)
+          love.graphics.rectangle('fill', x, y - 11, w, 5, 2, 2)
         end
       end)
 

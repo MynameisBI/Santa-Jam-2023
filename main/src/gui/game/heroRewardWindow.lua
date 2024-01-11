@@ -86,16 +86,33 @@ function HeroRewardWindow:open(value)
 
   local heroClasses = Lume.clone(TieredHeroes[rewardTier])  
   for i = 1, 3 do
-    local heroClass = Lume.randomchoice(heroClasses)
-    for i, v in ipairs(heroClasses) do
-      if v == heroClass then table.remove(heroClasses, i) end
+    local rewardType, xpAmount
+
+    local heroClass 
+    while heroClass == nil do
+      local toCheckHeroClass = Lume.randomchoice(heroClasses)
+      local heroEntities = Hump.Gamestate.current():getEntitiesWithComponent('Hero')
+      local heroEntityIndex = Lume.find(Lume.map(heroEntities, 'class'), toCheckHeroClass)
+
+      if not heroEntityIndex then
+        heroClass = toCheckHeroClass
+        rewardType, xpAmount = 'unlock', 0
+
+      else
+        local heroEntity = heroEntities[heroEntityIndex]
+        if not heroEntity:getComponent('Hero'):isMaxLevel() then
+          heroClass = toCheckHeroClass
+          rewardType, xpAmount = 'xp', math.max(Lume.round(value / rewardTier), 1)
+        else
+          for i, v in ipairs(heroClasses) do
+            if v == toCheckHeroClass then table.remove(heroClasses, i) end
+          end      
+        end
+      end
     end
 
-    local rewardType = 'unlock'
-    local xpAmount = 0
-    if Lume.find(Lume.map(Hump.Gamestate.current():getEntitiesWithComponent('Hero'), 'class'), heroClass) then
-      rewardType = 'xp'
-      xpAmount = math.max(Lume.round(value / rewardTier), 1)
+    for i, v in ipairs(heroClasses) do
+      if v == heroClass then table.remove(heroClasses, i) end
     end
 
     table.insert(self.heroRewards, {

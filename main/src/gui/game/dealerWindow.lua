@@ -114,16 +114,33 @@ function DealerWindow:getHeroItems(tier, xpAmount, count)
 
   local heroClasses = Lume.clone(TieredHeroes[tier])
   for i = 1, count do
-    local heroClass = Lume.randomchoice(heroClasses)
-    for i, v in ipairs(heroClasses) do
-      if v == heroClass then table.remove(heroClasses, i) end
+    local rewardType, finalXpAmount
+
+    local heroClass 
+    while heroClass == nil do
+      local toCheckHeroClass = Lume.randomchoice(heroClasses)
+      local heroEntities = Hump.Gamestate.current():getEntitiesWithComponent('Hero')
+      local heroEntityIndex = Lume.find(Lume.map(heroEntities, 'class'), toCheckHeroClass)
+
+      if not heroEntityIndex then
+        heroClass = toCheckHeroClass
+        rewardType, finalXpAmount = 'unlock', 0
+
+      else
+        local heroEntity = heroEntities[heroEntityIndex]
+        if not heroEntity:getComponent('Hero'):isMaxLevel() then
+          heroClass = toCheckHeroClass
+          rewardType, finalXpAmount = 'xp', xpAmount
+        else
+          for i, v in ipairs(heroClasses) do
+            if v == toCheckHeroClass then table.remove(heroClasses, i) end
+          end      
+        end
+      end
     end
 
-    local rewardType = 'unlock'
-    local finalXpAmount = 0
-    if Lume.find(Lume.map(Hump.Gamestate.current():getEntitiesWithComponent('Hero'), 'class'), heroClass) then
-      rewardType = 'xp'
-      finalXpAmount = xpAmount
+    for i, v in ipairs(heroClasses) do
+      if v == heroClass then table.remove(heroClasses, i) end
     end
 
     table.insert(heroItems, {

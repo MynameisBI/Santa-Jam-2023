@@ -86,15 +86,25 @@ end
 
 
 Hero.EXPERIENCE_THRESHOLD = {
-  2, 4, 8
+  2, 4, 8, 16, 32
 }
+Hero.MAX_LEVEL = #Hero.EXPERIENCE_THRESHOLD + 1
 
 function Hero:addExp(exp)
+  if self:isMaxLevel() then return end
+
   self.exp = self.exp + exp
-  if self.exp >= Hero.EXPERIENCE_THRESHOLD[self.level] then
+  while self.exp >= Hero.EXPERIENCE_THRESHOLD[self.level] do
     self.exp = self.exp - Hero.EXPERIENCE_THRESHOLD[self.level]
     self.level = self.level + 1
+    if self:isMaxLevel() then
+      break
+    end
   end
+end
+
+function Hero:isMaxLevel()
+  return self.level >= Hero.MAX_LEVEL
 end
 
 

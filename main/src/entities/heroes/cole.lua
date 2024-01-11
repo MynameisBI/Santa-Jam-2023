@@ -18,10 +18,11 @@ function Cole:initialize(slot)
   HeroEntity.initialize(self, slot, Images.heroes.cole, 'Cole', 1, {'bigEar', 'coordinator'},
   {
   --attackDamage, realityPower, attackSpeed, range, critChance, critDamage, cooldownReduction, energy, physicalArmorIgnoreRatio, realityArmorIgnoreRatio
-    [1] = Hero.Stats(62, 18, 0.625, 550, 0.5, 1.75, 0, 0, 0, 0),
-    [2] = Hero.Stats(59, 20, 0.68, 550, 0.5, 1.75, 0, 0, 0, 0),
-    [3] = Hero.Stats(59, 20, 0.625, 550, 0.5, 1.75, 0, 0, 0, 0),
-    [4] = Hero.Stats(59, 20, 0.625, 550, 0.5, 1.75, 0, 0, 0, 0),
+    [1] = Hero.Stats(50, 20, 1, 550, 0, 2, 0, 0, 0, 0),
+    [2] = Hero.Stats(67, 30, 1, 550, 0, 2, 0, 0, 0, 0),
+    [3] = Hero.Stats(89, 45, 1, 550, 0, 2, 0, 0, 0, 0),
+    [4] = Hero.Stats(119, 68, 1, 550, 0, 2, 0, 0, 0, 0),
+    [5] = Hero.Stats(158, 68, 1, 550, 0, 2, 0, 0, 0, 0),
   },
 
   ColeBullet,
