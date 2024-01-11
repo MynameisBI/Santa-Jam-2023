@@ -113,16 +113,25 @@ end
 function HUD:draw()
   love.graphics.setColor(1, 1, 1)
   if self.suit:ImageButton(Images.icons.moneyIcon, {id = 'money', sx = 2, sy = 2}, 23, 13).hovered then
-    
+    love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+    love.graphics.rectangle('fill', 15, 37, 230, 58)
+
+    love.graphics.setColor(0.85, 0.85, 0.85)
+    love.graphics.printf('Used to buy hero slots, perform or buy stuff in the dealer phase', Fonts.medium,
+        23, 42, 214, 'left')
   end
   love.graphics.setColor(0.85, 0.85, 0.85)
-  love.graphics.setFont(Fonts.medium)
-  love.graphics.print(tostring(self.resources:getMoney()), 53, 17)
+  love.graphics.print(tostring(self.resources:getMoney()), Fonts.medium, 53, 17)
 
 
   love.graphics.setColor(1, 1, 1)
   if self.suit:ImageButton(Images.icons.styleIcon, {id = 'gold', sx = 2, sy = 2}, 103, 13).hovered then
-    
+    love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+    love.graphics.rectangle('fill', 15, 37, 230, 74)
+
+    love.graphics.setColor(0.85, 0.85, 0.85)
+    love.graphics.printf('The more style your team has, the more likely you attract higher tier heroes', Fonts.medium,
+        23, 42, 214, 'left')
   end
   love.graphics.setColor(0.85, 0.85, 0.85)
   love.graphics.setFont(Fonts.medium)
@@ -183,32 +192,45 @@ function HUD:draw()
     if CurrentSkill().currentSkill == nil then
       love.graphics.setFont(Fonts.medium)
       local currentPhase = self.phase:current()
+      local bw, bh = 140, 65
+      
       if currentPhase == 'planning' then
-        self.suit.layout:reset(250, 475)
+        self.suit.layout:reset(love.graphics.getWidth()/2 - bw * 1.5 - 15, 460)
         self.suit.layout:padding(15)
-        if self.suit:Button('Perform\nCost: '..tostring(self.resources:getPerformMoney()),
-            self.suit.layout:col(110, 51)).hit then
-              AudioManager:playSound('button')
-          if self.resources:modifyMoney(-self.resources:getPerformMoney()) then
-            self.resources.performMoneyThresholdIndex = self.resources.performMoneyThresholdIndex + 1
-            self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
+
+        local performMoney = self.resources:getPerformMoney()
+        if performMoney then
+          if self.suit:Button('Perform\n+15 Style\nCost: '..performMoney, {draw = HUD.drawActionButton},
+              self.suit.layout:col(bw, bh)).hit then
+            AudioManager:playSound('button')
+            if self.resources:modifyMoney(-performMoney) then
+              self.resources.performMoneyThresholdIndex = self.resources.performMoneyThresholdIndex + 1
+              self.resources:modifyStyle(self.resources.PERFORM_STYLE_GAIN)
+            end
           end
+        else
+          self.suit:Button('Maximum\nperformances\nreached', {draw = HUD.drawActionButton}, self.suit.layout:col(bw, bh))
+        end
+        
+        local upgradeMoney = self.resources:getUpgradeMoney()
+        if upgradeMoney then
+          if self.suit:Button('Upgrade\n+1 Hero Slot\nCost: '..upgradeMoney, {draw = HUD.drawActionButton},
+              self.suit.layout:col(bw, bh)).hit then
+            AudioManager:playSound('button')
+            if self.resources:modifyMoney(-upgradeMoney) then
+              self.resources.upgradeMoneyThresholdIndex = self.resources.upgradeMoneyThresholdIndex + 1
+
+              Hump.Gamestate.current():addEntity(self.teamSlots[self.teamSlotCount])
+              self.teamSlotCount = self.teamSlotCount + 1
+
+              self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
+            end
+          end
+        else
+          self.suit:Button('Maximum\nhero slot\nreached', {draw = HUD.drawActionButton}, self.suit.layout:col(bw, bh))
         end
   
-        if self.suit:Button('Upgrade\nCost: '..tostring(self.resources:getUpgradeMoney()),
-            self.suit.layout:col(100, 51)).hit then
-          AudioManager:playSound('button')
-          if self.resources:modifyMoney(-self.resources:getUpgradeMoney()) then
-            self.resources.upgradeMoneyThresholdIndex = self.resources.upgradeMoneyThresholdIndex + 1
-
-            Hump.Gamestate.current():addEntity(self.teamSlots[self.teamSlotCount])
-            self.teamSlotCount = self.teamSlotCount + 1
-
-            self.resources:modifyBaseMaxEnergy(self.resources.UPGRADE_ENERGY_GAIN)
-          end
-        end
-  
-        if self.suit:Button('Let\'s roll!', self.suit.layout:col(110, 51)).hit then
+        if self.suit:Button('Let\'s roll!\nBegin\nnext wave', {draw = HUD.drawActionButton}, self.suit.layout:col(bw, bh)).hit then
           AudioManager:playSound('button')
           if self.phase.rounds[1] then
             if self.phase.rounds[1].mainType == 'dealer' then
@@ -517,6 +539,19 @@ function HUD.drawSynergy(image, opt, x, y, w, h)
     love.graphics.setColor(0.2, 0.2, 0.2, 0.7)
     love.graphics.rectangle('fill', x, y, 78, 32)
   end
+end
+
+function HUD.drawActionButton(text, opt, x, y, w, h)
+  if opt.state == 'normal' then love.graphics.setColor(0.2, 0.2, 0.2)
+  elseif opt.state == 'hovered' then love.graphics.setColor(0.19, 0.6, 0.73)
+  elseif opt.state == 'active' then love.graphics.setColor(1, 0.6, 0)
+  end
+	love.graphics.rectangle('fill', x, y, w, h, 2)
+
+  local wrappedtextWidth, wrappedtext = Fonts.medium:getWrap(text, w - 6)
+  love.graphics.setColor(0.85, 0.85, 0.85)
+  love.graphics.printf(text, Fonts.medium, x + w/2, y + h/2, w, 'center', 0, 1, 1,
+      w/2, Fonts.medium:getHeight() * #wrappedtext / 2)
 end
 
 function HUD.drawSkillIcon(hero, opt, x, y, w, h)

@@ -5,7 +5,7 @@ local SingletonComponent = require 'src.components.singletonComponent'
 
 local Resources = Class('Resources', SingletonComponent)
 
-Resources.STARTING_MONEY = 100
+Resources.STARTING_MONEY = 0
 Resources.STARTING_STYLE = 0
 
 Resources.UPGRADE_MONEY_THRESHOLD = {10, 20, 30, 40, 50}

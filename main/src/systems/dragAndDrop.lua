@@ -159,7 +159,7 @@ function DragAndDrop:earlysystemworlddraw()
 end
 
 function DragAndDrop.getCombatAreaStencil()
-  love.graphics.rectangle('fill', 320, 200, 540 ,180)
+  love.graphics.rectangle('fill', 314, 200, 540 ,180)
 end
 
 return DragAndDrop
