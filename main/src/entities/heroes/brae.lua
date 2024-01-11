@@ -1,5 +1,6 @@
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
+local BraeBullet = require 'src.entities.bullets.braeBullet'
 local Transform = require 'src.components.transform'
 local Area = require 'src.components.area'
 local Sprite = require 'src.components.sprite'
@@ -28,7 +29,7 @@ function Brae:initialize(slot)
       [5] = Hero.Stats(158, 190, 0.8, 450, 0, 2, 0, 0, 0, 0),
       [6] = Hero.Stats(211, 253, 0.8, 450, 0, 2, 0, 0, 0, 0),
     },
-    nil,
+    BraeBullet,
     Hero.Skill('Brae', 70, 10, function(hero)
       local ys = {}
       for i = 1, 5 do ys[i] = math.random(220, 350) end
@@ -77,13 +78,14 @@ function Brae:initialize(slot)
 
         Hump.Gamestate.current():addEntity(pillar)
       end
-    end)
+    end),
+    2, 0
   )
 
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.brae:getWidth(), Images.heroes.brae:getHeight())
-  animator:addAnimation('idle', {'1-2', 1}, 0.5, true)
-  animator:addAnimation('attack', {'3-4', 1}, 0.5, true, function()
+  animator:addAnimation('idle', {'1-2', 1}, {1.5, 2}, true)
+  animator:addAnimation('attack', {'3-4', 1, 3, 1}, {0.05, 0.3, 0.7}, true, function()
     animator:setCurrentAnimationName('idle') 
   end)
   animator:setCurrentAnimationName('idle')

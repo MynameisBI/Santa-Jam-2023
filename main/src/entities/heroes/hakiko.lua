@@ -1,6 +1,6 @@
-
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
+local HakikoBullet = require 'src.entities.bullets.hakikoBullet'
 
 local Entity = require 'src.entities.entity'
 
@@ -20,7 +20,7 @@ function Hakiko:initialize(slot)
     [5] = Hero.Stats(126, 190, 1.1, 500, 0, 2, 0, 0, 0, 0),
     [6] = Hero.Stats(169, 253, 1.1, 500, 0, 2, 0, 0, 0, 0),
   },
-  nil,
+  HakikoBullet,
   Hero.Skill('Hakiko', 60, 8, function(hero)
     local stats = hero:getStats()
     local enemies = Hump.Gamestate.current():getComponents('Enemy')
@@ -33,8 +33,8 @@ function Hakiko:initialize(slot)
 
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.hakiko:getWidth(), Images.heroes.hakiko:getHeight())
-  animator:addAnimation('idle', {'1-2', 1}, 0.5, true)
-  animator:addAnimation('attack', {'3-4', 1}, 0.075, true, function()
+  animator:addAnimation('idle', {'1-2', 1}, 0.75, true)
+  animator:addAnimation('attack', {'3-4', 1, 3, 1}, {0.075, 0.225, 0.7}, true, function()
     animator:setCurrentAnimationName('idle') 
   end)
   animator:setCurrentAnimationName('idle')

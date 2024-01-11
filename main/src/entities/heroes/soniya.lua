@@ -1,5 +1,6 @@
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
+local SoniyaBullet = require 'src.entities.bullets.soniyaBullet'
 local EnemyEffect = require 'src.type.enemyEffect'
 local Transform = require 'src.components.transform'
 local Rectangle = require 'src.components.rectangle'
@@ -24,7 +25,7 @@ function Soniya:initialize(slot)
       [5] = Hero.Stats(95, 158, 0.9, 400, 0, 2),
       [6] = Hero.Stats(126, 211, 0.9, 400, 0, 2),
     },
-    nil,
+    SoniyaBullet,
     Hero.Skill('Soniya', 150, 12, function(hero)
       local stats = hero:getStats()
       local enemies = Hump.Gamestate.current():getComponents('Enemy')
@@ -62,7 +63,7 @@ function Soniya:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.soniya:getWidth(), Images.heroes.soniya:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.5, true)
-  animator:addAnimation('attack', {'3-5', 1}, {0.075, 0.075, 0.075}, true, function()
+  animator:addAnimation('attack', {'4-5', 1, 3, 1}, {0.075, 0.25, 0.675}, true, function()
     animator:setCurrentAnimationName('idle') 
   end)
   animator:setCurrentAnimationName('idle')

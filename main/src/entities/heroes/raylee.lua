@@ -48,7 +48,7 @@ function Raylee:initialize(slot)
   animator:setGrid(18, 18, Images.heroes.raylee:getWidth(), Images.heroes.raylee:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.4, true)
   animator:addAnimation('attack', {'5-6', 1}, {0.2, 0.8}, true, function()
-  animator:setCurrentAnimationName('idle')
+    animator:setCurrentAnimationName('idle')
   end)
   animator:setCurrentAnimationName('idle')
 end

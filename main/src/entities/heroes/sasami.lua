@@ -1,5 +1,6 @@
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
+local SasamiBullet = require 'src.entities.bullets.sasamiBullet'
 local AreaSkillEntity = require 'src.entities.skills.areaSkillEntity'
 local EnemyEffect = require 'src.type.enemyEffect'
 local Transform = require 'src.components.transform'
@@ -26,7 +27,7 @@ function Sasami:initialize(slot)
       [5] = Hero.Stats(111, 205, 1.2, 500, 0, 2),
       [6] = Hero.Stats(147, 274, 1.2, 500, 0, 2),
     },
-    nil,
+    SasamiBullet,
     Hero.Skill('Sasami', 150, 12, function(hero, mx, my)
       Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = mx, y = my}, 240, 140,
           {damageType = 'reality', realityPowerRatio = 8}, 1.075, nil,
@@ -86,7 +87,8 @@ function Sasami:initialize(slot)
 
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.sasami:getWidth(), Images.heroes.sasami:getHeight())
-  animator:addAnimation('idle', {'1-2', 1}, {0.5, 0.5}, true, function()
+  animator:addAnimation('idle', {'1-2', 1}, 0.5, true)
+  animator:addAnimation('attack', {'1-2', 1}, 0.5, true, function()
     animator:setCurrentAnimationName('idle') 
   end)
   animator:setCurrentAnimationName('idle')

@@ -25,7 +25,6 @@ function Cole:initialize(slot)
     [5] = Hero.Stats(158, 63, 1, 550, 0, 2, 0, 0, 0, 0),
     [6] = Hero.Stats(211, 84, 1, 550, 0, 2, 0, 0, 0, 0),
   },
-
   ColeBullet,
   Hero.Skill('Cole',
     40, 8,

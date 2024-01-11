@@ -54,23 +54,23 @@ local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
 local DealerWindow = require 'src.gui.game.dealerWindow'
 local EndGameWindow = require 'src.gui.game.endGameWindow'
--- Enemies entities
--- mini enemies
-local Mino = require 'src.entities.enemies.mino'
-local Peach = require 'src.entities.enemies.peach'
-local Amber = require 'src.entities.enemies.amber'
--- heavy enemies
-local Rini = require 'src.entities.enemies.rini'
-local Spinel = require 'src.entities.enemies.spinel'
-local Elio =  require 'src.entities.enemies.elio'
--- gigantic enemies
-local Arno = require 'src.entities.enemies.arno'
-local Quad = require 'src.entities.enemies.quad'
-local Granite = require 'src.entities.enemies.granite'
--- fast enemies
-local Pepero = require 'src.entities.enemies.pepero'
-local Sev = require 'src.entities.enemies.sev'
-local Leo = require 'src.entities.enemies.leo'
+-- -- Enemies entities
+-- -- mini enemies
+-- local Mino = require 'src.entities.enemies.mino'
+-- local Peach = require 'src.entities.enemies.peach'
+-- local Amber = require 'src.entities.enemies.amber'
+-- -- heavy enemies
+-- local Rini = require 'src.entities.enemies.rini'
+-- local Spinel = require 'src.entities.enemies.spinel'
+-- local Elio =  require 'src.entities.enemies.elio'
+-- -- gigantic enemies
+-- local Arno = require 'src.entities.enemies.arno'
+-- local Quad = require 'src.entities.enemies.quad'
+-- local Granite = require 'src.entities.enemies.granite'
+-- -- fast enemies
+-- local Pepero = require 'src.entities.enemies.pepero'
+-- local Sev = require 'src.entities.enemies.sev'
+-- local Leo = require 'src.entities.enemies.leo'
 
 local Game = Class('Game', State)
 
@@ -87,21 +87,21 @@ function Game:enter(from)
     end
   end
 
-  -- self:addEntity(Soniya(benchSlots[1]))
+  self:addEntity(Soniya(benchSlots[1]))
   self:addEntity(Cole(benchSlots[2]))
   -- self:addEntity(Tom(benchSlots[3]))
-  -- self:addEntity(Sasami(slots[4]))
+  self:addEntity(Sasami(benchSlots[4]))
   -- self:addEntity(Skott(slots[5]))
   -- self:addEntity(Rover(benchSlots[6]))
-  self:addEntity(Skott(benchSlots[8]))
+  -- self:addEntity(Skott(benchSlots[8]))
   -- self:addEntity(Nathanael(slots[8]))
   -- self:addEntity(Kori(slots[9]))
-  self:addEntity(Keon(benchSlots[4]))
-  -- self:addEntity(Hakiko(slots[11]))
-  self:addEntity(Cloud(benchSlots[3]))
-  self:addEntity(Brunnos(benchSlots[6]))
-  -- self:addEntity(Brae(slots[14]))
-  -- self:addEntity(Aurora(slots[15]))
+  -- self:addEntity(Keon(benchSlots[4]))
+  self:addEntity(Hakiko(benchSlots[11]))
+  -- self:addEntity(Cloud(benchSlots[3]))
+  -- self:addEntity(Brunnos(benchSlots[6]))
+  self:addEntity(Brae(benchSlots[14]))
+  self:addEntity(Aurora(benchSlots[15]))
   -- self:addEntity(Alestra(slots[16]))
 
   local teamSlots = {}

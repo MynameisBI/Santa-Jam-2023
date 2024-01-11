@@ -1,5 +1,6 @@
 local Hero = require 'src.components.hero'
 local HeroEntity = require 'src.entities.heroes.heroEntity'
+local AuroraBullet = require 'src.entities.bullets.auroraBullet'
 local Resources = require 'src.components.resources'
 local Transform = require 'src.components.transform'
 local Rectangle = require 'src.components.rectangle'
@@ -24,7 +25,7 @@ function Aurora:initialize(slot)
       [5] = Hero.Stats(111, 158, 1, 425, 0, 2, 0, 0, 0, 0),
       [6] = Hero.Stats(147, 211, 1, 425, 0, 2, 0, 0, 0, 0),
     },
-    nil,
+    AuroraBullet,
     Hero.Skill('aurora', 80, 10, function(hero)
       local stats = hero:getStats()
       local resources = Resources()
@@ -56,7 +57,7 @@ function Aurora:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.aurora:getWidth(), Images.heroes.aurora:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.65, true)
-  animator:addAnimation('attack', {'3-10', 1}, {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5}, true, function()
+  animator:addAnimation('attack', {'9-10', 1, 9, 1}, {0.05, 0.2, 0.75}, true, function()
     animator:setCurrentAnimationName('idle') 
   end)
   animator:setCurrentAnimationName('idle')
