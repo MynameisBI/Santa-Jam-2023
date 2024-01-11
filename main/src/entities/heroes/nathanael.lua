@@ -17,9 +17,9 @@ function Nathanael:initialize(slot)
       [1] = Hero.Stats(50, 30, 1.1, 350, 0, 2),
       [2] = Hero.Stats(67, 40, 1.1, 350, 0, 2),
       [3] = Hero.Stats(89, 53, 1.1, 350, 0, 2),
-      [4] = Hero.Stats(119, 71, 1.1, 350, 0, 2)
-      [5] = Hero.Stats(158, 95, 1.1, 350, 0, 2)
-      [6] = Hero.Stats(211, 126, 1.1, 350, 0, 2)
+      [4] = Hero.Stats(119, 71, 1.1, 350, 0, 2),
+      [5] = Hero.Stats(158, 95, 1.1, 350, 0, 2),
+      [6] = Hero.Stats(211, 126, 1.1, 350, 0, 2),
     },
     nil,
     Hero.Skill('Nathanael', 50, 12, function(hero)

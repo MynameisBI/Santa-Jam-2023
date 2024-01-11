@@ -22,9 +22,9 @@ function Sasami:initialize(slot)
       [1] = Hero.Stats(35, 65, 1.2, 500, 0, 2),
       [2] = Hero.Stats(47, 87, 1.2, 500, 0, 2),
       [3] = Hero.Stats(62, 116, 1.2, 500, 0, 2),
-      [4] = Hero.Stats(83, 154, 1.2, 500, 0, 2)
-      [5] = Hero.Stats(111, 205, 1.2, 500, 0, 2)
-      [6] = Hero.Stats(147, 274, 1.2, 500, 0, 2)
+      [4] = Hero.Stats(83, 154, 1.2, 500, 0, 2),
+      [5] = Hero.Stats(111, 205, 1.2, 500, 0, 2),
+      [6] = Hero.Stats(147, 274, 1.2, 500, 0, 2),
     },
     nil,
     Hero.Skill('Sasami', 150, 12, function(hero, mx, my)

@@ -45,7 +45,7 @@ function Phase:dequeueRound()
   Hump.Gamestate.current().guis[1]:onRoundEnd()
 
   if self.rounds[1] == nil then
-    print('win')
+    Hump.Gamestate.current():win()
   end
 
   table.remove(self.rounds, 1)
@@ -59,7 +59,7 @@ function Phase:switchNextRound()
   Hump.Gamestate.current().guis[1]:onRoundEnd()
 
   if self.rounds[1] == nil then
-    print('win')
+    Hump.Gamestate.current():win()
   end
 
   table.remove(self.rounds, 1)

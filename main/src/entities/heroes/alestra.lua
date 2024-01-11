@@ -18,9 +18,9 @@ function Alestra:initialize(slot)
       [1] = Hero.Stats(90, 30, 1.0, 400, 0, 2),
       [2] = Hero.Stats(120, 40, 1.0, 400, 0, 2),
       [3] = Hero.Stats(160, 53, 1.0, 400, 0, 2),
-      [4] = Hero.Stats(213, 71, 1.0, 400, 0, 2)
-      [5] = Hero.Stats(284, 95, 1.0, 400, 0, 2)
-      [6] = Hero.Stats(379, 126, 1.0, 400, 0, 2)
+      [4] = Hero.Stats(213, 71, 1.0, 400, 0, 2),
+      [5] = Hero.Stats(284, 95, 1.0, 400, 0, 2),
+      [6] = Hero.Stats(379, 126, 1.0, 400, 0, 2),
     },
     nil,
     Hero.Skill('Alestra', 140, 14, function(hero)

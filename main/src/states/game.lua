@@ -53,7 +53,7 @@ local HUD = require 'src.gui.game.hud'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'
 local DealerWindow = require 'src.gui.game.dealerWindow'
-local Setting = require 'src.gui.setting.setting'
+local EndGameWindow = require 'src.gui.game.endGameWindow'
 -- Enemies entities
 -- mini enemies
 local Mino = require 'src.entities.enemies.mino'
@@ -125,7 +125,10 @@ function Game:enter(from)
     BattleRewardWindow(),
     HeroRewardWindow(),
     DealerWindow(),
+    EndGameWindow()
   }
+
+  self.paused = false
 end
 
 function Game:addSystems()
@@ -159,9 +162,11 @@ end
 
 
 function Game:update(dt)
-  State.update(self, dt)
-
   Lume.each(self.guis, 'update', dt)
+
+  if self.paused then return end
+
+  State.update(self, dt)
 end
 
 function Game:draw()
@@ -219,6 +224,8 @@ function Game:draw()
     self.guis[1]:draw()
   end
 
+  self.guis[5]:draw()
+
   -- love.graphics.print(love.timer.getFPS())
 end
 
@@ -228,6 +235,10 @@ function Game:keypressed(key, scancode, isRepeat)
       self.guis[2]:open({mainType = 'enemy', subType = '~1'})
     elseif scancode == 'f' then
       self.guis[4]:open(1)
+    elseif scancode == 'w' then
+      self:win()
+    elseif scancode == 'l' then
+      self:lose()
     end
   end
 
@@ -252,6 +263,16 @@ function Game:mousereleased(...)
   if not self.guis[2].isOpened and not self.guis[3].isOpened then
     State.mousereleased(self, ...)
   end
+end
+
+function Game:win()
+  self.paused = true
+  self.guis[5]:open('won')
+end
+
+function Game:lose()
+  self.paused = true
+  self.guis[5]:open('lost')
 end
 
 return Game

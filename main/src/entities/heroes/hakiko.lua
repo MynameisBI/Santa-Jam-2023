@@ -16,9 +16,9 @@ function Hakiko:initialize(slot)
     [1] = Hero.Stats(40, 60, 1.1, 500, 0, 2),
     [2] = Hero.Stats(53, 80, 1.1, 500, 0, 2),
     [3] = Hero.Stats(71, 107, 1.1, 500, 0, 2),
-    [4] = Hero.Stats(95, 142, 1.1, 500, 0, 2)
-    [5] = Hero.Stats(126, 190, 1.1, 500, 0, 2)
-    [6] = Hero.Stats(169, 253, 1.1, 500, 0, 2)
+    [4] = Hero.Stats(95, 142, 1.1, 500, 0, 2),
+    [5] = Hero.Stats(126, 190, 1.1, 500, 0, 2),
+    [6] = Hero.Stats(169, 253, 1.1, 500, 0, 2),
   },
   nil,
   Hero.Skill('Hakiko', 60, 8, function(hero)
