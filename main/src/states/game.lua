@@ -81,7 +81,7 @@ function Game:enter(from)
   self:initializeModSlots()
 
   local benchSlots = {}
-  for x = 145, 190, 45 do
+  for x = 104, 192, 44 do
     for y = 200, 360, 40 do
       table.insert(benchSlots, self:addEntity(Slot('bench', x, y)))
     end
@@ -105,12 +105,12 @@ function Game:enter(from)
   -- self:addEntity(Alestra(slots[16]))
 
   local teamSlots = {}
-  table.insert(teamSlots, Slot('team', 234, 262))
-  table.insert(teamSlots, Slot('team', 280, 284))
-  table.insert(teamSlots, Slot('team', 280, 226))
-  table.insert(teamSlots, Slot('team', 234, 320))
-  table.insert(teamSlots, Slot('team', 234, 204))
-  table.insert(teamSlots, Slot('team', 280, 342))
+  table.insert(teamSlots, Slot('team', 236, 262))
+  table.insert(teamSlots, Slot('team', 278, 284))
+  table.insert(teamSlots, Slot('team', 278, 226))
+  table.insert(teamSlots, Slot('team', 236, 320))
+  table.insert(teamSlots, Slot('team', 236, 204))
+  table.insert(teamSlots, Slot('team', 278, 342))
   
   local teamSynergy = TeamSynergy()
   teamSynergy:setTeamSlots(teamSlots)
