@@ -54,10 +54,10 @@ function ManageEnemy:earlysystemupdate(dt)
 
     elseif round.subType == 'A1' then
       self.spawnQueue = {
-        Mino, 0, Mino, 0, Mino, 1, Mino, 1, Mino, 2, Mino, 2, Mino, 3, Mino, 3,
-        Rini, 5, Rini, 6,
-        Mino, 9, Mino, 9, Mino, 10, Mino, 10, Mino, 11, Mino, 11, Mino, 12, Mino, 12,
-        Rini, 13, Rini, 14, Rini, 15,
+        Mino, 0, Mino, 0, Mino, 1, Mino, 1,
+        Rini, 3, Rini, 3,
+        Pepero, 6, Pepero, 6, Pepero, 6, Pepero, 6,
+        Spinel, 7, Spinel, 7,
       }
       
     elseif round.subType == 'A6' then
@@ -78,24 +78,75 @@ function ManageEnemy:earlysystemupdate(dt)
         Pepero, 4, Pepero, 4.5, Pepero, 5, Pepero, 5.5,
         Arno, 7, Arno, 8,
         Mino, 12, Mino, 12, Mino, 13, Mino, 13, Mino, 14, Mino, 14, Mino, 15, Mino, 15,
-
         Rini, 18, Rini, 18.75, Rini, 19.5, Rini, 20.25,
         Pepero, 22, Pepero, 22.5, Pepero, 23, Pepero, 23.5,
         Arno, 25, Arno, 26,
       }
     
     elseif round.subType == 'B1' then
+      self.spawnQueue = {
+        Rini, 0, Rini, 0.75, Rini, 1.5, Rini, 2.25,
+        Arno, 3, Arno, 4.25, Arno, 5.5, Arno, 6.75,
+        Mino, 8, Mino, 8, Mino, 8, Mino, 8, Mino, 9, Mino, 9, Mino, 9, Mino, 9,
+        Pepero, 10, Pepero, 12, Pepero, 14,
+        Spinel, 15.5, Spinel, 17.5, Spinel, 19.5,
+        Peach, 22, Peach, 23.5, Peach, 25, Peach, 26.5
+      }
 
     elseif round.subType == 'B6' then
+      self.spawnQueue = {
+        Sev, 0, Sev, 2.5, Sev, 5,
+        Mino, 6, Mino, 6, Mino, 6, Mino, 6, Mino, 7, Mino, 7, Mino, 7, Mino, 7,
+        Rini, 8, Rini, 8.75, Rini, 9.5, Rini, 10.25,
+        Pepero, 10, Pepero, 12, Pepero, 14,
+        Peach, 15.5, Peach, 17, Peach, 18.5, Peach, 20,
+        Elio, 22, Elio, 25,
+      }
 
     elseif round.subType == 'B11' then
+      self.spawnQueue = {
+        Amber, 0, Amber, 3, Amber, 6,
+        Pepero, 7, Pepero, 7.5, Pepero, 8, Pepero, 8.5, Pepero, 9, Pepero, 9.5,
+        Rini, 10.5, Rini, 12, Rini, 13.5, Rini, 15,
+        Peach, 16, Peach, 17.5, Peach, 19, Peach, 20.5,
+        Mino, 21, Mino, 21, Mino, 22, Mino, 22,
+        Amber, 22, Amber, 25, Amber, 28,
+        Elio, 30, Elio, 35,
+      }
 
     elseif round.subType == 'C0' then
+      self.spawnQueue = {
+        Spinel, 0, Amber, 0.75, Spinel, 1.5, Spinel, 3, Amber, 3.75, Spinel, 4.5,
+        Quad, 6, Pepero, 7, Quad, 8, Pepero, 9,
+        Rini, 10.5, Rini, 12, Rini, 13.5, Rini, 15,
+        Peach, 16, Peach, 17.5, Peach, 19, Peach, 20.5,
+        Elio, 22, Mino, 22.25, Mino, 22.25, Elio, 25, Mino, 25.25, Mino, 25.25, Elio, 28, Mino, 28.25, Mino, 28.25,
+        Amber, 22, Amber, 25, Amber, 28,
+        Mino, 30, Mino, 30, Mino, 30, Mino, 30, Mino, 31, Mino, 31, Mino, 31, Mino, 31,
+      }
 
     elseif round.subType == 'C5' then
+      self.spawnQueue = {
+        Spinel, 0, Mino, 0.75, Spinel, 1.5, Mino, 3, Mino, 3.75, Spinel, 4.5,
+        Quad, 6, Pepero, 7, Quad, 9, Pepero, 10,
+        Rini, 10.5, Amber, 12, Rini, 13.5, Amber, 15,
+        Peach, 16, Peach, 17.5, Peach, 19, Peach, 20.5,
+        Elio, 22, Mino, 22.25, Mino, 22.25, Elio, 25, Mino, 25.25, Mino, 25.25, Elio, 28, Mino, 28.25, Mino, 28.25,
+        Arno, 29, Arno, 32, Arno, 35,
+        Sev, 36, Sev, 37.5, Sev, 39, Sev, 40.5,
+      }
 
     elseif round.subType == 'C10' then
-
+      self.spawnQueue = {
+        Quad, 1, Quad, 4, Quad, 7,
+        Pepero, 8, Mino, 8.25, Pepero, 8.5, Mino, 8.75, Pepero, 9, Mino, 9.25, Pepero, 9.5, Mino, 9.75,
+        Peach, 10, Peach, 11.5, Peach, 13, Peach, 14.5, Peach, 16,
+        Elio, 17, Elio, 20, Elio, 23,
+        Sev, 24, Mino, 24.5, Sev, 25, Mino, 25.5, Sev, 26, Mino, 26.5,
+        Rini, 27, Rini, 28.75, Rini, 29.5, Rini, 30.25,
+        Amber, 31, Spinel, 34.5, Amber, 38, Spinel, 41.5,
+        Granite, 45, Granite, 4,
+      }
     end
 
   elseif round.mainType == 'elite' then
