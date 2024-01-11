@@ -4,7 +4,7 @@ local CurrentInspectable = Class('CurrentInspectable', SingletonComponent)
 
 function CurrentInspectable:initialize()
   SingletonComponent.initialize(self)
-  self.currentInspectable = nil
+  self.inspectable = nil
 end
 
 return CurrentInspectable

@@ -4,6 +4,7 @@ local System = require 'src.systems.system'
 local AudioManager = require 'src.components.audioManager'
 local Resources = require 'src.components.resources'
 local DrawSlot = require 'src.systems.drawSlot'
+local CurrentInspectable = require 'src.components.currentInspectable'
 
 local DragAndDrop = Class('DragAndDrop', System)
 
@@ -127,12 +128,16 @@ function DragAndDrop:earlysystemmousereleased(x, y, button)
 end
 
 function DragAndDrop:earlysystemworlddraw()
-  local currentDraggable = self.dragAndDropInfo.draggable
+  local heroEntity
 
-  if currentDraggable == nil then return end
-  if currentDraggable.draggableType ~= 'hero' then return end
+  if self.dragAndDropInfo.draggable and self.dragAndDropInfo.draggable.draggableType == 'hero' then
+    heroEntity = self.dragAndDropInfo.draggable:getEntity()
+  elseif CurrentInspectable().inspectable then
+    heroEntity = CurrentInspectable().inspectable:getEntity()
+  else
+    return
+  end
 
-  local heroEntity = currentDraggable:getEntity()
   local x, y = heroEntity:getComponent('Transform'):getGlobalPosition()
   local hero = heroEntity:getComponent('Hero')
   local stats = hero:getStats()
