@@ -19,10 +19,11 @@ function Cole:initialize(slot)
   {
   --attackDamage, realityPower, attackSpeed, range, critChance, critDamage, cooldownReduction, energy, physicalArmorIgnoreRatio, realityArmorIgnoreRatio
     [1] = Hero.Stats(50, 20, 1, 550, 0, 2, 0, 0, 0, 0),
-    [2] = Hero.Stats(67, 30, 1, 550, 0, 2, 0, 0, 0, 0),
-    [3] = Hero.Stats(89, 45, 1, 550, 0, 2, 0, 0, 0, 0),
-    [4] = Hero.Stats(119, 68, 1, 550, 0, 2, 0, 0, 0, 0),
-    [5] = Hero.Stats(158, 68, 1, 550, 0, 2, 0, 0, 0, 0),
+    [2] = Hero.Stats(67, 27, 1, 550, 0, 2, 0, 0, 0, 0),
+    [3] = Hero.Stats(89, 36, 1, 550, 0, 2, 0, 0, 0, 0),
+    [4] = Hero.Stats(119, 47, 1, 550, 0, 2, 0, 0, 0, 0),
+    [5] = Hero.Stats(158, 63, 1, 550, 0, 2, 0, 0, 0, 0),
+    [6] = Hero.Stats(211, 84, 1, 550, 0, 2, 0, 0, 0, 0),
   },
 
   ColeBullet,

@@ -73,7 +73,9 @@ function Rover:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.rover:getWidth(), Images.heroes.rover:getHeight())
   animator:addAnimation('idle', {'1-4', 1}, 0.25, true)
-  animator:addAnimation('attack', {'5-7', 1}, {0.075, 0.075, 0.075, 0.075, 0.075}, true)
+  animator:addAnimation('attack', {'6-7', 1, 5, 1}, {0.05, 0.2, 0.75}, true, function()
+    animator:setCurrentAnimationName('idle') 
+  end)
   animator:setCurrentAnimationName('idle')
 end
 

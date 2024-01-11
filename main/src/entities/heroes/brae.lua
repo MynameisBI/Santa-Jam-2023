@@ -81,7 +81,9 @@ function Brae:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.brae:getWidth(), Images.heroes.brae:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.5, true)
-  animator:addAnimation('attack', {'3-4', 1}, 0.5, true)
+  animator:addAnimation('attack', {'3-4', 1}, 0.5, true, function()
+    animator:setCurrentAnimationName('idle') 
+  end)
   animator:setCurrentAnimationName('idle')
 end
 

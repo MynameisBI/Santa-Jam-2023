@@ -73,6 +73,8 @@ function DealerWindow:open(value)
   self.isOpened = true
   self.isOn = true
 
+  value = 2
+
   if value == 1 then
     local tier1s = self:getHeroItems(1, 2, 3)
     local tier2s = self:getHeroItems(2, 1, 2)
@@ -85,23 +87,23 @@ function DealerWindow:open(value)
 
     
   elseif value == 2 then
-    local tier1s = self:getHeroItems(1, 2, 3)
-    local tier2s = self:getHeroItems(2, 1, 2)
-    local tier3s = self:getHeroItems(3, 1)
+    local tier2s = self:getHeroItems(2, 2, 3)
+    local tier3s = self:getHeroItems(3, 1, 2)
+    local tier4s = self:getHeroItems(4, 1)
     self.items = {
-      tier1s[1], tier1s[2], tier1s[3], tier3s[1],
-      tier2s[1], tier2s[2],
-      self:getModItem(1), self:getModItem(1)
+      tier2s[1], tier2s[2], tier2s[3], tier4s[1],
+      tier3s[1], tier3s[2],
+      self:getModItem(1), self:getModItem(2)
     }
 
   elseif value == 3 then
-    local tier1s = self:getHeroItems(1, 2, 3)
-    local tier2s = self:getHeroItems(2, 1, 2)
-    local tier3s = self:getHeroItems(3, 1)
+    local tier3s = self:getHeroItems(1, 2, 3)
+    local tier4s = self:getHeroItems(2, 1, 2)
+    local tier1s = self:getHeroItems(1, 5)
     self.items = {
-      tier1s[1], tier1s[2], tier1s[3], tier3s[1],
-      tier2s[1], tier2s[2],
-      self:getModItem(1), self:getModItem(1)
+      tier3s[1], tier3s[2], tier3s[3], tier1s[1],
+      tier4s[1], tier4s[2],
+      self:getModItem(2), self:getModItem(3)
     }
 
   end

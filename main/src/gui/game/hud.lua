@@ -419,17 +419,7 @@ function HUD:draw()
   for _, modEntity in ipairs(modEntities) do
     if modEntity:getComponent('Area'):hasWorldPoint(mx, my) then
       local mod = modEntity:getComponent('Mod')
-      if not self.dragAndDropInfo.draggable then
-        self:drawModTooltip(mod, mx, my)
-      else
-        local hoveredMod = self.dragAndDropInfo.draggable:getEntity():getComponent('Mod')
-        if hoveredMod then
-          local resultModEntity = Hero.getModEntityFromModCombination(mod, hoveredMod)
-          if resultModEntity then
-            self:drawModTooltip(resultModEntity:getComponent('Mod'), mx, my)
-          end
-        end
-      end
+      self:drawModTooltip(mod, mx, my)
     end
   end
   local heroes = Hump.Gamestate.current():getEntitiesWithComponent('Hero')

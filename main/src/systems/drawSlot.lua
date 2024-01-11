@@ -55,7 +55,7 @@ function DrawSlot:worlddraw(transform, area, dropSlot)
           -- love.graphics.setColor(0.05, 0.05, 0.05)
           -- love.graphics.rectangle('line', x - 1, y - 6, 14, 14)
           love.graphics.setColor(1, 1, 1)
-          love.graphics.draw(hero.modEntity:getComponent('Sprite').image, x, y - 8, 0, 1, 1)
+          love.graphics.draw(hero.modEntity:getComponent('Sprite').image, x, y - 5, 0, 1, 1)
         end)
       end
     end

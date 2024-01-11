@@ -60,7 +60,9 @@ function Soniya:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.soniya:getWidth(), Images.heroes.soniya:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.5, true)
-  animator:addAnimation('attack', {'3-5', 1}, {0.075, 0.075, 0.075}, true)
+  animator:addAnimation('attack', {'3-5', 1}, {0.075, 0.075, 0.075}, true, function()
+    animator:setCurrentAnimationName('idle') 
+  end)
   animator:setCurrentAnimationName('idle')
 end
 

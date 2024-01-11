@@ -19,10 +19,12 @@ function Keon:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes["k'eon"], 'K\'eon', 1, {'defect', 'droneMaestro'},
     {
-      [1] = Hero.Stats(52, 45, 0.625, 450, 0.5, 1.75, 0, 0, 0, 0),
-      [2] = Hero.Stats(59, 20, 0.625, 175, 0.5, 1.75, 0, 0, 0, 0),
-      [3] = Hero.Stats(59, 20, 0.625, 600, 0.5, 1.75, 0, 0, 0, 0),
-      [4] = Hero.Stats(59, 20, 0.625, 600, 0.5, 1.75, 0, 0, 0, 0),
+      [1] = Hero.Stats(25, 45, 0.8, 425, 0, 2, 0, 0, 0, 0),
+      [2] = Hero.Stats(33, 60, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [3] = Hero.Stats(44, 80, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [4] = Hero.Stats(59, 107, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [5] = Hero.Stats(79, 142, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [6] = Hero.Stats(105, 190, 0.8, 450, 0, 2, 0, 0, 0, 0),
     },
     KeonBullet,
     Hero.Skill('Keon', 30, 3, function(hero)

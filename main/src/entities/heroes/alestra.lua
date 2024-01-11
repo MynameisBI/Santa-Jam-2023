@@ -47,7 +47,9 @@ function Alestra:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.alestra:getWidth(), Images.heroes.alestra:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.65, true)
-  animator:addAnimation('attack', {'3-6', 1}, {0.5, 0.5, 0.5, 0.5}, true)
+  animator:addAnimation('attack', {'3-6', 1}, {0.5, 0.5, 0.5, 0.5}, true, function()
+    animator:setCurrentAnimationName('idle') 
+  end)
   animator:setCurrentAnimationName('idle')
 end
 

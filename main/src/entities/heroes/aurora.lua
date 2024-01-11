@@ -54,7 +54,9 @@ function Aurora:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.aurora:getWidth(), Images.heroes.aurora:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.65, true)
-  animator:addAnimation('attack', {'3-10', 1}, {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5}, true)
+  animator:addAnimation('attack', {'3-10', 1}, {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5}, true, function()
+    animator:setCurrentAnimationName('idle') 
+  end)
   animator:setCurrentAnimationName('idle')
 end
 

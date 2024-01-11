@@ -18,7 +18,7 @@ function Kori:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.kori, 'Kori', 2, {'bigEar', 'defect', 'trailblazer'},
     {
-        [1] = Hero.Stats(40, 30, 1.0, 300, 0, 2),
+        [1] = Hero.Stats(40, 30, 1.0, 500, 0, 2),
         [2] = Hero.Stats(60, 45, 1.0, 300, 0, 2),
         [3] = Hero.Stats(90, 68, 1.0, 300, 0, 2),
         [4] = Hero.Stats(135, 101, 1.0, 300, 0, 2)
@@ -71,7 +71,9 @@ function Kori:initialize(slot)
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.kori:getWidth(), Images.heroes.kori:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.3, true)
-  animator:addAnimation('attack', {'3-5', 1}, {1, 0.075, 0.075}, true)
+  animator:addAnimation('attack', {'3-5', 1}, {0.05, 0.15, 0.8}, true, function()
+    animator:setCurrentAnimationName('idle') 
+  end)
   animator:setCurrentAnimationName('idle')
 end
 

@@ -6,7 +6,7 @@ function AllyStats:initialize(attackDamage, realityPower, attackSpeed, range, cr
   self.attackSpeed = attackSpeed or (function() print('Warning: default stats attack speed is not 0'); return 1 end)()
   self.range = range or 0
   self.critChance = critChance or 0
-  self.critDamage = critDamage or (function() print('Warning: default crit damage is not 0'); return 2 end)()
+  self.critDamage = critDamage or 0
   self.cooldownReduction = cooldownReduction or 0
   self.energy = energy or 0
   
