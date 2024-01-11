@@ -20,9 +20,9 @@ function Soniya:initialize(slot)
       [1] = Hero.Stats(30, 50, 0.9, 400, 0, 2),
       [2] = Hero.Stats(40, 67, 0.9, 400, 0, 2),
       [3] = Hero.Stats(53, 89, 0.9, 400, 0, 2),
-      [4] = Hero.Stats(71, 119, 0.9, 400, 0, 2)
-      [5] = Hero.Stats(95, 158, 0.9, 400, 0, 2)
-      [6] = Hero.Stats(126, 211, 0.9, 400, 0, 2)
+      [4] = Hero.Stats(71, 119, 0.9, 400, 0, 2),
+      [5] = Hero.Stats(95, 158, 0.9, 400, 0, 2),
+      [6] = Hero.Stats(126, 211, 0.9, 400, 0, 2),
     },
     nil,
     Hero.Skill('Soniya', 150, 12, function(hero)

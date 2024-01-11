@@ -29,9 +29,9 @@ function Tom:initialize(slot)
       [1] = Hero.Stats(0, 80, 1, 0, 0, 2),
       [2] = Hero.Stats(0, 107, 1, 0, 0, 2),
       [3] = Hero.Stats(0, 142, 1, 0, 0, 2),
-      [4] = Hero.Stats(0, 190, 1, 0, 0, 2)
-      [5] = Hero.Stats(0, 253, 1, 0, 0, 2)
-      [6] = Hero.Stats(0, 337, 1, 0, 0, 2)
+      [4] = Hero.Stats(0, 190, 1, 0, 0, 2),
+      [5] = Hero.Stats(0, 253, 1, 0, 0, 2),
+      [6] = Hero.Stats(0, 337, 1, 0, 0, 2),
     },
     nil,
     Hero.Skill('Tom', 40, 8, function(hero)

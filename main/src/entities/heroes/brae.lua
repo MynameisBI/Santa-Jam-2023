@@ -21,12 +21,12 @@ function Brae:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.brae, 'Brae', 3, {'bigEar', 'artificer'},
     {
-      [1] = Hero.Stats(50, 60, 0.8, 450, 0, 2),
-      [2] = Hero.Stats(67, 80, 0.8, 450, 0, 2),
-      [3] = Hero.Stats(89, 107, 0.8, 450, 0, 2),
-      [4] = Hero.Stats(119, 142, 0.8, 450, 0, 2)
-      [5] = Hero.Stats(158, 190, 0.8, 450, 0, 2)
-      [6] = Hero.Stats(211, 253, 0.8, 450, 0, 2)
+      [1] = Hero.Stats(50, 60, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [2] = Hero.Stats(67, 80, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [3] = Hero.Stats(89, 107, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [4] = Hero.Stats(119, 142, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [5] = Hero.Stats(158, 190, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [6] = Hero.Stats(211, 253, 0.8, 450, 0, 2, 0, 0, 0, 0),
     },
     nil,
     Hero.Skill('Brae', 70, 10, function(hero)

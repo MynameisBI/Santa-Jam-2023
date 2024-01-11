@@ -17,12 +17,12 @@ function Rover:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.rover, 'Rover', 3, {'bigEar', 'trailblazer'},
     {
-      [1] = Hero.Stats(70, 30, 1.4, 350, 0, 2),
-      [2] = Hero.Stats(93, 40, 1.4, 350, 0, 2),
-      [3] = Hero.Stats(124, 53, 1.4, 350, 0, 2),
-      [4] = Hero.Stats(166, 71, 1.4, 350, 0, 2)
-      [5] = Hero.Stats(221, 95, 1.4, 350, 0, 2)
-      [6] = Hero.Stats(295, 126, 1.4, 350, 0, 2)
+      [1] = Hero.Stats(70, 30, 1.4, 350, 0, 2, 0, 0, 0, 0),
+      [2] = Hero.Stats(93, 40, 1.4, 350, 0, 2, 0, 0, 0, 0),
+      [3] = Hero.Stats(124, 53, 1.4, 350, 0, 2, 0, 0, 0, 0),
+      [4] = Hero.Stats(166, 71, 1.4, 350, 0, 2, 0, 0, 0, 0),
+      [5] = Hero.Stats(221, 95, 1.4, 350, 0, 2, 0, 0, 0, 0),
+      [6] = Hero.Stats(295, 126, 1.4, 350, 0, 2, 0, 0, 0, 0),
     },
     nil,
     Hero.Skill('Rover', 30, 15, function(hero)

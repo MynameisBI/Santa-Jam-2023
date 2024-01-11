@@ -13,9 +13,9 @@ function Skott:initialize(slot)
       [1] = Hero.Stats(40, 75, 1.3, 300, 0, 2),
       [2] = Hero.Stats(53, 100, 1.3, 300, 0, 2),
       [3] = Hero.Stats(71, 133, 1.3, 300, 0, 2),
-      [4] = Hero.Stats(95, 178, 1.3, 300, 0, 2)
-      [5] = Hero.Stats(126, 237, 1.3, 300, 0, 2)
-      [6] = Hero.Stats(169, 316, 1.3, 300, 0, 2)
+      [4] = Hero.Stats(95, 178, 1.3, 300, 0, 2),
+      [5] = Hero.Stats(126, 237, 1.3, 300, 0, 2),
+      [6] = Hero.Stats(169, 316, 1.3, 300, 0, 2),
     },
     nil,
     Hero.Skill('Skott', 100, 15, function(hero)
