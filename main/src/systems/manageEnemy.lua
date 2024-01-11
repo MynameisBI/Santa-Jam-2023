@@ -43,25 +43,46 @@ function ManageEnemy:earlysystemupdate(dt)
   if round.mainType == 'enemy' then
     if round.subType == '~1' then
       self.spawnQueue = {
-        Mino, 0, Mino, 2, Mino, 4.5, Mino, 7,
+        Mino, 0, Mino, 1.75, Mino, 3.5, Mino, 5.25,
       }
 
     elseif round.subType == '~2' then
       self.spawnQueue = {
-        Mino, 0, Mino, 1, Mino, 1.5, Mino, 2,
-        Rini, 3, Rini, 4.5, Rini, 6, Rini, 7.5,
+        Mino, 0, Mino, 1, Mino, 2, Mino, 3,
+        Mino, 6, Mino, 7, Mino, 8, Mino, 9,
       }
 
     elseif round.subType == 'A1' then
       self.spawnQueue = {
-        Mino, 0, Mino, 0,
-        Rini, 3, Rini, 3,
-        Arno, 6, Arno, 6, Pepero, 6, Pepero, 6, Pepero, 6, Pepero, 6
+        Mino, 0, Mino, 0, Mino, 1, Mino, 1, Mino, 2, Mino, 2, Mino, 3, Mino, 3,
+        Rini, 5, Rini, 6,
+        Mino, 9, Mino, 9, Mino, 10, Mino, 10, Mino, 11, Mino, 11, Mino, 12, Mino, 12,
+        Rini, 13, Rini, 14, Rini, 15,
       }
       
     elseif round.subType == 'A6' then
+      self.spawnQueue = {
+        Mino, 0, Mino, 0, Mino, 1, Mino, 1, Mino, 2, Mino, 2, Mino, 3, Mino, 3,
+        Rini, 4, Rini, 5,
+        Pepero, 8, Pepero, 8.5, Pepero, 9, Pepero, 9.5,
+        Mino, 12, Mino, 12, Mino, 13, Mino, 13, Mino, 14, Mino, 14, Mino, 15, Mino, 15,
+        Rini, 16, Rini, 17,
+        Pepero, 20, Pepero, 20.5, Pepero, 21, Pepero, 22.5,
+        Rini, 23, Rini, 24,
+        Pepero, 26, Pepero, 26.5, Pepero, 27, Pepero, 27.5, Pepero, 28, Pepero, 28.5
+      }
     
     elseif round.subType == 'A11' then
+      self.spawnQueue = {
+        Rini, 0, Rini, 0.75, Rini, 1.5, Rini, 2.25,
+        Pepero, 4, Pepero, 4.5, Pepero, 5, Pepero, 5.5,
+        Arno, 7, Arno, 8,
+        Mino, 12, Mino, 12, Mino, 13, Mino, 13, Mino, 14, Mino, 14, Mino, 15, Mino, 15,
+
+        Rini, 18, Rini, 18.75, Rini, 19.5, Rini, 20.25,
+        Pepero, 22, Pepero, 22.5, Pepero, 23, Pepero, 23.5,
+        Arno, 25, Arno, 26, Arno, 27, Arno, 28
+      }
     
     elseif round.subType == 'B1' then
 

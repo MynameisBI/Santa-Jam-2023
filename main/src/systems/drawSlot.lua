@@ -36,10 +36,16 @@ function DrawSlot:worlddraw(transform, area, dropSlot)
           local threshold = hero.class.EXPERIENCE_THRESHOLD[hero.level]
           for i = 1, threshold do
             local bx, by = x + w / threshold * (i-1), y - 11
-            if i <= hero.exp then love.graphics.setColor(0.8, 0.8, 0.8)
-            else love.graphics.setColor(0.15, 0.15, 0.15)
+
+            love.graphics.setColor(0.15, 0.15, 0.15)
+            love.graphics.setLineWidth(2)
+            love.graphics.rectangle('line', bx, by, w / threshold - 1, 5, 1, 1)
+            love.graphics.setLineWidth(1)
+
+            if i <= hero.exp then love.graphics.setColor(0.7, 0.85, 0.85)
+            else love.graphics.setColor(0.2, 0.3, 0.3)
             end
-            love.graphics.rectangle('fill', bx, by, w / threshold - 1, 5, 2, 2)
+            love.graphics.rectangle('fill', bx, by, w / threshold - 1, 5, 1, 1)
           end
         else
           love.graphics.setColor(0.8, 0.8, 0.8)

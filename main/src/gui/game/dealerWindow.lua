@@ -73,8 +73,6 @@ function DealerWindow:open(value)
   self.isOpened = true
   self.isOn = true
 
-  value = 2
-
   if value == 1 then
     local tier1s = self:getHeroItems(1, 2, 3)
     local tier2s = self:getHeroItems(2, 1, 2)

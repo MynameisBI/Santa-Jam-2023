@@ -44,7 +44,7 @@ function Hero:initialize(name, tier, traits, baseStats, bulletClass, skill)
   self.traits = traits or {}
 
   self.level = 1
-  self.exp = 1
+  self.exp = 0
   self.baseStats = baseStats or {
     [1] = Hero.Stats(),
     [2] = Hero.Stats(),

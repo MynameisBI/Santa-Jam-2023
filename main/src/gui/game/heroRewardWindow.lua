@@ -64,8 +64,6 @@ end
 function HeroRewardWindow:open(value)
   local heroes = Hump.Gamestate.current():getComponents('Hero')
 
-  local value = 3
-
   -- choose 3 hero
   -- for each hero, check if they're on the map or not
   -- if not on then add unlock hero reward

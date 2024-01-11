@@ -41,56 +41,103 @@ function BattleRewardWindow:initialize()
 end
 
 function BattleRewardWindow:open(round)
+  self.battleRewards = nil
+
   if round.mainType == 'enemy' then
     if round.subType == '~1' then
-      local reward1 = {rewardType = 'money', amount = math.random(6, 10)}
-      local reward2 = {rewardType = 'mod', modEntity = Lume.randomchoice(TieredMods[3])()}
-      local reward3 = {rewardType = 'hero', value = 1}
-      self.battleRewards = {reward1, reward2, reward3}
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(3, 4)},
+        {rewardType = 'hero', value = 1},
+      }
 
     elseif round.subType == '~2' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(3, 4)},
+        {rewardType = 'hero', value = 1},
+        {rewardType = 'mod', modEntity = Lume.randomchoice(TieredMods[1])()},
+      }
 
     elseif round.subType == 'A1' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(4, 6)},
+        {rewardType = 'hero', value = 2},
+      }
       
     elseif round.subType == 'A6' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(5, 7)},
+        {rewardType = 'hero', value = 3},
+      }
       
     elseif round.subType == 'A11' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(5, 7)},
+        {rewardType = 'mod', modEntity = Lume.randomchoice(TieredMods[1])()},
+      }
 
     elseif round.subType == 'B1' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(5, 7)},
+        {rewardType = 'hero', value = 3},
+      }
 
     elseif round.subType == 'B6' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(6, 8)},
+        {rewardType = 'hero', value = 4},
+      }
 
     elseif round.subType == 'B11' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(6, 8)},
+        {rewardType = 'mod', modEntity = Lume.randomchoice(TieredMods[2])()},
+      }
 
-    elseif round.subType == 'C0' then
+    elseif round.subType == 'C1' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(6, 8)},
+        {rewardType = 'hero', value = 4},
+      }
 
-    elseif round.subType == 'C5' then
+    elseif round.subType == 'C6' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(7, 9)},
+        {rewardType = 'hero', value = 5},
+      }
 
-    elseif round.subType == 'C10' then
+    elseif round.subType == 'C11' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(7, 9)},
+        {rewardType = 'mod', modEntity = Lume.randomchoice(TieredMods[3])()},
+      }
 
     end
 
   elseif round.mainType == 'elite' then
-    if round.subType == 'a' then
+    if round.subType == 'A1' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(8, 12)},
+        {rewardType = 'hero', value = 3},
+        {rewardType = 'hero', value = 4},
+      }
       
-    elseif round.subType == 'b' then
+    elseif round.subType == 'B1' then
+      self.battleRewards = {
+        {rewardType = 'money', amount = math.random(10, 14)},
+        {rewardType = 'hero', value = 5},
+        {rewardType = 'hero', value = 6},
+      }
 
-    elseif round.subType == 'A' then
-
-    elseif round.subType == 'B' then
-
-    elseif round.subType == 'C' then
-
-    elseif round.subType == 'D' then
-
-    elseif round.subType == 'E' then      
-
-    elseif round.subType == 'F' then
+    elseif round.subType == 'C1' then
+      -- no final boss reward
 
     end
 
   end
-  self.isOpened = true
+  
+  if self.battleRewards then
+    self.isOpened = true
+  end
 end
 
 function BattleRewardWindow:close()

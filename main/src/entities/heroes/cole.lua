@@ -33,7 +33,7 @@ function Cole:initialize(slot)
       local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
       enemyEntities = Lume.shuffle(enemyEntities)
       local stats = hero:getStats()
-      for i = 1, math.min(#enemyEntities, 8) do
+      for i = 1, math.min(#enemyEntities, 6) do
         local targetSkillEntity = Hump.Gamestate.current():addEntity(
           TargetSkillEntity(hero, enemyEntities[i],
               {damageType = 'true', attackDamageRatio = 1, canCrit = true}, 1 / stats.attackSpeed)
@@ -45,11 +45,11 @@ function Cole:initialize(slot)
         local sprite = effectEntity:addComponent(Sprite(Images.effects.coleAim, 16))
         sprite:setColor('default', 1, 1, 1, 0)
         local timerComponent = effectEntity:addComponent(Timer())
-        timerComponent.timer:after(1 / stats.attackSpeed,
+        timerComponent.timer:after(0.8 / stats.attackSpeed,
             function() Hump.Gamestate.current():removeEntity(effectEntity) end)
         effectEntity:getComponent('Transform'):setParent(targetSkillEntity:getComponent('Transform'))
-        timerComponent.timer:tween(0.5 / stats.attackSpeed, transform, {sx = 2, sy = 2}, 'quad')
-        timerComponent.timer:tween(0.5 / stats.attackSpeed, sprite, {_alpha = 1}, 'quad')
+        timerComponent.timer:tween(0.4 / stats.attackSpeed, transform, {sx = 2, sy = 2}, 'quad')
+        timerComponent.timer:tween(0.4 / stats.attackSpeed, sprite, {_alpha = 1}, 'quad')
         Hump.Gamestate.current():addEntity(effectEntity)
       end
     end
