@@ -16,7 +16,6 @@ end
 
 function Phase:initializeRounds()
   self.rounds[1] = {mainType = 'enemy', subType = '~1'}
-  self.rounds[1] = {mainType = 'elite', subType = 'C1'}
   self.rounds[2] = {mainType = 'enemy', subType = '~2'}
   self.rounds[3] = {mainType = 'dealer', value = 1}
 
