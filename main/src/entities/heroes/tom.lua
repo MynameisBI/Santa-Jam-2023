@@ -26,10 +26,12 @@ function Tom:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.tom, 'Tom', 4, {'bigEar', 'droneMaestro'},
     {
-      [1] = Hero.Stats(40, 30, 1.0, 300, 0, 2),
-      [2] = Hero.Stats(60, 45, 1.0, 300, 0, 2),
-      [3] = Hero.Stats(90, 68, 1.0, 300, 0, 2),
-      [4] = Hero.Stats(135, 101, 1.0, 300, 0, 2)
+      [1] = Hero.Stats(0, 80, 1, 0, 0, 2),
+      [2] = Hero.Stats(0, 107, 1, 0, 0, 2),
+      [3] = Hero.Stats(0, 142, 1, 0, 0, 2),
+      [4] = Hero.Stats(0, 190, 1, 0, 0, 2)
+      [5] = Hero.Stats(0, 253, 1, 0, 0, 2)
+      [6] = Hero.Stats(0, 337, 1, 0, 0, 2)
     },
     nil,
     Hero.Skill('Tom', 40, 8, function(hero)

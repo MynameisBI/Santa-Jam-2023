@@ -18,10 +18,12 @@ function Kori:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.kori, 'Kori', 2, {'bigEar', 'defect', 'trailblazer'},
     {
-        [1] = Hero.Stats(40, 30, 1.0, 500, 0, 2),
-        [2] = Hero.Stats(60, 45, 1.0, 300, 0, 2),
-        [3] = Hero.Stats(90, 68, 1.0, 300, 0, 2),
-        [4] = Hero.Stats(135, 101, 1.0, 300, 0, 2)
+      [1] = Hero.Stats(45, 45, 1.1, 275, 0, 2),
+      [2] = Hero.Stats(60, 60, 1.1, 275, 0, 2),
+      [3] = Hero.Stats(80, 80, 1.1, 275, 0, 2),
+      [4] = Hero.Stats(107, 107, 1.1, 275, 0, 2),
+      [5] = Hero.Stats(142, 142, 1.1, 275, 0, 2),
+      [6] = Hero.Stats(190, 190, 1.1, 275, 0, 2),
     },
     nil,
     Hero.Skill('Kori', 100, 15, function(hero)

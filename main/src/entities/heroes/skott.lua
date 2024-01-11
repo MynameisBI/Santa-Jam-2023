@@ -10,10 +10,12 @@ function Skott:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes["s'kott"], 'S\'kott', 4, {'defect', 'artificer', 'cracker'},
     {
-      [1] = Hero.Stats(40, 30, 1.0, 300, 0, 2),
-      [2] = Hero.Stats(60, 45, 1.0, 300, 0, 2),
-      [3] = Hero.Stats(90, 68, 1.0, 300, 0, 2),
-      [4] = Hero.Stats(135, 101, 1.0, 300, 0, 2)
+      [1] = Hero.Stats(40, 75, 1.3, 300, 0, 2),
+      [2] = Hero.Stats(53, 100, 1.3, 300, 0, 2),
+      [3] = Hero.Stats(71, 133, 1.3, 300, 0, 2),
+      [4] = Hero.Stats(95, 178, 1.3, 300, 0, 2)
+      [5] = Hero.Stats(126, 237, 1.3, 300, 0, 2)
+      [6] = Hero.Stats(169, 316, 1.3, 300, 0, 2)
     },
     nil,
     Hero.Skill('Skott', 100, 15, function(hero)

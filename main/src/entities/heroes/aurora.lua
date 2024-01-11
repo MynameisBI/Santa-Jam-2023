@@ -17,10 +17,12 @@ function Aurora:initialize(slot)
 
   HeroEntity.initialize(self, slot, Images.heroes.aurora, 'Aurora', 2, {'candyhead', 'droneMaestro'},
     {
-      [1] = Hero.Stats(40, 30, 1.0, 300, 0, 2),
-      [2] = Hero.Stats(60, 45, 1.0, 300, 0, 2),
-      [3] = Hero.Stats(90, 68, 1.0, 300, 0, 2),
-      [4] = Hero.Stats(135, 101, 1.0, 300, 0, 2)
+      [1] = Hero.Stats(35, 50, 1, 425, 0, 2),
+      [2] = Hero.Stats(47, 67, 1, 425, 0, 2),
+      [3] = Hero.Stats(62, 89, 1, 425, 0, 2),
+      [4] = Hero.Stats(83, 119, 1, 425, 0, 2)
+      [5] = Hero.Stats(111, 158, 1, 425, 0, 2)
+      [6] = Hero.Stats(147, 211, 1, 425, 0, 2)
     },
     nil,
     Hero.Skill('aurora', 80, 10, function(hero)
