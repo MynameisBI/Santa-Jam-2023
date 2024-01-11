@@ -159,14 +159,16 @@ function ManageEnemy:worlddraw(transform, area, enemy)
     local ratio = math.max(0, enemy.stats.HP / enemy.stats.maxHP)
     
     Deep.queue(18, function()
-      love.graphics.setColor(1, 1, 1, 0.75)
       if enemy:getAppliedEffect('skottMark') then
+        love.graphics.setColor(1, 1, 1, 0.75)
         love.graphics.draw(Images.icons.skottMarkIcon, x + w/2 - 5, y, 0, 2, 2)
       end
       if enemy:getAppliedEffect('reducePhysicalArmor') then
+        love.graphics.setColor(1, 1, 1, 0.75)
         love.graphics.draw(Images.icons.reducePhysicalArmorIcon, x + w, y - 2, 0, 2, 2)
       end
       if enemy:getAppliedEffect('reduceRealityArmor') then
+        love.graphics.setColor(1, 1, 1)
         love.graphics.draw(Images.icons.reduceRealityArmorIcon, x + w, y - 12, 0, 2, 2)
       end
 

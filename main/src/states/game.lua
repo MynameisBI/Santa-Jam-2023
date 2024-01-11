@@ -87,21 +87,22 @@ function Game:enter(from)
     end
   end
 
-  self:addEntity(Soniya(benchSlots[1]))
-  self:addEntity(Cole(benchSlots[2]))
+  -- self:addEntity(Soniya(benchSlots[1]))
+  self:addEntity(Cole(benchSlots[8]))
+  -- self:addEntity(Raylee(benchSlots[9]))
   -- self:addEntity(Tom(benchSlots[3]))
-  self:addEntity(Sasami(benchSlots[4]))
+  -- self:addEntity(Sasami(benchSlots[4]))
   -- self:addEntity(Skott(slots[5]))
   -- self:addEntity(Rover(benchSlots[6]))
   -- self:addEntity(Skott(benchSlots[8]))
   -- self:addEntity(Nathanael(slots[8]))
   -- self:addEntity(Kori(slots[9]))
   -- self:addEntity(Keon(benchSlots[4]))
-  self:addEntity(Hakiko(benchSlots[11]))
+  -- self:addEntity(Hakiko(benchSlots[11]))
   -- self:addEntity(Cloud(benchSlots[3]))
   -- self:addEntity(Brunnos(benchSlots[6]))
-  self:addEntity(Brae(benchSlots[14]))
-  self:addEntity(Aurora(benchSlots[15]))
+  -- self:addEntity(Brae(benchSlots[14]))
+  -- self:addEntity(Aurora(benchSlots[15]))
   -- self:addEntity(Alestra(slots[16]))
 
   local teamSlots = {}

@@ -111,33 +111,6 @@ function HUD:update(dt)
 end
 
 function HUD:draw()
-  love.graphics.setColor(1, 1, 1)
-  if self.suit:ImageButton(Images.icons.moneyIcon, {id = 'money', sx = 2, sy = 2}, 23, 13).hovered then
-    love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
-    love.graphics.rectangle('fill', 15, 37, 230, 58)
-
-    love.graphics.setColor(0.85, 0.85, 0.85)
-    love.graphics.printf('Used to buy hero slots, perform or buy stuff in the dealer phase', Fonts.medium,
-        23, 42, 214, 'left')
-  end
-  love.graphics.setColor(0.85, 0.85, 0.85)
-  love.graphics.print(tostring(self.resources:getMoney()), Fonts.medium, 53, 17)
-
-
-  love.graphics.setColor(1, 1, 1)
-  if self.suit:ImageButton(Images.icons.styleIcon, {id = 'gold', sx = 2, sy = 2}, 103, 13).hovered then
-    love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
-    love.graphics.rectangle('fill', 15, 37, 230, 74)
-
-    love.graphics.setColor(0.85, 0.85, 0.85)
-    love.graphics.printf('The more style your team has, the more likely you attract higher tier heroes', Fonts.medium,
-        23, 42, 214, 'left')
-  end
-  love.graphics.setColor(0.85, 0.85, 0.85)
-  love.graphics.setFont(Fonts.medium)
-  love.graphics.print(tostring(self.resources:getStyle()), 133, 17)
-
-
   -- Health bar
   self:drawBar(self.resources:getHealth(), self.resources:getMaxHealth(),
       {205/255, 41/255, 62/255}, Fonts.small,
@@ -434,6 +407,35 @@ function HUD:draw()
   end
 
   self.suit:draw()
+
+
+  -- Money and style
+  love.graphics.setColor(1, 1, 1)
+  if self.suit:ImageButton(Images.icons.moneyIcon, {id = 'money', sx = 2, sy = 2}, 23, 13).hovered then
+    love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+    love.graphics.rectangle('fill', 15, 37, 230, 58)
+
+    love.graphics.setColor(0.85, 0.85, 0.85)
+    love.graphics.printf('Used to buy hero slots, perform or buy stuff in the dealer phase', Fonts.medium,
+        23, 42, 214, 'left')
+  end
+  love.graphics.setColor(0.85, 0.85, 0.85)
+  love.graphics.print(tostring(self.resources:getMoney()), Fonts.medium, 53, 17)
+
+
+  love.graphics.setColor(1, 1, 1)
+  if self.suit:ImageButton(Images.icons.styleIcon, {id = 'style', sx = 2, sy = 2}, 103, 13).hovered then
+    love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
+    love.graphics.rectangle('fill', 15, 37, 230, 74)
+
+    love.graphics.setColor(0.85, 0.85, 0.85)
+    love.graphics.printf('The more style your team has, the more likely you attract higher tier heroes', Fonts.medium,
+        23, 42, 214, 'left')
+  end
+  love.graphics.setColor(0.85, 0.85, 0.85)
+  love.graphics.setFont(Fonts.medium)
+  love.graphics.print(tostring(self.resources:getStyle()), 133, 17)
+
 
   -- Mod tooltip
   local mx, my = love.mouse.getPosition()

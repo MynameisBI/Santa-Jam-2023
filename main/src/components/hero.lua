@@ -208,17 +208,22 @@ function Hero.Skill:cast()
 
   if not Resources():modifyEnergy(-self.energy) then return false end
 
-  if self.chargeCount >= 1 then
-    self.chargeCount = self.chargeCount - 1
-    if self.secondsUntilSkillReady <= 0 then
-      self.chargeCount = self.chargeCount + 1
-      self.secondsUntilSkillReady = self.secondsUntilSkillReady + self:getCooldown()
-    end
-
-  elseif self.secondsUntilSkillReady <= 0 then
+  if self.secondsUntilSkillReady <= 0 then
     local stats = self.hero:getStats()
     self.secondsUntilSkillReady = self:getCooldown()
+  elseif self.chargeCount >= 1 then
+    self.chargeCount = self.chargeCount - 1
   end
+  -- if self.chargeCount >= 1 then
+  --   self.chargeCount = self.chargeCount - 1
+  --   if self.secondsUntilSkillReady <= 0 then
+  --     self.chargeCount = self.chargeCount + 1
+  --     self.secondsUntilSkillReady = self.secondsUntilSkillReady + self:getCooldown()
+  --   end
+
+  -- elseif self.secondsUntilSkillReady <= 0 then
+    
+  -- end
 
   if not self.hasSecondaryCast then
     self._fn(self.hero)
