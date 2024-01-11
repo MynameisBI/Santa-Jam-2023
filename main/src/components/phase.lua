@@ -14,6 +14,7 @@ function Phase:initialize()
     {mainType = 'elite', subType = 'A1'},
     {mainType = 'enemy', subType = 'A6'},
   }
+  self.totalRoundCount = #self.rounds
   self.currentRound = nil
 end
 
@@ -34,6 +35,10 @@ end
 
 function Phase:getCurrentRound()
   return self.rounds[1]
+end
+
+function Phase:getCurrentRoundIndex()
+  return self.totalRoundCount - #self.rounds + 1
 end
 
 function Phase:dequeueRound()
