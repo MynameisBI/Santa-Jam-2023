@@ -81,7 +81,7 @@ function ManageEnemy:earlysystemupdate(dt)
 
         Rini, 18, Rini, 18.75, Rini, 19.5, Rini, 20.25,
         Pepero, 22, Pepero, 22.5, Pepero, 23, Pepero, 23.5,
-        Arno, 25, Arno, 26, Arno, 27, Arno, 28
+        Arno, 25, Arno, 26,
       }
     
     elseif round.subType == 'B1' then
@@ -99,7 +99,32 @@ function ManageEnemy:earlysystemupdate(dt)
     end
 
   elseif round.mainType == 'elite' then
-      -- Code for handling elite round
+    if round.subType == 'A1' then
+      self.spawnQueue = {
+        Arno, 0, Arno, 0.5, Arno, 1, Arno, 1.5,
+        Mino, 5, Mino, 6, Mino, 7, Mino, 8, Mino, 9, Mino, 10,
+        Arno, 10, Arno, 10.5, Arno, 11, Arno, 11.5,
+        Pepero, 12, Pepero, 14, Pepero, 16, Pepero, 18,
+        Arno, 20, Arno, 20.5, Arno, 21, Arno, 21.5
+      }
+    elseif round.subType == 'B1' then
+      self.spawnQueue = {
+        Quad, 0, Quad, 0.5, Quad, 1, Quad, 1.5,
+        Peach, 5, Peach, 6, Peach, 7, Peach, 8, Peach, 9, Peach, 10,
+        Quad, 10, Quad, 10.5, Quad, 11, Quad, 11.5,
+        Sev, 12, Sev, 14, Sev, 16, Sev, 18,
+        Quad, 20, Quad, 20.5, Quad, 21, Quad, 21.5
+      }
+    elseif round.subType == 'C1' then
+      self.spawnQueue = {
+        Granite, 0, Granite, 0.5, Granite, 1, Granite, 1.5,
+        Amber, 5, Amber, 6, Amber, 7, Amber, 8, Amber, 9, Amber, 10,
+        Granite, 10, Granite, 10.5, Granite, 11, Granite, 11.5,
+        Leo, 12, Leo, 14, Leo, 16, Leo, 18,
+        Granite, 20, Granite, 20.5, Granite, 21, Granite, 21.5
+      }
+    end
+    
   elseif round.mainType == 'dealer' then
       -- Code for handling dealer round
   end

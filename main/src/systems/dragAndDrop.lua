@@ -140,6 +140,7 @@ function DragAndDrop:earlysystemworlddraw()
 
   local x, y = heroEntity:getComponent('Transform'):getGlobalPosition()
   local hero = heroEntity:getComponent('Hero')
+  if hero == nil then return end
   local stats = hero:getStats()
 
   Deep.queue(8, function()
