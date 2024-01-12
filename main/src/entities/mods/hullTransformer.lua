@@ -6,8 +6,8 @@ function HullTransformer:initialize(slot)
   ModEntity.initialize(self, slot, Images.mods.hullTransformer, 
     'SB',
     'Hull Transformer',
-    '+ 0.2 AS',
-    5, 0, 0.2, 0, 0, 0
+    '+ 0.4 AS',
+    0, 0, 0.4, 0, 0, 0
   )
 end
 

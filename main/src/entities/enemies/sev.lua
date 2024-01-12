@@ -4,7 +4,7 @@ local EnemyEntity = require 'src.entities.enemies.enemyEntity'
 local Sev = Class('Sev', EnemyEntity)
 
 function Sev:initialize()
-    EnemyEntity.initialize(self, Images.enemies.fast, 'Sev', Enemy.Stats(225, 0.5, 0, 150, 4))
+    EnemyEntity.initialize(self, Images.enemies.fast, 'Sev', Enemy.Stats(360, 0.5, 0, 150, 4))
 
     local animator = self:getComponent('Animator')
     animator:setGrid(18, 18, Images.enemies.fast:getWidth(), Images.enemies.fast:getHeight())

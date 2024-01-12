@@ -173,7 +173,7 @@ function HUD:draw()
 
         local performMoney = self.resources:getPerformMoney()
         if performMoney then
-          if self.suit:Button('Perform\n+15 Style\nCost: '..performMoney, {draw = HUD.drawActionButton},
+          if self.suit:Button('Perform\n+100 Style\nCost: '..performMoney, {draw = HUD.drawActionButton},
               self.suit.layout:col(bw, bh)).hit then
             AudioManager:playSound('button')
             if self.resources:modifyMoney(-performMoney) then
@@ -370,7 +370,7 @@ function HUD:draw()
       end
 
     elseif inspectable.objectType == 'enemy' then
-      local y, h = y + 100, h - 200
+      local y, h = y + 50, h - 110
 
       love.graphics.setColor(0.2, 0.2, 0.2, 0.6)
       love.graphics.rectangle('fill', x, y, w, h)

@@ -4,7 +4,7 @@ local EnemyEntity = require 'src.entities.enemies.enemyEntity'
 local Pepero = Class('Pepero', EnemyEntity)
 
 function Pepero:initialize()
-    EnemyEntity.initialize(self, Images.enemies.fast, 'Pepero', Enemy.Stats(150, 0.25, 0, 150, 2))
+    EnemyEntity.initialize(self, Images.enemies.fast, 'Pepero', Enemy.Stats(180, 0.25, 0, 150, 2))
 
     local animator = self:getComponent('Animator')
     animator:setGrid(18, 18, Images.enemies.fast:getWidth(), Images.enemies.fast:getHeight())

@@ -8,7 +8,7 @@ function EnhancerFumes:initialize(slot)
   ModEntity.initialize(self, slot, Images.mods.enhancerFumes,
     'PBB',
     'Enhancer Fumes',
-    '+ 300 Energy\n* Attacks regenerate 20 energy',
+    '+ 300 Energy\n* Attacks regenerate 10 energy',
     0, 15, 0, 0, 0, 0, 0, 300
   )
 end

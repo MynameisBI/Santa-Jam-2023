@@ -231,6 +231,12 @@ function Game:draw()
 end
 
 function Game:keypressed(key, scancode, isRepeat)
+  local num = tonumber(scancode)
+  local heroComponents = TeamSynergy():getHeroComponentsInTeam()
+  if num and heroComponents[num] then
+    heroComponents[num].skill:cast()
+  end
+
   if love.keyboard.isDown('lctrl') then
     if scancode == 'd' then
       self.guis[2]:open({mainType = 'enemy', subType = '~1'})

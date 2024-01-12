@@ -9,7 +9,7 @@ local Phase = require 'src.components.phase'
 
 local EnemyEntity = Class('EnemyEntity', Entity)
 
-EnemyEntity.HP_SCALE_PER_ROUND = 0.05
+EnemyEntity.HP_SCALE_PER_ROUND = 0
 
 function EnemyEntity:initialize(image, name, baseStats)
     Entity.initialize(self)

@@ -6,8 +6,8 @@ function RadioPopper:initialize(slot)
   ModEntity.initialize(self, slot, Images.mods.radioPopper,
     'SSB',
     'Radio Popper',
-    '+ 0.7 AS\n- 20 CDR',
-    0, 0, 0.7, 0, 0, 0, -0.2, 0
+    '+ 1.4 AS\n- 20 CDR',
+    0, 0, 1.4, 0, 0, 0, -0.2, 0
   )
 end
 

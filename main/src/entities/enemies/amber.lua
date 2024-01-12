@@ -4,7 +4,7 @@ local EnemyEntity = require 'src.entities.enemies.enemyEntity'
 local Amber = Class('Amber', EnemyEntity)
 
 function Amber:initialize()
-    EnemyEntity.initialize(self, Images.enemies.mini, 'Amber', Enemy.Stats(240, 0.2, 0.2, 160, 3))
+    EnemyEntity.initialize(self, Images.enemies.mini, 'Amber', Enemy.Stats(300, 0.2, 0.2, 160, 3))
 
     local animator = self:getComponent('Animator')
     animator:setGrid(18, 18, Images.enemies.mini:getWidth(), Images.enemies.mini:getHeight())

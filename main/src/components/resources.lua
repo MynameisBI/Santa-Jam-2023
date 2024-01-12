@@ -11,8 +11,8 @@ Resources.STARTING_STYLE = 0
 Resources.UPGRADE_MONEY_THRESHOLD = {4, 6, 10, 16, 24} -- total 60
 Resources.UPGRADE_ENERGY_GAIN = 100
 
-Resources.PERFORM_MONEY_THRESHOLD = {3, 5, 7, 10, 13, 16} -- total 54
-Resources.PERFORM_STYLE_GAIN = 50
+Resources.PERFORM_MONEY_THRESHOLD = {6, 8, 10, 13, 16} -- total 53
+Resources.PERFORM_STYLE_GAIN = 100
 
 Resources.ENERGY_PERCENT_REGEN_RATE = 0.01
 

@@ -4,7 +4,7 @@ local EnemyEntity = require 'src.entities.enemies.enemyEntity'
 local Arno = Class('Arno', EnemyEntity)
 
 function Arno:initialize()
-    EnemyEntity.initialize(self, Images.enemies.gigantic, 'Arno', Enemy.Stats(1500, 0, 0, 40, 4))
+    EnemyEntity.initialize(self, Images.enemies.gigantic, 'Arno', Enemy.Stats(1800, 0, 0, 40, 4))
 
     local animator = self:getComponent('Animator')
     animator:setGrid(18, 18, Images.enemies.gigantic:getWidth(), Images.enemies.gigantic:getHeight())

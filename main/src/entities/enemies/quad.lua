@@ -4,7 +4,7 @@ local EnemyEntity = require 'src.entities.enemies.enemyEntity'
 local Quad = Class('Quad', EnemyEntity)
 
 function Quad:initialize()
-    EnemyEntity.initialize(self, Images.enemies.gigantic, 'Quad', Enemy.Stats(2250, 0, 0, 40, 8))
+    EnemyEntity.initialize(self, Images.enemies.gigantic, 'Quad', Enemy.Stats(3600, 0, 0, 40, 8))
 
     local animator = self:getComponent('Animator')
     animator:setGrid(18, 18, Images.enemies.gigantic:getWidth(), Images.enemies.gigantic:getHeight())
