@@ -11,7 +11,7 @@ local Entity = require 'src.entities.entity'
 
 local Aurora = Class('Aurora', HeroEntity)
 
-Aurora.SKILL_DESCRIPTION = "Regenerate 140 + 0.6 RP energy over 4s"
+Aurora.SKILL_DESCRIPTION = "Regenerate 100 + 0.5 RP energy over 6s"
 
 function Aurora:initialize(slot)
   Entity.initialize(self)
@@ -29,8 +29,8 @@ function Aurora:initialize(slot)
     Hero.Skill('aurora', 80, 8, function(hero)
       local stats = hero:getStats()
       local resources = Resources()
-      resources.secondsAuroraRegenLeft = 4
-      resources.auroraRegenSpeed = (140 + stats.realityPower * 0.6) / 4
+      resources.secondsAuroraRegenLeft = 6
+      resources.auroraRegenSpeed = (100 + stats.realityPower * 0.5) / 6
 
       local hx, hy = hero:getEntity():getComponent('Transform'):getGlobalPosition()
       for i = 1, 20 do

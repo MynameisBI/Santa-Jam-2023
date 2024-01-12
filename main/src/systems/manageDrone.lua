@@ -20,7 +20,7 @@ function ManageDrone:initialize()
 
   self.teamSynergy = TeamSynergy()
 
-  self.secondsPerDroneSpawn = 5
+  self.secondsPerDroneSpawn = 6
   self.secondsToSpawnDrone = 0
   self.droneDamage = 5
   self.spawningDrone = false

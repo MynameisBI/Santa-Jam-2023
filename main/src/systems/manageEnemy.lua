@@ -49,7 +49,7 @@ function ManageEnemy:earlysystemupdate(dt)
     elseif round.subType == '~2' then
       self.spawnQueue = {
         Mino, 0, Mino, 1, Mino, 2, Mino, 3,
-        Mino, 6, Mino, 7, Mino, 8, Mino, 9,
+        Mino, 4, Mino, 5, Mino, 6, Mino, 7,
       }
 
     elseif round.subType == 'A1' then
@@ -210,7 +210,7 @@ function ManageEnemy:update(transform, area, enemy, dt)
 
   local x, y = transform:getGlobalPosition()
   local isDead = enemy.stats.HP <= 0
-  local hasReachedPlatform = x < 330
+  local hasReachedPlatform = x < 310
   if hasReachedPlatform then
     self.resources:modifyHealth(-enemy.stats.damage)
   end

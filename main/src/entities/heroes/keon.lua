@@ -27,7 +27,7 @@ function Keon:initialize(slot)
       [6] = Hero.Stats(105, 190, 1.5, 450, 0, 2, 0, 0, 0, 0),
     },
     KeonBullet,
-    Hero.Skill('Keon', 40, 2.5, function(hero)
+    Hero.Skill('Keon', 60, 2.5, function(hero)
       if hero.skill.castCount == nil then hero.skill.castCount = 0 end
       hero.skill.castCount = hero.skill.castCount + 1
       

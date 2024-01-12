@@ -17,9 +17,9 @@ local ManageCandy = Class('ManageCandy', System)
 
 ManageCandy.CANDY_SPAWN_INTERVAL = 3
 ManageCandy.CANDY_DAMAGE_TYPE = 'reality'
-ManageCandy.CANDY_DAMAGE = 25
+ManageCandy.CANDY_DAMAGE = 20
 ManageCandy.CANDY_ARMOR_IGNORE_RATIO = 0
-ManageCandy.CANDY_STUN_DURATION = 1
+ManageCandy.CANDY_STUN_DURATION = 0.5
 
 function ManageCandy:initialize()
   System.initialize(self, 'Transform', 'Candy')

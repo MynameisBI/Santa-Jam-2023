@@ -28,7 +28,7 @@ HUD.TRAIT_DESCRIPTIONS = {
   },
   candyhead = {
     title = 'Candyhead',
-    body = 'Periodically summon 3 candies on the battlefield dealing\n 25 reality damage and stun enemies for 1s.',
+    body = 'Periodically summon 3 candies on the battlefield dealing\n 20 reality damage and stun enemies for 0.5s.',
     threshold = '\n(2) For each level 3 hero in your team, summon 1 more candy.'
   },
   coordinator = {
@@ -48,13 +48,13 @@ HUD.TRAIT_DESCRIPTIONS = {
   },
   droneMaestro = {
     title = 'Drone Maestro',
-    body = 'Drone Maestro spawns a drone every 5 seconds.\nDrones attack enemies and exist until the end of battle.',
+    body = 'Drone Maestro spawns a drone every 6 seconds.\nDrones attack enemies and exist until the end of battle.',
     threshold = '\n(2) Drones deal 24 damage\n(4) Drones deal 40 damage\n(6) Drones deal 60 damage'
   },
   cracker = {
     title = 'Cracker',
     body = 'Periodically remove the highest health enemy out of the field.\nHave a 33% chance to drop 1 gold.',
-    threshold = '\n(2) Every 8 seconds\n(3) Every 5 second'
+    threshold = '\n(2) Every 8 seconds\n(3) Every 5 seconds'
   },
 }
 
