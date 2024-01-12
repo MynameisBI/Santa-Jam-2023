@@ -6,6 +6,8 @@ local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 local Candy = require 'src.components.candy'
 local AudioManager = require 'src.components.audioManager'
+local Rectangle = require 'src.components.rectangle'
+local Timer = require 'src.components.timer'
 
 local System = require 'src.systems.system'
 
@@ -64,7 +66,7 @@ function ManageCandy:earlysystemupdate(dt)
         Hump.Gamestate.current():addEntity(Entity(
           Transform(targetX - 150, targetY - 800, 0, 2, 2),
           Sprite(Images.pets.candy, 16),
-          Candy(targetX, targetY, 120, 800 + math.random(-200, 200))
+          Candy(targetX, targetY, 120, 700 + math.random(-250, 250))
         ))
       end
     end
@@ -94,6 +96,18 @@ function ManageCandy:update(transform, candy, dt)
     AudioManager:playSound('fall-down', 0.2)
     
     Hump.Gamestate.current():removeEntity(transform:getEntity())
+
+    -- Effects
+    local afterImpact = Entity()
+    local aTransform = afterImpact:addComponent(Transform(candy.targetX + 10, candy.targetY + 10, 0, 0, 0, 0))
+    local aRectangle = afterImpact:addComponent(Rectangle('line', {0.84, 0.7, 0.63, 0.8}, 8, 6, 1, 1))
+    local aTimer = afterImpact:addComponent(Timer())
+    aTimer.timer:tween(0.08, aTransform, {sx = 120, sy = 120, ox = 60, oy = 60}, 'out-quad')
+    aTimer.timer:tween(0.4, aRectangle.color, {[4] = 0}, 'linear')
+    aTimer.timer:tween(0.4, aRectangle, {lineWidth = 1}, 'out-quad', function()
+      Hump.Gamestate.current():removeEntity(afterImpact)
+    end)
+    Hump.Gamestate.current():addEntity(afterImpact)
   end
 end
 
