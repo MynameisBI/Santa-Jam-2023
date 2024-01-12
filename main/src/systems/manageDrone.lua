@@ -90,7 +90,7 @@ function ManageDrone:update(transform, drone, dt)
 
       if Lume.distance(x, y, ex, ey) <= stats.range then
         Hump.Gamestate.current():addEntity(
-          BulletEntity(x, y, Images.pets.drone, drone, nearestEnemyEntity)
+          BulletEntity(x, y, Images.pets.droneBullet, drone, nearestEnemyEntity, 1000, 25)
         )
       end
     end
