@@ -15,9 +15,9 @@ local Tom = Class('Tom', HeroEntity)
 Tom.SKILL_DESCRIPTION = "Tom switch his music to the next phase\nPink phase: Tom gives his team 0.035 RP bonus attack speed\nPurple phase: Tom gives his team 0.5 RP bonus reality power\nBlue phase: Upon reaching this phase, your team gains 15 style"
 
 local COLORS = {
-  pink = {241/255, 135/255, 204/255, 0.65},
-  purple = {193/255, 150/255, 250/255, 0.65},
-  blue = {113/255, 177/255, 250/255, 0.65}
+  pink = {241/255, 135/255, 180/255, 0.75},
+  purple = {173/255, 150/255, 230/255, 0.75},
+  blue = {103/255, 177/255, 250/255, 0.75}
 }
 
 function Tom:initialize(slot)
@@ -54,16 +54,22 @@ function Tom:initialize(slot)
       local timer = hero.aura:getComponent('Timer')
       local rectangle = hero.aura:getComponent('Rectangle')
       rectangle.spinSpeed = 0
-      timer.timer:tween(0.2, transform, {sx = 20, sy = 20, ox = 10, oy = 10}, 'linear', function()
+      if timer.tomHandles then
+        for k, tomHandle in ipairs(timer.tomHandles) do
+          timer.timer:cancel(timer.tomHandles[k])
+        end
+      end
+      timer.tomHandles = {}
+      timer.tomHandles[1] = timer.timer:tween(0.2, transform, {sx = 20, sy = 20, ox = 10, oy = 10}, 'linear', function()
         if hero.currentMusicPhase == 'blue' then
           Resources():modifyStyle(15 + math.random(-3, 3))
         end
 
         rectangle.color = COLORS[hero.currentMusicPhase]
         transform.sx, transform.sy, transform.ox, transform.oy = 50, 50, 25, 25
-        timer.timer:tween(0.9, transform, {sx = 30, sy = 30, ox = 15, oy = 15}, 'out-in-elastic', nil)
+        timer.tomHandles[2] = timer.timer:tween(0.9, transform, {sx = 30, sy = 30, ox = 15, oy = 15}, 'out-in-elastic', nil)
         rectangle.spinSpeed, rectangle.lineWidth = 7.5, 4
-        timer.timer:tween(0.9, rectangle, {spinSpeed = 2.5, lineWidth = 2}, 'cubic')
+        timer.tomHandles[3] = timer.timer:tween(0.9, rectangle, {spinSpeed = 2.5, lineWidth = 2}, 'cubic')
 
         local effect = Entity()
         local x, y = transform:getGlobalPosition()

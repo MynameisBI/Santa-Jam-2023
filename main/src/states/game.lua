@@ -235,7 +235,7 @@ function Game:keypressed(key, scancode, isRepeat)
     if scancode == 'd' then
       self.guis[2]:open({mainType = 'enemy', subType = '~1'})
     elseif scancode == 'f' then
-      self.guis[4]:open(1)
+      self.guis[4]:open(2)
     elseif scancode == 'w' then
       self:win()
     elseif scancode == 'l' then
