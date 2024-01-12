@@ -18,15 +18,15 @@ function Soniya:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.soniya, 'Soniya', 2, {'sentient', 'cracker'},
     {
-      [1] = Hero.Stats(30, 50, 0.9, 400, 0, 2),
-      [2] = Hero.Stats(40, 67, 0.9, 400, 0, 2),
-      [3] = Hero.Stats(53, 89, 0.9, 400, 0, 2),
-      [4] = Hero.Stats(71, 119, 0.9, 400, 0, 2),
-      [5] = Hero.Stats(95, 158, 0.9, 400, 0, 2),
-      [6] = Hero.Stats(126, 211, 0.9, 400, 0, 2),
+      [1] = Hero.Stats(30, 50, 1.8, 400, 0, 2),
+      [2] = Hero.Stats(40, 67, 1.8, 400, 0, 2),
+      [3] = Hero.Stats(53, 89, 1.8, 400, 0, 2),
+      [4] = Hero.Stats(71, 119, 1.8, 400, 0, 2),
+      [5] = Hero.Stats(95, 158, 1.8, 400, 0, 2),
+      [6] = Hero.Stats(126, 211, 1.8, 400, 0, 2),
     },
     SoniyaBullet,
-    Hero.Skill('Soniya', 150, 12, function(hero)
+    Hero.Skill('Soniya', 120, 8, function(hero)
       local stats = hero:getStats()
       local enemies = Hump.Gamestate.current():getComponents('Enemy')
       for _, enemy in ipairs(enemies) do

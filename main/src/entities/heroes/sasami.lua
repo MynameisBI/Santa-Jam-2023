@@ -12,7 +12,7 @@ local Entity = require 'src.entities.entity'
 
 local Sasami = Class('Sasami', HeroEntity)
 
-Sasami.SKILL_DESCRIPTION = "After a delay, obliterate an area dealing 8.0 RP reality damage. Enemies caught in the epicenter can be critically strike"
+Sasami.SKILL_DESCRIPTION = "After a delay, obliterate an area dealing 10.0 RP reality damage. Enemies caught in the epicenter can be critically strike"
 
 function Sasami:initialize(slot)
   Entity.initialize(self)
@@ -20,18 +20,18 @@ function Sasami:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.sasami, 'Sasami', 3, {'defect', 'coordinator'},
     {
-      [1] = Hero.Stats(35, 65, 1.2, 500, 0, 2),
-      [2] = Hero.Stats(47, 87, 1.2, 500, 0, 2),
-      [3] = Hero.Stats(62, 116, 1.2, 500, 0, 2),
-      [4] = Hero.Stats(83, 154, 1.2, 500, 0, 2),
-      [5] = Hero.Stats(111, 205, 1.2, 500, 0, 2),
-      [6] = Hero.Stats(147, 274, 1.2, 500, 0, 2),
+      [1] = Hero.Stats(35, 65, 1.8, 500, 0, 2),
+      [2] = Hero.Stats(47, 87, 1.8, 500, 0, 2),
+      [3] = Hero.Stats(62, 116, 1.8, 500, 0, 2),
+      [4] = Hero.Stats(83, 154, 1.8, 500, 0, 2),
+      [5] = Hero.Stats(111, 205, 1.8, 500, 0, 2),
+      [6] = Hero.Stats(147, 274, 1.8, 500, 0, 2),
     },
     SasamiBullet,
-    Hero.Skill('Sasami', 150, 12, function(hero, mx, my)
+    Hero.Skill('Sasami', 150, 10, function(hero, mx, my)
       Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = mx, y = my}, 240, 140,
-          {damageType = 'reality', realityPowerRatio = 8}, 1.075, nil,
-          {damageType = 'reality', realityPowerRatio = 8, canCrit = true}, 128, 76))
+          {damageType = 'reality', realityPowerRatio = 10}, 1.075, nil,
+          {damageType = 'reality', realityPowerRatio = 10, canCrit = true}, 128, 76))
 
       local effectEntity = Entity()
       local transform = effectEntity:addComponent(Transform(mx,  my, 0, 440, 240, 220, 120))

@@ -19,15 +19,15 @@ function Raylee:initialize(slot)
 
   HeroEntity.initialize(self, slot, Images.heroes.raylee, 'Raylee', 1, {'bigEar', 'droneMaestro'},
     {
-      [1] = Hero.Stats(30, 40, 1, 450, 0, 2, 0, 0, 0, 0),
-      [2] = Hero.Stats(40, 53, 1, 450, 0, 2, 0, 0, 0, 0),
-      [3] = Hero.Stats(53, 71, 1, 450, 0, 2, 0, 0, 0, 0),
-      [4] = Hero.Stats(71, 95, 1, 450, 0, 2, 0, 0, 0, 0),
-      [5] = Hero.Stats(95, 126, 1, 450, 0, 2, 0, 0, 0, 0),
-      [6] = Hero.Stats(126, 169, 1, 450, 0, 2, 0, 0, 0, 0),
+      [1] = Hero.Stats(30, 40, 2, 450, 0, 2, 0, 0, 0, 0),
+      [2] = Hero.Stats(40, 53, 2, 450, 0, 2, 0, 0, 0, 0),
+      [3] = Hero.Stats(53, 71, 2, 450, 0, 2, 0, 0, 0, 0),
+      [4] = Hero.Stats(71, 95, 2, 450, 0, 2, 0, 0, 0, 0),
+      [5] = Hero.Stats(95, 126, 2, 450, 0, 2, 0, 0, 0, 0),
+      [6] = Hero.Stats(126, 169, 2, 450, 0, 2, 0, 0, 0, 0),
     },
     RayleeBullet,
-    Hero.Skill('Raylee', 50, 8, function(hero, mx, my)
+    Hero.Skill('Raylee', 60, 5, function(hero, mx, my)
       Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = mx, y = my}, 200, 60,
           {damageType = 'reality', realityPowerRatio = 2.5, effects = {EnemyEffect('reduceRealityArmor', 3)}}, 0.42))
 

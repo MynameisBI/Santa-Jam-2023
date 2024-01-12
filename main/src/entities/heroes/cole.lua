@@ -18,16 +18,16 @@ function Cole:initialize(slot)
   HeroEntity.initialize(self, slot, Images.heroes.cole, 'Cole', 1, {'bigEar', 'coordinator'},
   {
   --attackDamage, realityPower, attackSpeed, range, critChance, critDamage, cooldownReduction, energy, physicalArmorIgnoreRatio, realityArmorIgnoreRatio
-    [1] = Hero.Stats(50, 20, 1, 550, 0, 2, 0, 0, 0, 0),
-    [2] = Hero.Stats(67, 27, 1, 550, 0, 2, 0, 0, 0, 0),
-    [3] = Hero.Stats(89, 36, 1, 550, 0, 2, 0, 0, 0, 0),
-    [4] = Hero.Stats(119, 47, 1, 550, 0, 2, 0, 0, 0, 0),
-    [5] = Hero.Stats(158, 63, 1, 550, 0, 2, 0, 0, 0, 0),
-    [6] = Hero.Stats(211, 84, 1, 550, 0, 2, 0, 0, 0, 0),
+    [1] = Hero.Stats(50, 20, 2, 550, 0, 2, 0, 0, 0, 0),
+    [2] = Hero.Stats(67, 27, 2, 550, 0, 2, 0, 0, 0, 0),
+    [3] = Hero.Stats(89, 36, 2, 550, 0, 2, 0, 0, 0, 0),
+    [4] = Hero.Stats(119, 47, 2, 550, 0, 2, 0, 0, 0, 0),
+    [5] = Hero.Stats(158, 63, 2, 550, 0, 2, 0, 0, 0, 0),
+    [6] = Hero.Stats(211, 84, 2, 550, 0, 2, 0, 0, 0, 0),
   },
   ColeBullet,
   Hero.Skill('Cole',
-    40, 8,
+    40, 6,
     function(hero, mx, my)
       local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
       enemyEntities = Lume.shuffle(enemyEntities)
@@ -35,7 +35,7 @@ function Cole:initialize(slot)
       for i = 1, math.min(#enemyEntities, 6) do
         local targetSkillEntity = Hump.Gamestate.current():addEntity(
           TargetSkillEntity(hero, enemyEntities[i],
-              {damageType = 'true', attackDamageRatio = 1, canCrit = true}, 1 / stats.attackSpeed)
+              {damageType = 'true', attackDamageRatio = 1, canCrit = true}, 0.8 / stats.attackSpeed)
         )
 
         local effectEntity = Entity()

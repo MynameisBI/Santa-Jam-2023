@@ -18,15 +18,15 @@ function Aurora:initialize(slot)
 
   HeroEntity.initialize(self, slot, Images.heroes.aurora, 'Aurora', 2, {'candyhead', 'droneMaestro'},
     {
-      [1] = Hero.Stats(35, 50, 1, 425, 0, 2, 0, 0, 0, 0),
-      [2] = Hero.Stats(47, 67, 1, 425, 0, 2, 0, 0, 0, 0),
-      [3] = Hero.Stats(62, 89, 1, 425, 0, 2, 0, 0, 0, 0),
-      [4] = Hero.Stats(83, 119, 1, 425, 0, 2, 0, 0, 0, 0),
-      [5] = Hero.Stats(111, 158, 1, 425, 0, 2, 0, 0, 0, 0),
-      [6] = Hero.Stats(147, 211, 1, 425, 0, 2, 0, 0, 0, 0),
+      [1] = Hero.Stats(35, 50, 2, 425, 0, 2, 0, 0, 0, 0),
+      [2] = Hero.Stats(47, 67, 2, 425, 0, 2, 0, 0, 0, 0),
+      [3] = Hero.Stats(62, 89, 2, 425, 0, 2, 0, 0, 0, 0),
+      [4] = Hero.Stats(83, 119, 2, 425, 0, 2, 0, 0, 0, 0),
+      [5] = Hero.Stats(111, 158, 2, 425, 0, 2, 0, 0, 0, 0),
+      [6] = Hero.Stats(147, 211, 2, 425, 0, 2, 0, 0, 0, 0),
     },
     AuroraBullet,
-    Hero.Skill('aurora', 80, 10, function(hero)
+    Hero.Skill('aurora', 80, 8, function(hero)
       local stats = hero:getStats()
       local resources = Resources()
       resources.secondsAuroraRegenLeft = 4

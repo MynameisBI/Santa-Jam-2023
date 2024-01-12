@@ -19,15 +19,15 @@ function Keon:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes["k'eon"], 'K\'eon', 1, {'defect', 'droneMaestro'},
     {
-      [1] = Hero.Stats(25, 45, 0.8, 425, 0, 2, 0, 0, 0, 0),
-      [2] = Hero.Stats(33, 60, 0.8, 450, 0, 2, 0, 0, 0, 0),
-      [3] = Hero.Stats(44, 80, 0.8, 450, 0, 2, 0, 0, 0, 0),
-      [4] = Hero.Stats(59, 107, 0.8, 450, 0, 2, 0, 0, 0, 0),
-      [5] = Hero.Stats(79, 142, 0.8, 450, 0, 2, 0, 0, 0, 0),
-      [6] = Hero.Stats(105, 190, 0.8, 450, 0, 2, 0, 0, 0, 0),
+      [1] = Hero.Stats(25, 45, 1.5, 425, 0, 2, 0, 0, 0, 0),
+      [2] = Hero.Stats(33, 60, 1.5, 450, 0, 2, 0, 0, 0, 0),
+      [3] = Hero.Stats(44, 80, 1.5, 450, 0, 2, 0, 0, 0, 0),
+      [4] = Hero.Stats(59, 107, 1.5, 450, 0, 2, 0, 0, 0, 0),
+      [5] = Hero.Stats(79, 142, 1.5, 450, 0, 2, 0, 0, 0, 0),
+      [6] = Hero.Stats(105, 190, 1.5, 450, 0, 2, 0, 0, 0, 0),
     },
     KeonBullet,
-    Hero.Skill('Keon', 30, 3, function(hero)
+    Hero.Skill('Keon', 40, 2.5, function(hero)
       if hero.skill.castCount == nil then hero.skill.castCount = 0 end
       hero.skill.castCount = hero.skill.castCount + 1
       

@@ -34,7 +34,7 @@ function Tom:initialize(slot)
       [6] = Hero.Stats(0, 337, 1, 0, 0, 2),
     },
     nil,
-    Hero.Skill('Tom', 40, 8, function(hero)
+    Hero.Skill('Tom', 50, 5, function(hero)
       if hero.currentMusicPhase == 'pink' then
         hero.currentMusicPhase = 'purple'
       elseif hero.currentMusicPhase == 'purple' then

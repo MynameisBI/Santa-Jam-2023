@@ -9,11 +9,15 @@ local AudioManager = require 'src.components.audioManager'
 
 local System = require 'src.systems.system'
 
+local EnemyEffect = require 'src.type.enemyEffect'
+
 local ManageCandy = Class('ManageCandy', System)
 
+ManageCandy.CANDY_SPAWN_INTERVAL = 3
 ManageCandy.CANDY_DAMAGE_TYPE = 'reality'
-ManageCandy.CANDY_DAMAGE = 100
+ManageCandy.CANDY_DAMAGE = 25
 ManageCandy.CANDY_ARMOR_IGNORE_RATIO = 0
+ManageCandy.CANDY_STUN_DURATION = 1
 
 function ManageCandy:initialize()
   System.initialize(self, 'Transform', 'Candy')
@@ -23,8 +27,8 @@ function ManageCandy:initialize()
 
   self.teamSynergy = TeamSynergy()
 
-  self.secondsPerCandySpawn = 2
-  self.secondsToSpawnCandy = 2
+  self.secondsPerCandySpawn = ManageCandy.CANDY_SPAWN_INTERVAL
+  self.secondsToSpawnCandy = ManageCandy.CANDY_SPAWN_INTERVAL
   self.spawningCandy = false
 end
 
@@ -56,11 +60,11 @@ function ManageCandy:earlysystemupdate(dt)
       end)
 
       for i = 1, 3 + #level3Heroes do
-        local targetX, targetY = math.random(420, 740), math.random(220, 320)
+        local targetX, targetY = math.random(400, 780), math.random(210, 330)
         Hump.Gamestate.current():addEntity(Entity(
           Transform(targetX - 150, targetY - 800, 0, 2, 2),
           Sprite(Images.pets.candy, 16),
-          Candy(targetX, targetY, 240, 800 + math.random(-200, 200))
+          Candy(targetX, targetY, 120, 800 + math.random(-200, 200))
         ))
       end
     end
@@ -81,8 +85,10 @@ function ManageCandy:update(transform, candy, dt)
       return Lume.distance(x, y, ex, ey) < candy.radius
     end)
     for _, enemyEntity in ipairs(enemyEntities) do
-      enemyEntity:getComponent('Enemy'):takeDamage(ManageCandy.CANDY_DAMAGE, ManageCandy.CANDY_DAMAGE_TYPE,
+      local enemy = enemyEntity:getComponent('Enemy')
+      enemy:takeDamage(ManageCandy.CANDY_DAMAGE, ManageCandy.CANDY_DAMAGE_TYPE,
           ManageCandy.CANDY_ARMOR_IGNORE_RATIO, 'candy')
+      enemy:applyEffect(EnemyEffect('stun', ManageCandy.CANDY_STUN_DURATION))
     end
 
     AudioManager:playSound('fall-down', 0.2)

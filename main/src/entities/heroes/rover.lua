@@ -9,7 +9,7 @@ local Entity = require 'src.entities.entity'
 
 local Rover = Class('Rover', HeroEntity)
 
-Rover.SKILL_DESCRIPTION = "Enter a frenzy for 6s\nFrenzy: Basic attacks ignore 50% physical armor. Every third basic attack deal bonus 0.25 RP physical damage and slash in an arc"
+Rover.SKILL_DESCRIPTION = "Enter a frenzy for 6s\nFrenzy: Basic attacks ignore 50% physical armor, deal bonus 0.25 RP physical damage and slash in an arc"
 
 function Rover:initialize(slot)
   Entity.initialize(self)
@@ -17,15 +17,15 @@ function Rover:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.rover, 'Rover', 3, {'bigEar', 'trailblazer'},
     {
-      [1] = Hero.Stats(70, 30, 1.4, 350, 0, 2, 0, 0, 0, 0),
-      [2] = Hero.Stats(93, 40, 1.4, 350, 0, 2, 0, 0, 0, 0),
-      [3] = Hero.Stats(124, 53, 1.4, 350, 0, 2, 0, 0, 0, 0),
-      [4] = Hero.Stats(166, 71, 1.4, 350, 0, 2, 0, 0, 0, 0),
-      [5] = Hero.Stats(221, 95, 1.4, 350, 0, 2, 0, 0, 0, 0),
-      [6] = Hero.Stats(295, 126, 1.4, 350, 0, 2, 0, 0, 0, 0),
+      [1] = Hero.Stats(70, 30, 3, 325, 0, 2, 0, 0, 0, 0),
+      [2] = Hero.Stats(93, 40, 3, 325, 0, 2, 0, 0, 0, 0),
+      [3] = Hero.Stats(124, 53, 3, 325, 0, 2, 0, 0, 0, 0),
+      [4] = Hero.Stats(166, 71, 3, 325, 0, 2, 0, 0, 0, 0),
+      [5] = Hero.Stats(221, 95, 3, 325, 0, 2, 0, 0, 0, 0),
+      [6] = Hero.Stats(295, 126, 3, 325, 0, 2, 0, 0, 0, 0),
     },
     nil,
-    Hero.Skill('Rover', 30, 15, function(hero)
+    Hero.Skill('Rover', 45, 12, function(hero)
       hero.secondsUntilEndFrenzy = 6
 
       local frenzyStats = hero.class.Stats(0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0)
@@ -51,7 +51,7 @@ function Rover:initialize(slot)
     local x, y = enemyEntity:getComponent('Transform'):getGlobalPosition()
     if hero.secondsUntilEndFrenzy > 0 then
       hero.frenzyAttackCount = hero.frenzyAttackCount + 1
-      if hero.frenzyAttackCount == 3 then
+      -- if hero.frenzyAttackCount == 3 then
         hero.frenzyAttackCount = 0 
 
         local x, y = x + 18, y + 18
@@ -66,8 +66,10 @@ function Rover:initialize(slot)
         end))
         Hump.Gamestate.current():addEntity(effect)
 
+        hero:getEntity():getComponent('Animator'):setCurrentAnimationName('attack')
+
         return false
-      end
+      -- end
     end
     return true
   end

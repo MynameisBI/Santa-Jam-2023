@@ -114,11 +114,12 @@ end
 function Phase:switchNextRound()
   Hump.Gamestate.current().guis[1]:onRoundEnd()
 
+  table.remove(self.rounds, 1)
+
   if self.rounds[1] == nil then
     Hump.Gamestate.current():win()
+    return
   end
-
-  table.remove(self.rounds, 1)
 
   if self.rounds[1].mainType == 'dealer' then
     self:startCurrentRound()

@@ -18,15 +18,15 @@ function Kori:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.kori, 'Kori', 2, {'bigEar', 'defect', 'trailblazer'},
     {
-      [1] = Hero.Stats(45, 45, 1.1, 275, 0, 2, 0, 0, 0, 0),
-      [2] = Hero.Stats(60, 60, 1.1, 275, 0, 2, 0, 0, 0, 0),
-      [3] = Hero.Stats(80, 80, 1.1, 275, 0, 2, 0, 0, 0, 0),
-      [4] = Hero.Stats(107, 107, 1.1, 275, 0, 2, 0, 0, 0, 0),
-      [5] = Hero.Stats(142, 142, 1.1, 275, 0, 2, 0, 0, 0, 0),
-      [6] = Hero.Stats(190, 190, 1.1, 275, 0, 2, 0, 0, 0, 0),
+      [1] = Hero.Stats(45, 45, 2.5, 275, 0, 2, 0, 0, 0, 0),
+      [2] = Hero.Stats(60, 60, 2.5, 275, 0, 2, 0, 0, 0, 0),
+      [3] = Hero.Stats(80, 80, 2.5, 275, 0, 2, 0, 0, 0, 0),
+      [4] = Hero.Stats(107, 107, 2.5, 275, 0, 2, 0, 0, 0, 0),
+      [5] = Hero.Stats(142, 142, 2.5, 275, 0, 2, 0, 0, 0, 0),
+      [6] = Hero.Stats(190, 190, 2.5, 275, 0, 2, 0, 0, 0, 0),
     },
     nil,
-    Hero.Skill('Kori', 100, 15, function(hero)
+    Hero.Skill('Kori', 120, 10, function(hero)
       local stats = hero:getStats()
       local hx, hy = hero:getEntity():getComponent('Transform'):getGlobalPosition()
       

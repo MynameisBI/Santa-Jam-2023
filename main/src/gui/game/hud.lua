@@ -19,7 +19,7 @@ HUD.TRAIT_DESCRIPTIONS = {
   sentient = {
     title = 'Sentient',
     body = 'Increase attack speed. Doubled for 2 seconds after skill cast.',
-    threshold = '(2) +20% attack speed\n(4) +32.5% attack speed \n(6) +50% attack speed'
+    threshold = '(2) +0.5 attack speed\n(3) +0.8 attack speed \n(4) +1.25 attack speed'
   },
   defect = {
     title = 'Defect',
@@ -28,7 +28,7 @@ HUD.TRAIT_DESCRIPTIONS = {
   },
   candyhead = {
     title = 'Candyhead',
-    body = 'Periodically summon 3 candies on the battlefield dealing \ndamage and stun enemies.',
+    body = 'Periodically summon 3 candies on the battlefield dealing\n 25 reality damage and stun enemies for 1s.',
     threshold = '\n(2) For each level 3 hero in your team, summon 1 more candy.'
   },
   coordinator = {
@@ -44,17 +44,17 @@ HUD.TRAIT_DESCRIPTIONS = {
   trailblazer = {
     title = 'Trailblazer',
     body = 'Attacks deal more damage the nearer the enemies.',
-    threshold = '(2) +0-50% more damage\n(3) +0-75% more damage\n(4) +0-100% more damage'
+    threshold = '(2) +0-60% more damage\n(3) +0-90% more damage\n(4) +0-120% more damage'
   },
   droneMaestro = {
     title = 'Drone Maestro',
-    body = 'Drone Maestro spawns a drone every 5 seconds.\nDrones exist until the end of battle.',
-    threshold = '\n(1) Drones deal 10 damage\n(3) Drones deal 16 damage\n(5) Drones deal 24 damage'
+    body = 'Drone Maestro spawns a drone every 5 seconds.\nDrones attack enemies and exist until the end of battle.',
+    threshold = '\n(2) Drones deal 24 damage\n(4) Drones deal 40 damage\n(6) Drones deal 60 damage'
   },
   cracker = {
     title = 'Cracker',
     body = 'Periodically remove the highest health enemy out of the field.\nHave a 33% chance to drop 1 gold.',
-    threshold = '\n(2) Every 4 seconds\n(3) Every 2 second'
+    threshold = '\n(2) Every 8 seconds\n(3) Every 5 second'
   },
 }
 

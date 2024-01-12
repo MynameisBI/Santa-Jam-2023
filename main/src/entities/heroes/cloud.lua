@@ -18,16 +18,16 @@ function Cloud:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.cloud, 'Cloud', 1, {'candyhead', 'cracker'},
     {
-      [1] = Hero.Stats(35, 40, 0.9, 500, 0, 2, 0, 0, 0, 0),
-      [2] = Hero.Stats(47, 53, 0.9, 500, 0, 2, 0, 0, 0, 0),
-      [3] = Hero.Stats(62, 71, 0.9, 500, 0, 2, 0, 0, 0, 0),
-      [4] = Hero.Stats(83, 95, 0.9, 500, 0, 2, 0, 0, 0, 0),
-      [5] = Hero.Stats(111, 126, 0.9, 500, 0, 2, 0, 0, 0, 0),
-      [6] = Hero.Stats(147, 169, 0.9, 500, 0, 2, 0, 0, 0, 0),
+      [1] = Hero.Stats(35, 40, 1.7, 500, 0, 2, 0, 0, 0, 0),
+      [2] = Hero.Stats(47, 53, 1.7, 500, 0, 2, 0, 0, 0, 0),
+      [3] = Hero.Stats(62, 71, 1.7, 500, 0, 2, 0, 0, 0, 0),
+      [4] = Hero.Stats(83, 95, 1.7, 500, 0, 2, 0, 0, 0, 0),
+      [5] = Hero.Stats(111, 126, 1.7, 500, 0, 2, 0, 0, 0, 0),
+      [6] = Hero.Stats(147, 169, 1.7, 500, 0, 2, 0, 0, 0, 0),
     },
 
     CloudBullet,
-    Hero.Skill('Cloud', 50, 5, function(hero, mx, my)
+    Hero.Skill('Cloud', 50, 4, function(hero, mx, my)
       Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = mx, y = my}, 150, 40,
           {damageType = 'reality', realityPowerRatio = 5}, 0.1))
 

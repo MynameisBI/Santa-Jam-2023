@@ -13,20 +13,20 @@ function Hakiko:initialize(slot)
 
   HeroEntity.initialize(self, slot, Images.heroes.hakiko, 'Hakiko', 3, {'defect', 'droneMaestro'},
   {
-    [1] = Hero.Stats(40, 60, 1.1, 500, 0, 2, 0, 0, 0, 0 ),
-    [2] = Hero.Stats(53, 80, 1.1, 500, 0, 2, 0, 0, 0, 0),
-    [3] = Hero.Stats(71, 107, 1.1, 500, 0, 2, 0, 0, 0, 0),
-    [4] = Hero.Stats(95, 142, 1.1, 500, 0, 2, 0, 0, 0, 0),
-    [5] = Hero.Stats(126, 190, 1.1, 500, 0, 2, 0, 0, 0, 0),
-    [6] = Hero.Stats(169, 253, 1.1, 500, 0, 2, 0, 0, 0, 0),
+    [1] = Hero.Stats(40, 60, 2.2, 500, 0, 2, 0, 0, 0, 0 ),
+    [2] = Hero.Stats(53, 80, 2.2, 500, 0, 2, 0, 0, 0, 0),
+    [3] = Hero.Stats(71, 107, 2.2, 500, 0, 2, 0, 0, 0, 0),
+    [4] = Hero.Stats(95, 142, 2.2, 500, 0, 2, 0, 0, 0, 0),
+    [5] = Hero.Stats(126, 190, 2.2, 500, 0, 2, 0, 0, 0, 0),
+    [6] = Hero.Stats(169, 253, 2.2, 500, 0, 2, 0, 0, 0, 0),
   },
   HakikoBullet,
-  Hero.Skill('Hakiko', 60, 8, function(hero)
+  Hero.Skill('Hakiko', 75, 6, function(hero)
     local stats = hero:getStats()
     local enemies = Hump.Gamestate.current():getComponents('Enemy')
     for _, enemy in ipairs(enemies) do
       enemy:takeDamage(stats.realityPower * 2.4, 'reality', stats.realityArmorIgnoreRatio, hero)
-      enemy:knockBack(150)
+      enemy:knockBack(135)
     end
   end)
   )

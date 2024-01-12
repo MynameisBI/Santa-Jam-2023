@@ -18,16 +18,16 @@ function Brunnos:initialize(slot)
   HeroEntity.initialize(
     self, slot, Images.heroes.brunnos, 'Brunnos', 1, {'sentient', 'trailblazer'},
     {
-        [1] = Hero.Stats(45, 20, 1.2, 375, 0, 2, 0, 0, 0, 0),
-        [2] = Hero.Stats(60, 27, 1.2, 375, 0, 2, 0, 0, 0, 0),
-        [3] = Hero.Stats(80, 36, 1.2, 375, 0, 2, 0, 0, 0, 0),
-        [4] = Hero.Stats(107, 47, 1.2, 375, 0, 2, 0, 0, 0, 0),
-        [5] = Hero.Stats(142, 63, 1.2, 375, 0, 2, 0, 0, 0, 0),
-        [6] = Hero.Stats(190, 84, 1.2, 375, 0, 2, 0, 0, 0, 0),
+        [1] = Hero.Stats(45, 20, 2.6, 375, 0, 2, 0, 0, 0, 0),
+        [2] = Hero.Stats(60, 27, 2.6, 375, 0, 2, 0, 0, 0, 0),
+        [3] = Hero.Stats(80, 36, 2.6, 375, 0, 2, 0, 0, 0, 0),
+        [4] = Hero.Stats(107, 47, 2.6, 375, 0, 2, 0, 0, 0, 0),
+        [5] = Hero.Stats(142, 63, 2.6, 375, 0, 2, 0, 0, 0, 0),
+        [6] = Hero.Stats(190, 84, 2.6, 375, 0, 2, 0, 0, 0, 0),
     },
 
     nil,
-    Hero.Skill('Brunnos', 40, 8, function(hero, mx, my)
+    Hero.Skill('Brunnos', 20, 5, function(hero, mx, my)
       local enemies = Hump.Gamestate.current():getComponents('Enemy')
       local highestHealthEnemy
       local highestHealth = -math.huge
@@ -40,7 +40,7 @@ function Brunnos:initialize(slot)
       if highestHealthEnemy == nil then return end
 
       local stats = hero:getStats()
-      self:getComponent('Timer').timer:every(0.25, function()
+      self:getComponent('Timer').timer:every(0.2, function()
         if highestHealthEnemy.stats.HP <= 0 then return end
 
         local targetSkillEntity = Hump.Gamestate.current():addEntity(
