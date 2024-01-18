@@ -2,7 +2,7 @@ DEBUG = {
   status = true,
   buildingsX = 0,
   buildingsSpeed = 25,
-  audioEnabled = false,
+  audioEnabled = true,
 }
 
 Hump = {

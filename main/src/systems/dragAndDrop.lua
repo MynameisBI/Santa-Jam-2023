@@ -11,6 +11,20 @@ local DragAndDrop = Class('DragAndDrop', System)
 function DragAndDrop:initialize()
   System.initialize(self, 'Draggable', 'Transform', 'Area', '?Hero', '?Mod')
   self.dragAndDropInfo = DragAndDropInfo()
+
+  self.oldPhase = Phase():current()
+end
+
+function DragAndDrop:earlysystemupdate(dt)
+  local currentPhase = Phase():current()
+  if self.oldPhase ~= currentPhase and currentPhase == 'planning' then
+    if self.dragAndDropInfo.draggable ~= nil then
+      self.dragAndDropInfo.draggable:setSlot(self.dragAndDropInfo.oldSlot)
+      self.dragAndDropInfo.oldSlot = nil
+      self.dragAndDropInfo.draggable = nil
+    end
+  end
+  self.oldPhase = currentPhase
 end
 
 function DragAndDrop:update(draggable, transform, area, hero, mod, dt)
