@@ -48,7 +48,6 @@ local Alestra = require 'src.entities.heroes.alestra'
 -- Mod entity
 local ModSlot = require 'src.entities.modSlot'
 -- UI
-local Menu = require 'src.gui.menu.menu'
 local HUD = require 'src.gui.game.hud'
 local BattleRewardWindow = require 'src.gui.game.battleRewardWindow'
 local HeroRewardWindow = require 'src.gui.game.heroRewardWindow'

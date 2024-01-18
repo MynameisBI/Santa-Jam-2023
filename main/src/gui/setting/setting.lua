@@ -44,17 +44,18 @@ function Setting:draw()
     self.buttonY = 170
 
     love.graphics.setColor(1, 1, 1, 0.9)
-    self.plusButton = self.suit:Button('+', self.buttonX + 110, self.buttonY, 40, 40)
-    if self.plusButton.hit then
-        AudioManager:playSound('button', 0.5)
-        self.songVolume = math.min(self.songVolume + 0.1, 0.9)
-        AudioManager.currentSong:setVolume(self.songVolume)
-    end
 
-    self.minusButton = self.suit:Button('-', self.buttonX + 310, self.buttonY, 40, 40)
+    self.minusButton = self.suit:Button('-', self.buttonX + 110, self.buttonY, 40, 40)
     if self.minusButton.hit then
         AudioManager:playSound('button', 0.5)
         self.songVolume = math.max(self.songVolume - 0.1, 0.1)
+        AudioManager.currentSong:setVolume(self.songVolume)
+    end
+
+    self.plusButton = self.suit:Button('+', self.buttonX + 310, self.buttonY, 40, 40)
+    if self.plusButton.hit then
+        AudioManager:playSound('button', 0.5)
+        self.songVolume = math.min(self.songVolume + 0.1, 0.9)
         AudioManager.currentSong:setVolume(self.songVolume)
     end
 

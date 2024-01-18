@@ -2,7 +2,7 @@ require 'globals'
 require 'assets'
 
 Game = require 'src.states.game'
-Menu = require 'src.gui.menu.menu'
+Menu = require 'src.states.menu'
 
 local AudioManager = require 'src.components.audioManager'
 
