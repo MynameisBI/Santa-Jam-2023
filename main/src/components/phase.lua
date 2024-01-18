@@ -81,7 +81,7 @@ function Phase:switch(phase)
 end
 
 function Phase:current()
-  return self._currentPhase 
+  return self._currentPhase
 end
 
 function Phase:enqueueRound(mainType, subType)

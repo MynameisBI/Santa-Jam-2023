@@ -24,7 +24,7 @@ function love.load(args)
   AudioManager:loadSound('fall-down', 'assets/sfx/fall-down.wav', 'static')
   AudioManager:loadSound('transform', 'assets/sfx/transform.wav', 'static')
 
-  AudioManager:playSong('song1', 0.4)
+  AudioManager:playSong('song2', 0.5)
 end
 
 function love.update(dt)

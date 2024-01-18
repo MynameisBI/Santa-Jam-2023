@@ -40,19 +40,28 @@ function AudioManager:stopSound()
 end
 
 function AudioManager:update(dt)
-  -- local isPlaying = self.currentSong and (self.currentSong:getDuration() - self.currentSong:tell()) > 1
+  local isPlaying = self.currentSong and (self.currentSong:getDuration() - self.currentSong:tell()) > 1
 
-  -- if self.currentSong and not isPlaying then
-  --   self.currentSong:stop()
+  if self.currentSong and not isPlaying then
+    self.currentSong:stop()
 
-  --   local currentPhase = self.phase:current()
-  --   local round = self.phase:getCurrentRound()
 
-  --   if currentPhase == 'battle' and (round.mainType == 'enemy' or round.mainType == 'elite') then
-  --     self:playSong('enemy', 0.4)
-  --   end
-  -- end
-  self:switch()
+    if Hump.Gamestate.current() == Game then
+      local currentPhase = self.phase:current()
+      local round = self.phase:getCurrentRound()
+      if currentPhase == 'battle' and (round.mainType == 'enemy' or round.mainType == 'elite') then
+        self:playSong('song1', 0.4)
+      -- elseif currentPhase == 'dealer' then
+      --   self:playSong('song3', 0.4)
+      else
+        self.currentSong:play()
+      end
+    end
+  end
+
+  if self.currentSong and not self.currentSong:isPlaying() then
+    self.playSong('song2', 0.4)
+  end
 end
 
 
@@ -75,28 +84,24 @@ function AudioManager:playSong(id, volume)
   return self.currentSong
 end
 
-function AudioManager:switch()
-  local isPlaying = self.currentSong and (self.currentSong:getDuration() - self.currentSong:tell()) > 1
-  if self.currentSong and not isPlaying then
-    self.currentSong:stop()
-  end
+-- function AudioManager:switch()
+--   local isPlaying = self.currentSong and (self.currentSong:getDuration() - self.currentSong:tell()) > 1
+--   if self.currentSong and not isPlaying then
+--     self.currentSong:stop()
+--   end
 
-  local currentPhase = self.phase:current()
-  local round = self.phase:getCurrentRound()
+--   local currentPhase = self.phase:current()
+--   local round = self.phase:getCurrentRound()
 
-  if currentPhase == 'battle' and (round.mainType == 'enemy' or round.mainType == 'elite') then
-    self:playSong('song1', 0.4)
-  else
-    self:playSong('song2', 0.4)
-  end
-end
+--   if currentPhase == 'battle' and (round.mainType == 'enemy' or round.mainType == 'elite') then
+--     self:playSong('song1', 0.4)
+--   else
+--     self:playSong('song2', 0.4)
+--   end
+-- end
 
 function AudioManager:getCurrentSongVolume()
   return self.currentSongVolume
-end
-
-function AudioManager:getCurrentSoundVolume()
-  return self.currentSoundVolume
 end
 
 return AudioManager

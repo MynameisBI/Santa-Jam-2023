@@ -38,6 +38,7 @@ function Menu:draw()
     if self.startButton.hit then
         Hump.Gamestate.switch(Game)
         AudioManager:playSound('button', 0.4)
+        AudioManager:playSong('song1', 0.4)
     end
 
     self.settingButton = self.suit:Button('Setting', self.buttonX, self.buttonY + 50, 180, 40)
