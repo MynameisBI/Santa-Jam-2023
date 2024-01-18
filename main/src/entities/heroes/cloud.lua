@@ -5,6 +5,7 @@ local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 local Animator = require 'src.components.animator'
 local CloudBullet = require 'src.entities.bullets.cloudBullet'
+local AudioManager = require 'src.components.audioManager'
 
 local Entity = require 'src.entities.entity'
 
@@ -30,6 +31,7 @@ function Cloud:initialize(slot)
     Hero.Skill('Cloud', 50, 4, function(hero, mx, my)
       Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = mx, y = my}, 150, 40,
           {damageType = 'reality', realityPowerRatio = 5}, 0.1))
+      AudioManager:playSound('transform', 0.4)
 
       local effectEntity = Entity()
       effectEntity:addComponent(Transform(mx - 52, my - 60, 0, 2, 2))
@@ -48,7 +50,7 @@ function Cloud:initialize(slot)
   animator:setGrid(18, 18, Images.heroes.cloud:getWidth(), Images.heroes.cloud:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.5, true)
   animator:addAnimation('attack', {'6-5', 1}, {0.3, 0.7}, true, function()
-    animator:setCurrentAnimationName('idle') 
+  animator:setCurrentAnimationName('idle')
   end)
   animator:setCurrentAnimationName('idle')
 end

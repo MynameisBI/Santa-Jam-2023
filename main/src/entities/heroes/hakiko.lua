@@ -35,7 +35,7 @@ function Hakiko:initialize(slot)
   animator:setGrid(18, 18, Images.heroes.hakiko:getWidth(), Images.heroes.hakiko:getHeight())
   animator:addAnimation('idle', {'1-2', 1}, 0.75, true)
   animator:addAnimation('attack', {'3-4', 1, 3, 1}, {0.075, 0.225, 0.7}, true, function()
-    animator:setCurrentAnimationName('idle') 
+  animator:setCurrentAnimationName('idle')
   end)
   animator:setCurrentAnimationName('idle')
 end

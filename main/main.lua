@@ -23,6 +23,10 @@ function love.load(args)
   AudioManager:loadSound('shoot', 'assets/sfx/shoot.wav', 'static')
   AudioManager:loadSound('fall-down', 'assets/sfx/fall-down.wav', 'static')
   AudioManager:loadSound('transform', 'assets/sfx/transform.wav', 'static')
+  AudioManager:loadSound('explosion', 'assets/sfx/explosion.wav', 'static')
+  AudioManager:loadSound('laser', 'assets/sfx/laser.wav', 'static')
+  AudioManager:loadSound('target', 'assets/sfx/target.wav', 'static')
+  AudioManager:loadSound('note', 'assets/sfx/note.wav', 'static')
 
   AudioManager:playSong('song2', 0.5)
 end

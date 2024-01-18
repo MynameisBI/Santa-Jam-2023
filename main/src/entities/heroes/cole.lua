@@ -5,6 +5,7 @@ local TargetSkillEntity = require 'src.entities.skills.targetSkillEntity'
 local Transform = require 'src.components.transform'
 local Sprite = require 'src.components.sprite'
 local Timer = require 'src.components.timer'
+local AudioManager = require 'src.components.audioManager'
 
 local Entity = require 'src.entities.entity'
 
@@ -37,6 +38,7 @@ function Cole:initialize(slot)
           TargetSkillEntity(hero, enemyEntities[i],
               {damageType = 'true', attackDamageRatio = 1, canCrit = true}, 0.8 / stats.attackSpeed)
         )
+        AudioManager:playSound('target', 0.4)
 
         local effectEntity = Entity()
         local transform = effectEntity:addComponent(Transform(18, 18, 0, 6, 6,

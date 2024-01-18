@@ -45,14 +45,12 @@ function AudioManager:update(dt)
   if self.currentSong and not isPlaying then
     self.currentSong:stop()
 
-
     if Hump.Gamestate.current() == Game then
       local currentPhase = self.phase:current()
-      local round = self.phase:getCurrentRound()
-      if currentPhase == 'battle' and (round.mainType == 'enemy' or round.mainType == 'elite') then
+      if currentPhase == 'battle' then
         self:playSong('song1', 0.4)
-      -- elseif currentPhase == 'dealer' then
-      --   self:playSong('song3', 0.4)
+      elseif currentPhase == 'dealer' then
+        self:playSong('song3', 0.4)
       else
         self.currentSong:play()
       end

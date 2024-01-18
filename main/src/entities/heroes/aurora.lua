@@ -5,7 +5,7 @@ local Resources = require 'src.components.resources'
 local Transform = require 'src.components.transform'
 local Rectangle = require 'src.components.rectangle'
 local Timer = require 'src.components.timer'
-
+local AudioManager = require 'src.components.audioManager'
 
 local Entity = require 'src.entities.entity'
 
@@ -31,6 +31,7 @@ function Aurora:initialize(slot)
       local resources = Resources()
       resources.secondsAuroraRegenLeft = 6
       resources.auroraRegenSpeed = (100 + stats.realityPower * 0.5) / 6
+      AudioManager:playSound('explosion', 0.4)
 
       local hx, hy = hero:getEntity():getComponent('Transform'):getGlobalPosition()
       for i = 1, 20 do

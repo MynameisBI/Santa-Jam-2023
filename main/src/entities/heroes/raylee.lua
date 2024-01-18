@@ -7,6 +7,7 @@ local Sprite = require 'src.components.sprite'
 local Animator = require 'src.components.animator'
 local Rectangle = require 'src.components.rectangle'
 local RayleeBullet = require 'src.entities.bullets.rayleeBullet'
+local AudioManager = require 'src.components.audioManager'
 
 local Entity = require 'src.entities.entity'
 
@@ -30,7 +31,7 @@ function Raylee:initialize(slot)
     Hero.Skill('Raylee', 60, 5, function(hero, mx, my)
       Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = mx, y = my}, 200, 60,
           {damageType = 'reality', realityPowerRatio = 2.5, effects = {EnemyEffect('reduceRealityArmor', 3)}}, 0.42))
-
+      AudioManager:playSound('note', 0.4)
       local effectEntity = Entity()
       effectEntity:addComponent(Transform(mx - 100, my - 96, 0, 2, 2))
       effectEntity:addComponent(Sprite(Images.effects.rayleeSkill, 16))
@@ -40,9 +41,10 @@ function Raylee:initialize(slot)
           function() Hump.Gamestate.current():removeEntity(effectEntity) end)
       animator:setCurrentAnimationName('default')
       Hump.Gamestate.current():addEntity(effectEntity)
-    end, true, 200, 60),
-    2, -1
-  )
+      end, true, 200, 60),
+      2, -1
+    )
+
 
   local animator = self:getComponent('Animator')
   animator:setGrid(18, 18, Images.heroes.raylee:getWidth(), Images.heroes.raylee:getHeight())

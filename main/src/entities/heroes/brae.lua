@@ -9,6 +9,7 @@ local AreaSkillEntity = require 'src.entities.skills.areaSkillEntity'
 local EnemyEffect = require 'src.type.enemyEffect'
 local Timer = require 'src.components.timer'
 local Rectangle = require 'src.components.rectangle'
+local AudioManager = require 'src.components.audioManager'
 
 local Entity = require 'src.entities.entity'
 
@@ -47,6 +48,7 @@ function Brae:initialize(slot)
           
           Hump.Gamestate.current():addEntity(AreaSkillEntity(hero, {x = x, y = y}, 60, 26,
               {damageType = 'reality', realityPowerRatio = 1.5, effects = {EnemyEffect('stun', 1)}}))
+              AudioManager:playSound('fall-down', 0.4)
 
           local effect = Entity()
           local transform = effect:addComponent(Transform(x, y, 0, 0, 0, 0, 0))

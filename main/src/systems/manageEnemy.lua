@@ -2,6 +2,7 @@ local Entity = require 'src.entities.entity'
 local System = require 'src.systems.system'
 local Phase = require 'src.components.phase'
 local Resources = require 'src.components.resources'
+local AudioManager = require 'src.components.audioManager'
 -- Enemies
 -- mini enemies
 local Mino = require 'src.entities.enemies.mino'
@@ -213,6 +214,7 @@ function ManageEnemy:update(transform, area, enemy, dt)
   local hasReachedPlatform = x < 310
   if hasReachedPlatform then
     self.resources:modifyHealth(-enemy.stats.damage)
+    AudioManager:playSound('hit-hurt', 0.3)
   end
   if isDead or hasReachedPlatform then
     Hump.Gamestate.current():removeEntity(transform:getEntity())

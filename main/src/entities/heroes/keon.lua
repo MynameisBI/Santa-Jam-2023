@@ -6,6 +6,7 @@ local Sprite = require 'src.components.sprite'
 local Timer = require 'src.components.timer'
 local Animator = require 'src.components.animator'
 local KeonBullet = require 'src.entities.bullets.keonBullet'
+local AudioManager = require 'src.components.audioManager'
 
 local Entity = require 'src.entities.entity'
 
@@ -30,6 +31,7 @@ function Keon:initialize(slot)
     Hero.Skill('Keon', 60, 2.5, function(hero)
       if hero.skill.castCount == nil then hero.skill.castCount = 0 end
       hero.skill.castCount = hero.skill.castCount + 1
+      AudioManager:playSound('laser', 0.4)
       
       local spawnColumn = function()
         local enemyEntities = Hump.Gamestate.current():getEntitiesWithComponent('Enemy')
